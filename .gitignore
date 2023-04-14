@@ -1,1 +1,3 @@
 .idea
+hadoop-cluster/client/notebook
+*/__pycache__
