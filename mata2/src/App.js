@@ -41,7 +41,7 @@ function App() {
         }/>
         <Route path='/login' element={
           <WelcomeLayout state={ {user: user} }>
-            <Login/>
+          
           </WelcomeLayout>
         }/>
         <Route path='/logout' element={

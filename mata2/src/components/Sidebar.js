@@ -15,10 +15,7 @@ const Sidebar = () => {
         </NavItem>
         <Collapse isOpen={isOpen}>
           <NavItem>
-            <NavLink href="#">서브메뉴1</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="#">서브메뉴2</NavLink>
+            <NavLink href="/start">대쉬보드</NavLink>
           </NavItem>
           <NavItem>
             <NavLink href="#">서브메뉴3</NavLink>
