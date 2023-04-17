@@ -9,6 +9,7 @@ import DashboardLayout from './layout/DashboardLayout';
 import WelcomeLayout from "./layout/WelcomeLayout";
 import Welcome from './views/Welcome';
 import Login from './views/Login';
+import SignUp from './views/SignUp';
 function App() {
   const [user, setUser] = useState(null);
   const userInfo = async (accessToken) => {
@@ -51,7 +52,7 @@ function App() {
         }/>
         <Route path='/signup' element={
           <WelcomeLayout state={ {user: user} }>
-
+            <SignUp/>
           </WelcomeLayout>
         }/>
         <Route path='/start' element={
