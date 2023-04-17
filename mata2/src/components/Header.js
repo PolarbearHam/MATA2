@@ -3,8 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
 
 const Header = (props) => {
-
-
   const dropdown = () => {
     document.getElementById("nav-content").classList.toggle("hidden");
   }
@@ -29,7 +27,7 @@ const Header = (props) => {
           </svg>
         </button>
       </div>
-      <div id="nav-content" className="w-full lg:flex lg:w-auto">
+      <div id="nav-content" className="w-full lg:flex lg:w-auto hidden">
         {!props.state.user ? ( <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
           <a href="/"
              className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 mr-4">

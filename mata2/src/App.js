@@ -11,6 +11,7 @@ import Welcome from './views/Welcome';
 import Logout from "./views/Logout";
 
 function App() {
+  // GLOBAL: ************** 사용자 정보 **************
   const [user, setUser] = useState(null);
   const userInfo = async (accessToken) => {
     if(!accessToken || accessToken=='') return;
@@ -22,6 +23,7 @@ function App() {
       name: "dummy"
     });
   }
+  // GLOBAL: ************** 사용자 정보 **************
 
   useEffect(() => {
     sessionStorage.setItem("accessToken", "dummy"); // 더미 데이터
