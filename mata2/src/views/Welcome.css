@@ -1,92 +1,77 @@
 #background {
   display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 10px;
-gap: 10px;
-background-image: url('../assets/Welcome.jpg');
-background-size: cover;
-height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+  background-image: url('../assets/Welcome.jpg');
+  background-size: cover;
+  height: 100vh;
 }
 
-#heroTitle{
-  display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 10px;
-gap: 10px;
-
-
-
-}
-
-#MATA{
-  width: 205px;
-height: 87px;
-
-font-family: 'Inter';
-font-style: normal;
-font-weight: 600;
-font-size: 72px;
-line-height: 87px;
-
-color: #FFFFFF;
-
-}
-
-#main{
-  width: 200px;
-height: 44px;
-
-font-family: 'Inter';
-font-style: normal;
-font-weight: 500;
-font-size: 36px;
-line-height: 44px;
-/* identical to box height */
-
-
-color: #FFFFFF;
-
-}
-#heroContent{
+#heroTitle {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 10px;
   gap: 10px;
-  
-  
- 
 }
 
-#firstExplanation{
-  
-height: 19px;
+#MATA {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 72px;
+  line-height: 87px;
 
-font-family: 'Inter';
-font-style: normal;
-font-weight: 600;
-font-size: 16px;
-line-height: 19px;
+  color: #FFFFFF;
 
-color: #FFFFFF;
 }
 
-#secondExplanation{
-  
-height: 19px;
+#main {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 44px;
+  /* identical to box height */
 
-font-family: 'Inter';
-font-style: normal;
-font-weight: 600;
-font-size: 16px;
-line-height: 19px;
 
-color: #FFFFFF;
+  color: #FFFFFF;
+
+}
+
+#heroContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+
+
+}
+
+#firstExplanation {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #FFFFFF;
+}
+
+#secondExplanation {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #FFFFFF;
 }
 
 
