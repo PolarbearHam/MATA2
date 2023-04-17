@@ -8,7 +8,7 @@ import ServiceCustom from './views/ServiceCustom';
 import DashboardLayout from './layout/DashboardLayout';
 import WelcomeLayout from "./layout/WelcomeLayout";
 import Welcome from './views/Welcome';
-
+import Login from './views/Login';
 function App() {
   const [user, setUser] = useState(null);
   const userInfo = async (accessToken) => {
@@ -41,7 +41,7 @@ function App() {
         }/>
         <Route path='/login' element={
           <WelcomeLayout state={ {user: user} }>
-          
+          <Login/>
           </WelcomeLayout>
         }/>
         <Route path='/logout' element={

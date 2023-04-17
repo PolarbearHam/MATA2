@@ -24,27 +24,27 @@ gap: 10px;
 
 #MATA{
   width: 205px;
-height: 87px;
-
-font-family: 'Inter';
-font-style: normal;
-font-weight: 600;
-font-size: 72px;
-line-height: 87px;
-
-color: #FFFFFF;
+  height: 87px;
+  
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 72px;
+  line-height: 87px;
+  
+  color: #FFFFFF;
 
 }
 
 #main{
   width: 200px;
-height: 44px;
-
-font-family: 'Inter';
-font-style: normal;
-font-weight: 500;
-font-size: 36px;
-line-height: 44px;
+  height: 44px;
+  
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 44px;
 /* identical to box height */
 
 
