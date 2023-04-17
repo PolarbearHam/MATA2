@@ -80,4 +80,9 @@ public class MemberService {
         }
         else log.info("refresh 없음");
     }
+
+    public Member getMemberInfoByUserName(String name){
+        Member member = memberRepository.findByEmail(name).orElseThrow(NoSuchMemberException::new);
+        return member;
+    }
 }

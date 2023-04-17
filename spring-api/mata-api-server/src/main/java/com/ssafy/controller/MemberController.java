@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -60,7 +61,7 @@ public class MemberController {
     @GetMapping(value = "/info")
     public ResponseEntity<Member> info(@Validated @RequestBody MemberResponse request){
         String userName = jwtTokenProvider.getUser(request.getAccessToken());
-
+        Member member = memberService.getMemberInfoByUserName(userName);
         return ResponseEntity.status(HttpStatus.OK).body(member);
     }
 }
