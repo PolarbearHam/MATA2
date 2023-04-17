@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-const nav = () => {
+const Header = () => {
     return (
         <nav>
             <ul class="nav flex-column">
@@ -18,4 +18,4 @@ const nav = () => {
     );
 };
 
-export default nav;
+export default Header;

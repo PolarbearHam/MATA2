@@ -5,16 +5,22 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Collapse from './views/Collapse';
 import Sidebar from './components/Sidebar';
 import ServiceCustom from './views/ServiceCustom';
-
+import DashboardLayout from './layout/DashboardLayout';
+import WelcomeLayout from "./layout/WelcomeLayout";
 
 function App() {
 	return(
 		<BrowserRouter>
-      <Sidebar/>
 			<Routes>
-        <Route path='/service/:id/setting' element={ServiceCustom()}/>
-        <Route path='*' element={Collapse}/>
-
+				<Route path='/' element={
+					<WelcomeLayout>
+					</WelcomeLayout>
+				}/>
+        <Route path='/service/:id/setting' element={
+					<DashboardLayout>
+						<ServiceCustom/>
+					</DashboardLayout>
+				}/>
       </Routes>
 		</BrowserRouter>
 	)

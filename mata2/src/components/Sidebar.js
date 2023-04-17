@@ -10,12 +10,6 @@ const Sidebar = () => {
   return (
     <div>
       <Nav vertical>
-        <NavItem>
-          <NavLink href="#">홈</NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink href="#">프로필</NavLink>
-        </NavItem>
         <NavItem onClick={toggle}>
           <NavLink>메뉴</NavLink>
         </NavItem>
