@@ -7,6 +7,7 @@ import Sidebar from './components/Sidebar';
 import ServiceCustom from './views/ServiceCustom';
 import DashboardLayout from './layout/DashboardLayout';
 import WelcomeLayout from "./layout/WelcomeLayout";
+import Welcome from './views/Welcome';
 
 function App() {
 	return(
@@ -14,6 +15,7 @@ function App() {
 			<Routes>
 				<Route path='/' element={
 					<WelcomeLayout>
+						<Welcome/>
 					</WelcomeLayout>
 				}/>
         <Route path='/service/:id/setting' element={
