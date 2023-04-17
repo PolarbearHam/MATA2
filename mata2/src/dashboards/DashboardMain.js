@@ -7,25 +7,39 @@ import DemoSankeyChart from "./sankeychart/DemoSankeyChart";
 import DemoPieChart from "./piechart/DemoPieChart";
 
 
-function DashboardMain() {
+// function DashboardMain() {
+const DashboardMain = (props) => {
   return (
     <div className="dashboard">
       <header className="header">
-        <h1>각종 기본 정보들...</h1>
+        {!props.state.user
+          ? (<h1> 김 아무개의 대시보드 </h1>)
+          : (<h1> {props.state.user.name}의 대시보드</h1>)
+        }
       </header>
       <main className="main">
         {/* 대시보드 화면 구성 요소 */}
         <div className="charts-container">
           <div className="chart-row">
-            <DemoLineChart />
-            <DemoAreaChart />
+            <div className="chart-col">
+              <DemoLineChart />
+            </div>
+            <div className="chart-col">
+              <DemoAreaChart />
+            </div>
           </div>
           <div className="chart-row">
-            <DemoBarChart />
-            <DemoSankeyChart />
+            <div className="chart-col">
+              <DemoBarChart />
+            </div>
+            <div className="chart-col">
+              <DemoPieChart />
+            </div>
           </div>
           <div className="chart-row">
-            <DemoPieChart />
+            <div className="chart-col">
+              <DemoSankeyChart />
+            </div>
           </div>
         </div>
       </main>

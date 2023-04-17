@@ -29,3 +29,7 @@
 .chart-row > * {
     flex-basis: 50%;
 }
+
+.chart-col {
+    display: flex;
+}

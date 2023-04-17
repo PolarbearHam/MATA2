@@ -7,8 +7,12 @@ const DashboardLayout = (props) => {
   return (
     <div>
       <Header state={props.state}/>
-      <Sidebar state={props.state}/>
-      <DashboardMain/>
+      <div style={{ display: "flex", flexGrow: "1" }}>
+        <div style={{width:"15%", minWidth:"150px"}}>
+          <Sidebar state={props.state}/>
+        </div>
+        <DashboardMain state={props.state}/>
+      </div>
       {props.children}
     </div>
   )
