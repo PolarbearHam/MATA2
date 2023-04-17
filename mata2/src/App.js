@@ -18,6 +18,11 @@ function App() {
             <Welcome/>
           </WelcomeLayout>
         }/>
+        <Route path='/start' element={
+          <DashboardLayout>
+
+          </DashboardLayout>
+        }/>
         <Route path='/service/:id/setting' element={
           <DashboardLayout>
             <ServiceCustom/>
