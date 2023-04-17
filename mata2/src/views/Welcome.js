@@ -2,10 +2,6 @@ import React from 'react';
 import backgroundImage from '../assets/Welcome.jpg'
 import './Welcome.css'
 const Welcome = () => {
-  const styles = {
-    backgroundImage: `url(${backgroundImage})`,
-  
-  };
 
     return (
       <div id='background'>

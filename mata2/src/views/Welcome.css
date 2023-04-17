@@ -4,11 +4,14 @@
   justify-content: center;
   align-items: center;
   padding: 10px;
-  gap: 10px;
   background-image: url('../assets/Welcome.jpg');
   background-size: cover;
+  gap: 10px;
   height: 100vh;
+  filter: contrast(150%) hue-rotate(330deg);
 }
+
+
 
 #heroTitle {
   display: flex;
