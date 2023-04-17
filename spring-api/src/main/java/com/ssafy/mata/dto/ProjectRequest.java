@@ -1,4 +1,4 @@
-package com.ssafy.dto.project.request;
+package com.ssafy.mata.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

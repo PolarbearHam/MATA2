@@ -1,6 +1,6 @@
-package com.ssafy.dto.project.response;
+package com.ssafy.mata.dto;
 
-import com.ssafy.entity.Project;
+import com.ssafy.mata.entity.Project;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

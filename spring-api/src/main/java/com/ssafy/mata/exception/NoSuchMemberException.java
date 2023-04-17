@@ -1,4 +1,4 @@
-package com.ssafy.dto.member.exception;
+package com.ssafy.mata.exception;
 
 public class NoSuchMemberException extends RuntimeException{
     public NoSuchMemberException() {

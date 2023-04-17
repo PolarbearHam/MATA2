@@ -1,7 +1,7 @@
-package com.ssafy.repository;
+package com.ssafy.mata.repository;
 
 
-import com.ssafy.entity.*;
+import com.ssafy.mata.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

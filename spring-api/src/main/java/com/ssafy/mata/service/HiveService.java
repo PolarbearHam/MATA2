@@ -1,7 +1,7 @@
-package com.ssafy.service;
+package com.ssafy.mata.service;
 
-import com.ssafy.entity.*;
-import com.ssafy.repository.HiveRepository;
+import com.ssafy.mata.entity.*;
+import com.ssafy.mata.repository.HiveRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

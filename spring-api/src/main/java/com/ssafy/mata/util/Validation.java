@@ -1,9 +1,8 @@
-package com.ssafy.common.validation;
+package com.ssafy.mata.util;
 
-import com.ssafy.entity.Project;
+import com.ssafy.mata.entity.Project;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 

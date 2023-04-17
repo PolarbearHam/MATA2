@@ -1,16 +1,15 @@
-package com.ssafy.service;
+package com.ssafy.mata.service;
 
-import com.ssafy.token.JwtTokenProvider;
-import com.ssafy.dto.member.request.MemberLoginRequest;
-import com.ssafy.dto.member.request.MemberSignUpRequest;
-import com.ssafy.dto.member.response.MemberResponse;
-import com.ssafy.dto.member.exception.NoSuchMemberException;
-import com.ssafy.dto.member.exception.DuplicateMemberException;
-import com.ssafy.entity.Member;
-import com.ssafy.repository.member.MemberRepository;
+import com.ssafy.mata.exception.DuplicateMemberException;
+import com.ssafy.mata.exception.NoSuchMemberException;
+import com.ssafy.mata.dto.MemberLoginRequest;
+import com.ssafy.mata.dto.MemberSignUpRequest;
+import com.ssafy.mata.dto.MemberResponse;
+import com.ssafy.mata.entity.Member;
+import com.ssafy.mata.repository.MemberRepository;
+import com.ssafy.mata.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

@@ -1,12 +1,11 @@
-package com.ssafy.service;
+package com.ssafy.mata.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ssafy.common.validation.RedisKeyExecption;
-import com.ssafy.dto.WebLog;
-import com.ssafy.dto.project.exception.NoSuchProjectException;
-import com.ssafy.entity.Project;
-import com.ssafy.repository.project.ProjectRepository;
-import com.ssafy.common.validation.Validation;
+import com.ssafy.mata.util.RedisKeyExecption;
+import com.ssafy.mata.util.Validation;
+import com.ssafy.mata.dto.WebLog;
+import com.ssafy.mata.entity.Project;
+import com.ssafy.mata.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;

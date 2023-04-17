@@ -1,6 +1,6 @@
-package com.ssafy.entity;
+package com.ssafy.mata.entity;
 
-import com.ssafy.entity.enums.ProjectCategory;
+import com.ssafy.mata.util.enums.ProjectCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

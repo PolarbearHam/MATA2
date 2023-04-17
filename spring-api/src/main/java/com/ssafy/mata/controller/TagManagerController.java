@@ -1,14 +1,18 @@
-package com.ssafy.controller;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ssafy.dto.WebLog;
-import com.ssafy.service.KafkaProducerService;
-import lombok.RequiredArgsConstructor;
+package com.ssafy.mata.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ssafy.mata.dto.WebLog;
+import com.ssafy.mata.service.KafkaProducerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Arrays;
 
 @RestController
 @RequiredArgsConstructor

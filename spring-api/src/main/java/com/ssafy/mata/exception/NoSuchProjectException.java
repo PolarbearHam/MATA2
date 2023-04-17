@@ -1,4 +1,4 @@
-package com.ssafy.dto.project.exception;
+package com.ssafy.mata.exception;
 
 public class NoSuchProjectException extends RuntimeException{
     public NoSuchProjectException() {

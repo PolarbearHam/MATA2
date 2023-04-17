@@ -1,4 +1,4 @@
-package com.ssafy.dto.member.exception;
+package com.ssafy.mata.exception;
 
 public class DuplicateMemberException extends RuntimeException{
     public DuplicateMemberException() {

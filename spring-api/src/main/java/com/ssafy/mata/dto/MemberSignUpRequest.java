@@ -1,13 +1,11 @@
-package com.ssafy.dto.member.request;
+package com.ssafy.mata.dto;
 
 
-import com.ssafy.entity.Member;
-import com.ssafy.entity.enums.MemberPrivilege;
+import com.ssafy.mata.entity.Member;
+import com.ssafy.mata.util.enums.MemberPrivilege;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;

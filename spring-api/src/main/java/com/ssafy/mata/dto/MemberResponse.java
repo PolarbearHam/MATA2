@@ -1,4 +1,4 @@
-package com.ssafy.dto.member.response;
+package com.ssafy.mata.dto;
 
 
 import lombok.AllArgsConstructor;

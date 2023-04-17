@@ -1,8 +1,8 @@
-package com.ssafy.config.sercurity;
+package com.ssafy.mata.security;
 
 
-import com.ssafy.token.JwtAuthenticationFilter;
-import com.ssafy.token.JwtTokenProvider;
+import com.ssafy.mata.util.JwtAuthenticationFilter;
+import com.ssafy.mata.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

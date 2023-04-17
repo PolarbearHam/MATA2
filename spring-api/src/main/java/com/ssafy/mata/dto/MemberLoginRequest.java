@@ -1,4 +1,4 @@
-package com.ssafy.dto.member.request;
+package com.ssafy.mata.dto;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.ssafy.common.exception.dto;
+package com.ssafy.mata.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

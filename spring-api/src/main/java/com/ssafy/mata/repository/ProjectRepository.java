@@ -1,6 +1,6 @@
-package com.ssafy.repository.project;
+package com.ssafy.mata.repository;
 
-import com.ssafy.entity.Project;
+import com.ssafy.mata.entity.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

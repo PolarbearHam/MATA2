@@ -1,12 +1,8 @@
-package com.ssafy.common.exception;
+package com.ssafy.mata.exception;
 
 
-import com.ssafy.common.exception.dto.ErrorResponse;
-import com.ssafy.common.validation.RedisKeyExecption;
-import com.ssafy.dto.member.exception.DuplicateMemberException;
-import com.ssafy.dto.member.exception.NoSuchMemberException;
-import com.ssafy.dto.project.exception.NoSuchProjectException;
-import lombok.extern.slf4j.Slf4j;
+import com.ssafy.mata.dto.ErrorResponse;
+import com.ssafy.mata.util.RedisKeyExecption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

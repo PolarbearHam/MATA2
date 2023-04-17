@@ -1,7 +1,7 @@
-package com.ssafy.controller;
+package com.ssafy.mata.controller;
 
-import com.ssafy.entity.*;
-import com.ssafy.service.HiveService;
+import com.ssafy.mata.entity.*;
+import com.ssafy.mata.service.HiveService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

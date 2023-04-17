@@ -1,7 +1,7 @@
-package com.ssafy.token;
+package com.ssafy.mata.util;
 
-import com.ssafy.dto.member.response.MemberResponse;
-import com.ssafy.entity.Member;
+import com.ssafy.mata.dto.MemberResponse;
+import com.ssafy.mata.entity.Member;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

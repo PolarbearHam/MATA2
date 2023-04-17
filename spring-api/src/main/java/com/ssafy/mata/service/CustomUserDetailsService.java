@@ -1,7 +1,7 @@
-package com.ssafy.service;
+package com.ssafy.mata.service;
 
-import com.ssafy.entity.Member;
-import com.ssafy.repository.member.MemberRepository;
+import com.ssafy.mata.entity.Member;
+import com.ssafy.mata.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

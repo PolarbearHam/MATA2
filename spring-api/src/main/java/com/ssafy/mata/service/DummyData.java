@@ -1,12 +1,11 @@
-package com.ssafy;
+package com.ssafy.mata.service;
 
-import com.ssafy.entity.Member;
-import com.ssafy.entity.Project;
-import com.ssafy.entity.enums.MemberPrivilege;
-import com.ssafy.entity.enums.ProjectCategory;
-import com.ssafy.repository.member.MemberRepository;
-import com.ssafy.repository.project.ProjectRepository;
-import com.ssafy.service.MemberService;
+import com.ssafy.mata.entity.Member;
+import com.ssafy.mata.entity.Project;
+import com.ssafy.mata.util.enums.MemberPrivilege;
+import com.ssafy.mata.util.enums.ProjectCategory;
+import com.ssafy.mata.repository.MemberRepository;
+import com.ssafy.mata.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

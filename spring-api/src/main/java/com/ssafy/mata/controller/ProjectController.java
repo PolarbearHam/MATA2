@@ -1,12 +1,11 @@
-package com.ssafy.controller;
+package com.ssafy.mata.controller;
 
-import com.ssafy.config.sercurity.SecurityUtils;
-import com.ssafy.dto.project.request.ProjectAddRequest;
-import com.ssafy.dto.project.request.ProjectDeleteRequest;
-import com.ssafy.dto.project.request.ProjectRequest;
-import com.ssafy.dto.project.response.ProjectResponse;
-import com.ssafy.dto.project.response.TokenResponse;
-import com.ssafy.service.ProjectService;
+import com.ssafy.mata.security.SecurityUtils;
+import com.ssafy.mata.dto.ProjectAddRequest;
+import com.ssafy.mata.dto.ProjectRequest;
+import com.ssafy.mata.dto.ProjectResponse;
+import com.ssafy.mata.dto.TokenResponse;
+import com.ssafy.mata.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

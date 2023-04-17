@@ -1,9 +1,9 @@
-package com.ssafy.controller;
+package com.ssafy.mata.controller;
 
-import com.ssafy.dto.member.request.MemberLoginRequest;
-import com.ssafy.dto.member.request.MemberSignUpRequest;
-import com.ssafy.dto.member.response.MemberResponse;
-import com.ssafy.service.MemberService;
+import com.ssafy.mata.dto.MemberLoginRequest;
+import com.ssafy.mata.dto.MemberSignUpRequest;
+import com.ssafy.mata.dto.MemberResponse;
+import com.ssafy.mata.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

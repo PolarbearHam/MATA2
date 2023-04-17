@@ -1,7 +1,7 @@
-package com.ssafy.repository.member;
+package com.ssafy.mata.repository;
 
 
-import com.ssafy.entity.Member;
+import com.ssafy.mata.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

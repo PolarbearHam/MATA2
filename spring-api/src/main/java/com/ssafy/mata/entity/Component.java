@@ -1,4 +1,4 @@
-package com.ssafy.entity;
+package com.ssafy.mata.entity;
 
 import lombok.Data;
 

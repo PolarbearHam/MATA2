@@ -1,14 +1,11 @@
-package com.ssafy.dto;
+package com.ssafy.mata.dto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.protocol.types.Field;
-import org.w3c.dom.events.EventTarget;
 
 @Data
 @NoArgsConstructor

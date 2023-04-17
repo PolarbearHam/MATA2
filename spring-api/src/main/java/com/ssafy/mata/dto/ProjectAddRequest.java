@@ -1,8 +1,8 @@
-package com.ssafy.dto.project.request;
+package com.ssafy.mata.dto;
 
-import com.ssafy.entity.Member;
-import com.ssafy.entity.Project;
-import com.ssafy.entity.enums.ProjectCategory;
+import com.ssafy.mata.entity.Member;
+import com.ssafy.mata.entity.Project;
+import com.ssafy.mata.util.enums.ProjectCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

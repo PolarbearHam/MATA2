@@ -1,4 +1,4 @@
-package com.ssafy.common.validation;
+package com.ssafy.mata.util;
 
 public class RedisKeyExecption extends RuntimeException{
     public RedisKeyExecption() {
