@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import Collapse from './views/Collapse';
 import Sidebar from './components/Sidebar';
@@ -10,22 +10,22 @@ import WelcomeLayout from "./layout/WelcomeLayout";
 import Welcome from './views/Welcome';
 
 function App() {
-	return(
-		<BrowserRouter>
-			<Routes>
-				<Route path='/' element={
-					<WelcomeLayout>
-						<Welcome/>
-					</WelcomeLayout>
-				}/>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={
+          <WelcomeLayout>
+            <Welcome/>
+          </WelcomeLayout>
+        }/>
         <Route path='/service/:id/setting' element={
-					<DashboardLayout>
-						<ServiceCustom/>
-					</DashboardLayout>
-				}/>
+          <DashboardLayout>
+            <ServiceCustom/>
+          </DashboardLayout>
+        }/>
       </Routes>
-		</BrowserRouter>
-	)
+    </BrowserRouter>
+  )
 }
 
 export default App;

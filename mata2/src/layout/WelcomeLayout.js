@@ -2,7 +2,7 @@ import {Outlet} from "react-router-dom";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 
-const Welcome = (props) => {
+const WelcomeLayout = (props) => {
   return (
     <div>
       <Header/>
@@ -11,4 +11,4 @@ const Welcome = (props) => {
   )
 }
 
-export default Welcome;
+export default WelcomeLayout;

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Nav, NavItem, NavLink, Collapse } from 'reactstrap';
+import {Nav, NavItem, NavLink, Collapse} from 'reactstrap';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);

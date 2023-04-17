@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import React, {useState} from 'react';
+import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 
 const ServiceCustom = () => {
-  const [fields, setFields] = useState([{ value: null }]);
+  const [fields, setFields] = useState([{value: null}]);
 
   const handleAddField = () => {
     const values = [...fields];
-    values.push({ value: null });
+    values.push({value: null});
     setFields(values);
   };
 
