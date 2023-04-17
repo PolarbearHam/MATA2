@@ -3,17 +3,17 @@ package com.ssafy.controller;
 import com.ssafy.dto.member.request.MemberLoginRequest;
 import com.ssafy.dto.member.request.MemberSignUpRequest;
 import com.ssafy.dto.member.response.MemberResponse;
+import com.ssafy.entity.Member;
+import com.ssafy.service.CustomUserDetailsService;
 import com.ssafy.service.MemberService;
+import com.ssafy.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MemberController {
     private final MemberService memberService;
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    private final JwtTokenProvider jwtTokenProvider;
 
 
     @PostMapping(value="/signup")
@@ -54,5 +55,12 @@ public class MemberController {
 
         memberService.logout(token);
         return ResponseEntity.status(HttpStatus.OK).body("Success");
+    }
+
+    @GetMapping(value = "/info")
+    public ResponseEntity<Member> info(@Validated @RequestBody MemberResponse request){
+        String userName = jwtTokenProvider.getUser(request.getAccessToken());
+
+        return ResponseEntity.status(HttpStatus.OK).body(member);
     }
 }
