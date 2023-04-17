@@ -16,17 +16,19 @@ function App() {
   const userInfo = async (accessToken) => {
     if(!accessToken || accessToken=='') return;
     // fetch나 axios로 유저 정보 가져오기
-    // 아래는 더미 데이터
-    setUser({
-      id: 1,
-      email: "dummy@dummy.dum",
-      name: "dummy"
-    });
+    // 아래는 로그인 더미 로직
+    await setTimeout(()=>{
+      sessionStorage.setItem("accessToken", "dummy"); // 더미 데이터
+      setUser({
+        id: 1,
+        email: "dummy@dummy.dum",
+        name: "dummy"
+      });
+    }, 3000);
   }
   // GLOBAL: ************** 사용자 정보 **************
 
   useEffect(() => {
-    sessionStorage.setItem("accessToken", "dummy"); // 더미 데이터
     let accessToken = sessionStorage.getItem("accessToken");
     accessToken = 'dummy-token'; // 더미 데이터
     userInfo(accessToken);
