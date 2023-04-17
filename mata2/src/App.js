@@ -28,6 +28,7 @@ function App() {
   useEffect(() => {
     sessionStorage.setItem("accessToken", "dummy"); // 더미 데이터
     let accessToken = sessionStorage.getItem("accessToken");
+    accessToken = 'dummy-token'; // 더미 데이터
     userInfo(accessToken);
     return () => {
 
