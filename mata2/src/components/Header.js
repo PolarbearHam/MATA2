@@ -30,16 +30,30 @@ const Header = (props) => {
         </button>
       </div>
       <div id="nav-content" className="w-full lg:flex lg:w-auto">
+        {!props.state.user ? ( <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
+          <a href="/"
+             className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 mr-4">
+            홈
+          </a>
+          <a href="/login"
+             className="block no-underline mt-2 lg:inline-block text-white hover:text-blue-200 mr-4 ">
+            로그인
+          </a>
+        </div>) : (
         <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
-          <a href="#responsive-header"
+          <a href="/start"
+             className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 mr-4">
+            {props.state.user.name}의 대시보드
+          </a>
+          <a href="/profile"
              className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 mr-4">
             프로필
           </a>
-          <a href="#responsive-header"
+          <a href="/logout"
              className="block no-underline mt-2 lg:inline-block text-white hover:text-blue-200 mr-4 ">
             로그아웃
           </a>
-        </div>
+        </div>)}
       </div>
     </nav>
   );
