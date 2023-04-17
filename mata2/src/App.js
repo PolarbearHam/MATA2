@@ -8,6 +8,7 @@ import ServiceCustom from './views/ServiceCustom';
 import DashboardLayout from './layout/DashboardLayout';
 import WelcomeLayout from "./layout/WelcomeLayout";
 import Welcome from './views/Welcome';
+import Logout from "./views/Logout";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -23,8 +24,8 @@ function App() {
   }
 
   useEffect(() => {
+    sessionStorage.setItem("accessToken", "dummy"); // 더미 데이터
     let accessToken = sessionStorage.getItem("accessToken");
-    accessToken = 'dummy-token'; // 더미 데이터
     userInfo(accessToken);
     return () => {
 
@@ -41,12 +42,12 @@ function App() {
         }/>
         <Route path='/login' element={
           <WelcomeLayout state={ {user: user} }>
-            <Login/>
+
           </WelcomeLayout>
         }/>
         <Route path='/logout' element={
           <WelcomeLayout state={ {user: user} }>
-
+            <Logout state={ {user: user, setUser: setUser} }/>
           </WelcomeLayout>
         }/>
         <Route path='/signup' element={
