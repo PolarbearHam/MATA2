@@ -5,8 +5,8 @@ import Sidebar from "../components/Sidebar";
 const DashboardLayout = (props) => {
   return (
     <div>
-      <Header/>
-      <Sidebar/>
+      <Header state={props.state}/>
+      <Sidebar state={props.state}/>
       {props.children}
     </div>
   )

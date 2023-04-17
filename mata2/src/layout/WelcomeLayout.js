@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 const WelcomeLayout = (props) => {
   return (
     <div>
-      <Header/>
+      <Header state={props.state}/>
       {props.children}
     </div>
   )
