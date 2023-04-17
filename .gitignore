@@ -1,1 +1,5 @@
 .idea
+.mvn
+hadoop-cluster/client/notebook
+*/__pycache__
+target/
