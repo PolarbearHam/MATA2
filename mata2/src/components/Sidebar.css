@@ -22,6 +22,7 @@
 .NavItemButton{
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: flex-start;
   padding: 5px 10px;
   gap: 10px;
@@ -38,10 +39,13 @@
 }
 
 .itemIcon{
-  width: 19%;
-  height: 19%;
+  width: 20%;
+  height: 20%;
 }
 
 .nav-link{
   color:black;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
 }
