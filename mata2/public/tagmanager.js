@@ -84,27 +84,25 @@ export default class TagManager {
     this.enterTimer = Date.now();
     this.baseEvents = ['click', 'mouseenter', 'mouseleave', 'scroll', 'load', 'unload'];
 
-    // 이벤트 딕셔너리 초기화
-    this.eventDict = {};
-    const urlStr = document.location;
-    const url = new URL(urlStr);
-    const urlParams = url.searchParams;
-    const pathArray = document.location.pathname.split('/');
-    for (name of Object.keys(this.events)) {
+    this.getCustomEvent = function (name, targetName) {
+      const urlStr = document.location;
+      const url = new URL(urlStr);
+      const urlParams = url.searchParams;
+      const pathArray = document.location.pathname.split('/');
       let detail = {};
+      detail['targetName'] = targetName;
       for (let d = 0; d < this.events[name].param.length; d++) {
         detail[this.events[name].param[d].name] = urlParams.get(this.events[name].param[d].key);
       }
       for (let p = 0; p < this.events[name].path.length; p++) {
         detail[this.events[name].path[p].name] = pathArray[this.events[name].path[p].index];
       }
-      this.eventDict[name] = new CustomEvent(name, {
+      return new CustomEvent(name, {
         detail: detail,
         bubbles: true,
         cancelable: true
       });
     }
-
 
 
 
@@ -115,7 +113,7 @@ export default class TagManager {
       this.flushLog();
     }.bind(this);
     this.handlerDict['pageleave'] = function (e) {
-      this.stackLog(e, 'pageenter');
+      this.stackLog(e, 'pageleave');
       this.flushLog();
     }.bind(this);
     for (name of Object.keys(this.events)) {
@@ -141,7 +139,8 @@ export default class TagManager {
         serviceToken: this.serviceToken,
         sessionId: this.sessionId,
         event: eventType,
-        targetId: (e && e.target && e.target.id) ? e.target.id : 'none',
+        targetId: (e && e.target && e.target.id) ? e.target.id : null,
+        targetName: (e && e.detail && e.detail['targetName']) ? e.detail['targetName'] : null,
         positionX: e && e.pageX ? e.pageX : null,
         positionY: e && e.pageY ? e.pageY : null,
         location: this.location.href,
@@ -165,7 +164,7 @@ export default class TagManager {
           for (let e = 0; e < this.tags[keys[i]].events.length; e++) {
             if (!this.baseEvents.includes(this.tags[keys[i]].events[e])) { // 사용자 커스텀 이벤트라면
               tagById.addEventListener(this.events[this.tags[keys[i]].events[e]].dom, function () { // base DOM 이벤트에 dispatcher 붙이기
-                tagById.dispatchEvent(this.eventDict[this.tags[keys[i]].events[e]]);
+                tagById.dispatchEvent(this.getCustomEvent(this.tags[keys[i]].events[e], keys[i]));
               }.bind(this));
             }
             tagById.addEventListener(this.tags[keys[i]].events[e], this.handlerDict[this.tags[keys[i]].events[e]]); // 해당 eventHandler 붙이기
@@ -177,7 +176,7 @@ export default class TagManager {
             for (let e = 0; e < this.tags[keys[i]].events.length; e++) {
               if (!this.baseEvents.includes(this.tags[keys[i]].events[e])) { // 사용자 커스텀 이벤트라면
                 tagByClass.addEventListener(this.events[this.tags[keys[i]].events[e]].dom, function () { // base DOM 이벤트에 dispatcher 붙이기
-                  tagByClass.dispatchEvent(this.eventDict[this.tags[keys[i]].events[e]]);
+                  tagByClass.dispatchEvent(this.getCustomEvent(this.tags[keys[i]].events[e], keys[i]));
                 }.bind(this));
               }
               tagByClass.addEventListener(this.tags[keys[i]].events[e], this.handlerDict[this.tags[keys[i]].events[e]]); // 해당 eventHandler 붙이기
@@ -191,35 +190,7 @@ export default class TagManager {
       this.handlerDict['pageenter'](window);
     }
     this.detach = function () {
-      for (name of Object.keys(this.tags)) { // 모든 태그 중
-        if (this.tags[name].id) { // ID로 태그 찾기
-          let tagById = document.querySelector('#' + this.tags[name].id);
-          if (!tagById) continue;
-          for (let e = 0; e < this.tags[name].events.length; e++) {
-            if (!this.baseEvents.includes(this.tags[name].events[e])) { // 사용자 커스텀 이벤트라면
-              tagById.removeEventListener(this.events[this.tags[name].events[e]].dom, function () { // base DOM 이벤트에 dispatcher 붙이기
-                tagById.dispatchEvent(this.eventDict[this.tags[name].events[e]]);
-              }.bind(this));
-            }
-            tagById.removeEventListener(this.tags[name].events[e], this.handlerDict[this.tags[name].events[e]]); // 해당 eventHandler 붙이기
-          }
-        } else if (this.tags[name].class) { // ID가 없으면 class로 태그 찾기
-          let tagsByClass = document.querySelectorAll('.' + this.tags[name].class.replace(" ", "."));
-          if (!tagsByClass) continue;
-          tagsByClass.forEach((tagByClass) => {
-            for (let e = 0; e < this.tags[name].events.length; e++) {
-              if (!this.baseEvents.includes(this.tags[name].events[e])) { // 사용자 커스텀 이벤트라면
-                tagByClass.removeEventListener(this.events[this.tags[name].events[e]].dom, function () { // base DOM 이벤트에 dispatcher 붙이기
-                  tagByClass.dispatchEvent(this.eventDict[this.tags[name].events[e]]);
-                }.bind(this));
-              }
-              tagByClass.removeEventListener(this.tags[name].events[e], this.handlerDict[this.tags[name].events[e]]); // 해당 eventHandler 붙이기
-            }
-          });
-        } else { // 모든 element
 
-        }
-      }
       // 태그에 종속되지 않는 이벤트 발생시키기
       this.handlerDict['pageleave'](window);
     }
