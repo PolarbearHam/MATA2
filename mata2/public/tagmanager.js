@@ -57,7 +57,7 @@ export default class TagManager {
         button2: {id: 'button2', class: 'primary', events: ['purchase']},
         mata: {id: 'MATA', class: '', events: ['click', 'click_mata']},
         main: {id: 'main', class: null, events: ['click_main']},
-        header: {id: null, class: 'flex items-center', events: ['click_header']},
+        header: {id: null, class: 'flex justify-between items-center flex-wrap', events: ['click_header']},
       }
     }
     // *************** JS에 주입돼서 들어가는 영역 ***************
@@ -116,8 +116,9 @@ export default class TagManager {
       this.stackLog(e, 'pageleave');
       this.flushLog();
     }.bind(this);
-    for (name of Object.keys(this.events)) {
-      this.handlerDict[name] = function (e) {
+    let keys = Object.keys(this.events);
+    for (let i=0; i<keys.length; i++) {
+      this.handlerDict[keys[i]] = function (e) {
         console.log(e)
         this.stackLog(e, e.type);
       }.bind(this)
@@ -170,7 +171,11 @@ export default class TagManager {
             tagById.addEventListener(this.tags[keys[i]].events[e], this.handlerDict[this.tags[keys[i]].events[e]]); // 해당 eventHandler 붙이기
           }
         } else if (this.tags[keys[i]].class) { // ID가 없으면 class로 태그 찾기
-          let tagsByClass = document.querySelectorAll('.' + this.tags[keys[i]].class.replace(" ", "."));
+          let classes = this.tags[keys[i]].class.split(" ");
+          let tagsByClass = [...document.querySelectorAll('*')];
+          for (let c=0; c<classes.length; c++) {
+            tagsByClass = tagsByClass.filter(tag => tag.classList.contains(classes[c]))
+          }
           if (!tagsByClass) continue;
           tagsByClass.forEach((tagByClass) => {
             for (let e = 0; e < this.tags[keys[i]].events.length; e++) {

@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
-import Collapse from './views/Collapse';
-import Sidebar from './components/Sidebar';
 import ServiceCustom from './views/ServiceCustom';
 import DashboardLayout from './layout/DashboardLayout';
 import WelcomeLayout from "./layout/WelcomeLayout";
