@@ -2,8 +2,8 @@ import React from 'react';
 
 const ServiceAdd = () => {
   return (
-    <div className='d-flex align-items-center justify-content-center mx-auto '>
-      <form className='container bg-light d-flex flex-column justify-content-center' >
+    <div className='vh-100'>
+      <form className='container bg-light d-flex flex-column justify-content-center flex-grow' >
         <div >서비스 추가</div>
         <input  placeholder='서비스 이름'/>
         <input  placeholder='서비스 주소 url'/>
