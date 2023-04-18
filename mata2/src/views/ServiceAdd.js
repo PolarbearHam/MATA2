@@ -1,20 +1,21 @@
 import React from 'react';
-
+import './ServiceAdd.css'
 const ServiceAdd = () => {
   return (
-    <div className='vh-100'>
-      <form className='container bg-light d-flex flex-column justify-content-center flex-grow' >
-        <div >서비스 추가</div>
-        <input  placeholder='서비스 이름'/>
-        <input  placeholder='서비스 주소 url'/>
+    <div id='ServiceAdd-background' className='vh-100'>
+      <form  id='ServiceAddForm' >
+        <div className='text-xl'>서비스 추가</div>
+        <input className='inputField'  placeholder='서비스 이름'/>
+        <input className='inputField' placeholder='서비스 주소 url'/>
 
-        <p>카테고리</p>
-        <select>
+        <label>카테고리
+        <select className='inputField'>
           <option value='블로그'>블로그</option>
           <option value='쇼핑'>쇼핑</option>
           <option value='SNS'>SNS</option>    
         </select>
-        <button  >추가</button>
+        </label>
+        <button id='ServiceAddButton' >추가</button>
         
        
       </form>
