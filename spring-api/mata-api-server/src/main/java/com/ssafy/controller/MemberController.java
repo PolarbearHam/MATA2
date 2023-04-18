@@ -59,7 +59,7 @@ public class MemberController {
     }
 
     @GetMapping(value = "/info")
-    public ResponseEntity<Member> info(@Validated @RequestBody MemberResponse request){
+    public ResponseEntity<Member> info(@RequestBody MemberResponse request){
         String userName = jwtTokenProvider.getUser(request.getAccessToken());
         Member member = memberService.getMemberInfoByUserName(userName);
         return ResponseEntity.status(HttpStatus.OK).body(member);
