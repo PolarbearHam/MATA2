@@ -7,8 +7,18 @@ import DashboardLayout from './layout/DashboardLayout';
 import WelcomeLayout from "./layout/WelcomeLayout";
 import Welcome from './views/Welcome';
 import Logout from "./views/Logout";
+import TagManager from "./assets/tagmanager";
 
 function App() {
+  const location = useLocation();
+  const mata = new TagManager();
+  useEffect(() => {
+    mata.attach();
+    return () => {
+      mata.detach();
+    }
+  }, [location])
+
   // GLOBAL: ************** 사용자 정보 **************
   const [user, setUser] = useState(null);
   const userInfo = async (accessToken) => {
@@ -36,7 +46,7 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+
       <Routes>
         <Route path='/' element={
           <WelcomeLayout state={ {user: user} }>
@@ -69,7 +79,6 @@ function App() {
           </DashboardLayout>
         }/>
       </Routes>
-    </BrowserRouter>
   )
 }
 

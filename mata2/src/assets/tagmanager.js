@@ -207,27 +207,7 @@ export default class TagManager {
       this.handlerDict['pageleave'](window);
     }
 
-    window.addEventListener("load", function (e) {
-      this.attach();
-      console.log("loaded")
-    }.bind(this));
-    window.addEventListener("unload", function (e) {
-      this.detach();
-      console.log("unloaded")
-    }.bind(this));
-
-
   };
 
 }
-
-let mata = new TagManager();
-
-
-
-
-
-
-
-
 
