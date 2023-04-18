@@ -1,5 +1,6 @@
 package com.ssafy.controller;
 
+import com.ssafy.dto.member.request.MemberInfoRequest;
 import com.ssafy.dto.member.request.MemberLoginRequest;
 import com.ssafy.dto.member.request.MemberSignUpRequest;
 import com.ssafy.dto.member.response.MemberResponse;
@@ -59,9 +60,11 @@ public class MemberController {
     }
 
     @GetMapping(value = "/info")
-    public ResponseEntity<Member> info(@RequestBody MemberResponse request){
-        String userName = jwtTokenProvider.getUser(request.getAccessToken());
-        Member member = memberService.getMemberInfoByUserName(userName);
+    public ResponseEntity<?> info(@RequestBody MemberInfoRequest request){
+        String userEmail = jwtTokenProvider.getUserEmail(request.getAccessToken());
+
+        Member member = memberService.getMemberInfoByUserName(userEmail);
+        int breakpoint = 0;
         return ResponseEntity.status(HttpStatus.OK).body(member);
     }
 }

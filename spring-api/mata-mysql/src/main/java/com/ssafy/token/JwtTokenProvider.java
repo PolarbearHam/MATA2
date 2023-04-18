@@ -134,14 +134,13 @@ public class JwtTokenProvider {
         return (expiration.getTime() - now);
     }
 
-    public String getUser(String accessToken) {
+    public String getUserEmail(String accessToken) {
         checkLength(accessToken);
-        String token = accessToken.substring(7);
-
+        // String token = accessToken.substring(7);
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJws(token)
+                .parseClaimsJws(accessToken) // .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
