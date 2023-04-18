@@ -1,13 +1,11 @@
 package com.ssafy.mata.dto;
 
 import com.ssafy.mata.entity.Project;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenResponse {

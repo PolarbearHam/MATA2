@@ -8,19 +8,21 @@ import com.ssafy.mata.dto.TokenResponse;
 import com.ssafy.mata.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/project")
 @RequiredArgsConstructor
 public class ProjectController {
 
     private final ProjectService projectService;
+    Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
     @GetMapping("/")
     public ResponseEntity<?> projectList(@AuthenticationPrincipal UserDetails userDetails) {
@@ -47,7 +49,7 @@ public class ProjectController {
     @PostMapping("/add")
     public ResponseEntity<Void> addProject(@RequestBody ProjectAddRequest request){
         String email = SecurityUtils.getCurrentMemberEmail();
-        log.info("email is : "+ email);
+        logger.info("email is : "+ email);
         projectService.addProject(email, request);
         return ResponseEntity
                 .status(HttpStatus.OK)

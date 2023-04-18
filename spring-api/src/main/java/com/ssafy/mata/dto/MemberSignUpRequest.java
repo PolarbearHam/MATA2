@@ -6,12 +6,14 @@ import com.ssafy.mata.util.enums.MemberPrivilege;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.Collections;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberSignUpRequest {

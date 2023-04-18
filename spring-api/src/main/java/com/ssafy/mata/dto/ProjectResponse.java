@@ -2,15 +2,13 @@ package com.ssafy.mata.dto;
 
 import com.ssafy.mata.entity.Project;
 import com.ssafy.mata.util.enums.ProjectCategory;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectResponse {
@@ -23,7 +21,7 @@ public class ProjectResponse {
 
     public static ProjectResponse fromEntity(Project project) {
         return ProjectResponse.builder()
-                .id(project.getId())
+                .id(project.getProjectId())
                 .url(project.getUrl())
                 .name(project.getName())
                 .createAt(project.getCreateAt())

@@ -1,9 +1,6 @@
 package com.ssafy.mata.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -25,11 +22,14 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
+@Setter
+@AllArgsConstructor
+@ToString
 public class Member implements UserDetails {
 
-    @Id @Column(name = "memberId")
+    @Id @Column(name = "userId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String userId;
 
 //    @Builder
 //    public Member(String password, String email, String name) {

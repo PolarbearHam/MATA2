@@ -1,10 +1,7 @@
 package com.ssafy.mata.entity;
 
 import com.ssafy.mata.util.enums.ProjectCategory;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -19,11 +16,14 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
+@Setter
+@AllArgsConstructor
+@ToString
 public class Project {
 
     @Id @Column(name = "projectId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long projectId;
 
     @Size(max = 255)
     @NotNull

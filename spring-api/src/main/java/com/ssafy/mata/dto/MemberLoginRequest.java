@@ -3,12 +3,14 @@ package com.ssafy.mata.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class MemberLoginRequest {
     @NotEmpty(message = "이메일은 필수 입력값입니다.")

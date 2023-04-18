@@ -5,7 +5,8 @@ import com.ssafy.mata.entity.Member;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,10 +22,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Component
 public class JwtTokenProvider {
     private static final String EMAIL_KEY = "email";
+    Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 2 * 60 * 60 * 1000L;              // 2시간
@@ -61,7 +62,7 @@ public class JwtTokenProvider {
         if (isChangeRT) {
             // Refresh Token 생성
             refreshToken = Jwts.builder()
-                    .setSubject(member.getId().toString())
+                    .setSubject(member.getUserId().toString())
                     .claim(EMAIL_KEY, authentication.getName())
                     .claim(AUTHORITIES_KEY, authorities)
                     .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
@@ -101,18 +102,18 @@ public class JwtTokenProvider {
 
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
-        log.info(token);
+        logger.info(token);
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
+            logger.info("Invalid JWT Token", e);
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
+            logger.info("Expired JWT Token", e);
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
+            logger.info("Unsupported JWT Token", e);
         } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
+            logger.info("JWT claims string is empty.", e);
         }
         return false;
     }

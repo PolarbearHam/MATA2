@@ -9,6 +9,8 @@ import com.ssafy.mata.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class KafkaProducerService {
@@ -29,6 +30,7 @@ public class KafkaProducerService {
     private final Validation validation;
     private final ProjectRepository projectRepository;
     private final StringRedisTemplate redisTemplate;
+    Logger logger = LoggerFactory.getLogger(KafkaProducerService.class);
 
     public void sendToKafka(final WebLog data) throws JsonProcessingException {
         final ProducerRecord<String, String> record = data.toProducerRecord(TOPIC_TAG_MANAGER, 0);
@@ -37,13 +39,13 @@ public class KafkaProducerService {
             @Override
             public void onFailure(Throwable ex) {
                 System.out.println("Failed to send data: "+data);
-                log.warn("Failed to send data: "+data, ex);
+                logger.warn("Failed to send data: "+data, ex);
             }
 
             @Override
             public void onSuccess(SendResult<String, String> result) {
                 System.out.println("Data sent successfully: "+data);
-                log.warn("Data sent successfully: "+data);
+                logger.warn("Data sent successfully: "+data);
             }
         });
     }
@@ -58,7 +60,7 @@ public class KafkaProducerService {
         String id = redisTemplate.opsForValue().get(token);
         if(id == null){
             Project project = projectRepository.findByToken(token).orElseThrow(RedisKeyExecption::new);
-            return project.getId();
+            return project.getProjectId();
         }
         return Long.parseLong(id);
     }
