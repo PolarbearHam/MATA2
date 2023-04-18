@@ -52,7 +52,7 @@ function App() {
         }/>
         <Route path='/signup' element={
           <WelcomeLayout state={ {user: user} }>
-            <SignUp/>
+            <SignUp></SignUp>
           </WelcomeLayout>
         }/>
         <Route path='/start' element={

@@ -18,7 +18,7 @@ const Sidebar = () => {
             <NavLink href="/start">TestService</NavLink>
           </NavItem>
           <NavItem className='NavItemButton'>
-            <img src={serviceAddIcon} className='itemIcon'/>  <NavLink href="#">서비스추가</NavLink>
+            <img src={serviceAddIcon} className='itemIcon'/>  <NavLink href="#" className='nav-link'>서비스추가</NavLink>
           </NavItem>
       </Nav>
     </div>
