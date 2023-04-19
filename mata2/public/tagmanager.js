@@ -197,14 +197,14 @@ export default class TagManager {
         }
       }
       // 태그에 종속되지 않는 이벤트 발생시키기
-      this.handlerDict['pageenter'](window);
+      this.handlerDict['pageenter']({target: window});
     }
     this.detach = function () {
       for(let i=0; i<this.attachedListeners.length; i++) {
         this.attachedListeners[i].target.removeEventListener(this.attachedListeners[i].type, this.attachedListeners[i].listener);
       }
       // 태그에 종속되지 않는 이벤트 발생시키기
-      this.handlerDict['pageleave'](window);
+      this.handlerDict['pageleave']({target: window});
     }
 
     window.addEventListener("load", function (e) {
@@ -222,12 +222,4 @@ export default class TagManager {
 }
 
 let mata = new TagManager();
-
-
-
-
-
-
-
-
 
