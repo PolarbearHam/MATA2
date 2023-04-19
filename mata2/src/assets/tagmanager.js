@@ -5,6 +5,7 @@ export default class TagManager {
     this.injection = {
       bootstrap: 'https://dummy-bootstrap.com',
       serviceToken: 'dummy-serviceToken',
+      spa: true,
       events: {
         click: {base: null, param: [], path: []}, // 기본 DOM 이벤트
         mouseenter: {base: null, param: [], path: []}, // 기본 DOM 이벤트
@@ -91,6 +92,7 @@ export default class TagManager {
     this.sessionId = sessionStorage.getItem('TAGMANAGER_SESSION');
     this.bootstrap = this.injection.bootstrap;
     this.serviceToken = this.injection.serviceToken;
+    this.spa = this.injection.spa;
     this.userAgent = (() => {
       let userAgent = navigator.userAgent.toLowerCase()
       if(userAgent.indexOf('edge')>-1){
@@ -107,8 +109,9 @@ export default class TagManager {
     })()
     this.events = this.injection.events;
     this.tags = this.injection.tags;
-    this.location = document.location;
-    this.referrer = document.referrer;
+    this.location = null;
+    this.prevLocation = null;
+    this.referrer = null;
     this.pageDuration = 0;
     this.data = {};
 
@@ -178,7 +181,7 @@ export default class TagManager {
         targetName: (e && e.detail && e.detail['targetName']) ? e.detail['targetName'] : null,
         positionX: e && e.pageX ? e.pageX : null,
         positionY: e && e.pageY ? e.pageY : null,
-        location: this.location.href,
+        location: this.location,
         referrer: this.referrer,
         timestamp: Date.now(),
         pageDuration: Date.now() - this.enterTimer,
@@ -191,6 +194,12 @@ export default class TagManager {
 
     // Tagmanager 부착/제거 로직
     this.attach = function () {
+      this.location = document.location.href;
+      console.log('location: '+this.location)
+      console.log('prev: '+this.prevLocation)
+      this.referrer = this.spa ? (this.prevLocation ? this.prevLocation : document.referrer) : document.referrer;
+      console.log('referrer: '+this.referrer)
+
       let keys = Object.keys(this.tags);
       for (let i=0; i<keys.length; i++) { // 모든 태그 중
         if (this.tags[keys[i]].id) { // ID로 태그 찾기
@@ -235,6 +244,7 @@ export default class TagManager {
       this.handlerDict['pageenter']({target: window});
     }
     this.detach = function () {
+      this.prevLocation = this.location;
       for(let i=0; i<this.attachedListeners.length; i++) {
         this.attachedListeners[i].target.removeEventListener(this.attachedListeners[i].type, this.attachedListeners[i].listener);
       }
