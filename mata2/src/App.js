@@ -7,6 +7,8 @@ import DashboardLayout from './layout/DashboardLayout';
 import WelcomeLayout from "./layout/WelcomeLayout";
 import Welcome from './views/Welcome';
 import Logout from "./views/Logout";
+import SignUp from './views/SignUp';
+import ServiceAdd from './views/ServiceAdd';
 import TagManager from "./assets/tagmanager";
 
 function App() {
@@ -55,7 +57,7 @@ function App() {
         }/>
         <Route path='/login' element={
           <WelcomeLayout state={ {user: user} }>
-
+          <Login/>
           </WelcomeLayout>
         }/>
         <Route path='/logout' element={
@@ -65,7 +67,12 @@ function App() {
         }/>
         <Route path='/signup' element={
           <WelcomeLayout state={ {user: user} }>
-
+            <SignUp></SignUp>
+          </WelcomeLayout>
+        }/>
+        <Route path='/service-add' element={
+          <WelcomeLayout state={ {user: user} }>
+            <ServiceAdd/>
           </WelcomeLayout>
         }/>
         <Route path='/start' element={

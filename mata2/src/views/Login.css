@@ -1,0 +1,137 @@
+#loginBackground{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 74px 698px;
+  gap: 6px;
+  
+
+  height: 100vh;
+  
+  background: url('../assets/loginBackground.svg');
+  background-size: cover;
+  
+  /* Inside auto layout */
+  
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 1;
+}
+
+#loginForm{
+  
+  width: 500px;
+  height: 500px;
+  left: 710px;
+  top: 92.5px;
+  
+  background: #FFFFFF;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: auto;
+  gap: 2rem;
+}
+
+#loginLogo{
+  
+  width: 194px;
+  height: 95px;
+  left: 858px;
+  top: 133.5px;
+  
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 70px;
+  line-height: 95px;
+  
+  color: #000000;
+  
+
+}
+
+.inputField{
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 36px;
+  
+  color: rgba(0, 0, 0, 0.4);
+  
+}
+
+#loginButton{
+  width: 400px;
+  height: 80px;
+  color: white;
+  font-size: 20px;
+  background: #6A9D67;
+  border-radius: 30px;
+}
+
+#finds{
+  display: flex;
+  
+  justify-content: space-around;
+  
+}
+.findsText{
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  
+  color: #C9774F;
+}
+
+
+#below{
+  background: #FFFFFF;
+  border-radius: 30px;
+  width: 500px;
+  height: 200px;
+  
+  
+  /* Inside auto layout */
+  
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+
+
+}
+
+#belowExplanation{
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 39px;
+  /* identical to box height */
+  
+  text-align: center;
+  
+  color: #000000;
+}
+
+#createAccount{
+  box-sizing: border-box;
+  width: 300px;
+  height: 50px;
+  background: #FFFFFF;
+  border: 1px solid #000000;
+  border-radius: 20px;  
+  text-align: center;
+}

@@ -11,26 +11,24 @@ const data = {
     { name: "L3" },
     { name: "L4" },
     { name: "R5" },
-    { name: "R6" },
-    { name: "R7" },
-    { name: "R8" },
-    { name: "R9" }
+    // { name: "R6" },
+    // { name: "R7" },
+    // { name: "R8" },
+    // { name: "R9" }
   ],
   links: [
-    { source: 0, target: 5, value: 30 },
-    { source: 1, target: 8, value: 99 },
-    { source: 1, target: 7, value: 20 },
-    { source: 1, target: 6, value: 15 },
-    { source: 4, target: 5, value: 6 },
-    { source: 2, target: 8, value: 30 },
-    { source: 0, target: 6, value: 15 },
-    { source: 2, target: 9, value: 11 },
-    { source: 3, target: 9, value: 8 },
-    { source: 3, target: 8, value: 23 },
-    { source: 2, target: 5, value: 20 }
+    { source: 5, target: 1, value: 30 },
+    { source: 5, target: 2, value: 99 },
+    { source: 5, target: 3, value: 20 },
+    { source: 5, target: 4, value: 15 },
+    { source: 5, target: 0, value: 18 },
+    // { source: 9, target: 5, value: 30 },
+    // { source: 8, target: 5, value: 99 },
+    // { source: 7, target: 5, value: 20 },
+    // { source: 6, target: 5, value: 33 },
   ]
 };
-const colors = ["#F9DB6D", "#40F99B", "#AFC2D5", "#FF8360", "#EC9192"];
+const colors = ["#F9DB6D", "#40F99B", "#AFC2D5", "#1F8360", "#EC9192", "#919191", "#ABCDEF", "#1A2B3C", "#9F8E7D", "#3912EF"];
 
 function DemoSankeyChart() {
   const numColors = colors.length;
