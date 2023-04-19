@@ -43,7 +43,7 @@ spring:
     redis:
       host: localhost
       port: 6379
-      password: ssafy8a506
+      password: ssafy8a309
     cassandra:
       contact-points: 172.16.238.2:9042
       keyspace-name: mykeyspace
