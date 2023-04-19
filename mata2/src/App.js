@@ -12,9 +12,11 @@ import SignUp from './views/SignUp';
 import ServiceAdd from './views/ServiceAdd';
 import TagManager from "./assets/tagmanager";
 import DashboardMain from './dashboards/DashboardMain';
+
+const mata = new TagManager();
+
 function App() {
   const location = useLocation();
-  const mata = new TagManager();
   useEffect(() => {
     mata.attach();
     return () => {
