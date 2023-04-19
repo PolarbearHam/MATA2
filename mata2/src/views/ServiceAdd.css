@@ -11,7 +11,7 @@
   
   background: url('../assets/loginBackground.svg');
   background-size: cover;
-  
+  filter: hue-rotate(10deg);
   /* Inside auto layout */
   
   flex: none;

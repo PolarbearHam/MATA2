@@ -6,6 +6,7 @@ import ServiceCustom from './views/ServiceCustom';
 import DashboardLayout from './layout/DashboardLayout';
 import WelcomeLayout from "./layout/WelcomeLayout";
 import Welcome from './views/Welcome';
+import Login from "./views/Login";
 import Logout from "./views/Logout";
 import SignUp from './views/SignUp';
 import ServiceAdd from './views/ServiceAdd';
