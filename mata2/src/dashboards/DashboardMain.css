@@ -1,0 +1,35 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: sans-serif;
+}
+
+.header {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    text-align: center;
+}
+
+.main {
+    flex-grow: 1;
+    padding: 1rem;
+}
+
+.charts-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-row {
+    display: flex;
+    height: 250px;
+}
+
+.chart-row > * {
+    flex-basis: 50%;
+}
+
+.chart-col {
+    display: flex;
+}
