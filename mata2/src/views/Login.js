@@ -14,8 +14,8 @@ const Login = () => {
       
       <form id='loginForm'>
         <div id='loginLogo'>MATA</div>
-        <input className='inputField' placeholder='사용자 이름'/>
-        <input className='inputField' placeholder='암호'/>
+        <input className='inputField' placeholder='email' name='email'/>
+        <input className='inputField' placeholder='암호' name='password'/>
         <button id='loginButton' >로그인</button>
         
         <div id='finds'>

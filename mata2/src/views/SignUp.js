@@ -5,12 +5,12 @@ const SignUp = () => {
     <div id='signUpBackground'>
       <form id='signUpForm'>
         <div id='signUpTitle'>회원가입</div>
-        <input className='inputField' placeholder='이메일'/>
-        <input className='inputField'placeholder='비밀번호'/>
-        <input className='inputField'placeholder='비밀번호 확인'/>
+        <input className='inputField' placeholder='이메일' name='email'/>
+        <input className='inputField'placeholder='비밀번호' name='password'/>
+        <input className='inputField'placeholder='비밀번호 확인' name='password2'/>
         <div id='agreement'>이용약관</div>
         <label id='checkBox'>
-          <input type='checkbox'/>
+          <input type='checkbox' name='agreement'/>
           위 약관에 동의합니다.
         </label> 
         <div id='buttons'>
