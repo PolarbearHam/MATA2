@@ -6,19 +6,19 @@ export default class TagManager {
       bootstrap: 'https://dummy-bootstrap.com',
       serviceToken: 'dummy-serviceToken',
       events: {
-        click: {dom: null, param: [], path: []},
-        mouseenter: {dom: null, param: [], path: []},
-        mouseleave: {dom: null, param: [], path: []},
-        scroll: {dom: null, param: [], path: []},
+        click: {base: null, param: [], path: []}, // 기본 DOM 이벤트
+        mouseenter: {base: null, param: [], path: []}, // 기본 DOM 이벤트
+        mouseleave: {base: null, param: [], path: []}, // 기본 DOM 이벤트
+        scroll: {base: null, param: [], path: []}, // 기본 DOM 이벤트
         login: {
-          dom: 'click',
+          base: 'click',
           param: [],
           path: [
             {name: "userId", index: 2}
           ]
         }, // param: 쿼리스트링으로 전달되는 데이터, path: path로 전달되는 데이터의 인덱스
         purchase: {
-          dom: 'click',
+          base: 'click',
           param: [
             {name: "productName", key: "product"}
           ],
@@ -27,14 +27,19 @@ export default class TagManager {
           ]
         },
         click_mata: {
-          dom: 'click',
+          base: 'click',
           param: [
             {name: "productId", key: 'productId'}
           ],
           path: []
         },
+        mata_easter_egg: {
+          base: 'click_mata',
+          param: [],
+          path: []
+        },
         click_main: {
-          dom: 'click',
+          base: 'click',
           param: [
             {name: "productId", key: 'productId'},
             {name: "userId", key: 'userId'}
@@ -42,7 +47,7 @@ export default class TagManager {
           path: []
         },
         click_header: {
-          dom: 'click',
+          base: 'click',
           param: [
             {name: "productId", key: 'productId'},
             {name: "userId", key: 'userId'}
@@ -50,14 +55,14 @@ export default class TagManager {
           path: []
         },
         click_input: {
-          dom: 'click',
+          base: 'click',
           param: [],
           path: [
             {name: "path", index: 1}
           ]
         },
         click_signup: {
-          dom: 'click',
+          base: 'click',
           param: [],
           path: [
             {name: "path", index: 1}
@@ -67,7 +72,7 @@ export default class TagManager {
       tags: {
         button1: {id: 'button', class: '', events: ['click', 'login']},
         button2: {id: 'button2', class: 'primary', events: ['purchase']},
-        mata: {id: 'MATA', class: '', events: ['click', 'click_mata']},
+        mata: {id: 'MATA', class: '', events: ['click', 'click_mata', 'mata_easter_egg']},
         main: {id: 'main', class: null, events: ['click_main']},
         header: {id: null, class: 'flex justify-between items-center flex-wrap', events: ['click_header']},
         inputBox: {id: null, class: 'inputField', events: ['click_input']},
@@ -111,7 +116,6 @@ export default class TagManager {
     this.attachedListeners = [];
     this.logStash = [];
     this.enterTimer = Date.now();
-    this.baseEvents = ['click', 'mouseenter', 'mouseleave', 'scroll', 'load', 'unload'];
 
     this.getCustomEvent = function (name, targetName) {
       const urlStr = document.location;
@@ -193,12 +197,12 @@ export default class TagManager {
           let tagById = document.querySelector('#' + this.tags[keys[i]].id);
           if (!tagById) continue;
           for (let e = 0; e < this.tags[keys[i]].events.length; e++) {
-            if (!this.baseEvents.includes(this.tags[keys[i]].events[e])) { // 사용자 커스텀 이벤트라면
+            if (this.events[this.tags[keys[i]].events[e]].base) { // 사용자 커스텀 이벤트라면
               let dispatcher = function () { // base DOM 이벤트에 dispatcher 붙이기
                 tagById.dispatchEvent(this.getCustomEvent(this.tags[keys[i]].events[e], keys[i]));
               }.bind(this)
-              tagById.addEventListener(this.events[this.tags[keys[i]].events[e]].dom, dispatcher);
-              this.attachedListeners.push({target: tagById, type:this.events[this.tags[keys[i]].events[e]].dom, listener: dispatcher}) // detach를 위해 붙인 이벤트 모으기
+              tagById.addEventListener(this.events[this.tags[keys[i]].events[e]].base, dispatcher);
+              this.attachedListeners.push({target: tagById, type:this.events[this.tags[keys[i]].events[e]].base, listener: dispatcher}) // detach를 위해 붙인 이벤트 모으기
             }
             tagById.addEventListener(this.tags[keys[i]].events[e], this.handlerDict[this.tags[keys[i]].events[e]]); // 해당 eventHandler 붙이기
             this.attachedListeners.push({target: tagById, type:this.tags[keys[i]].events[e], listener: this.handlerDict[this.tags[keys[i]].events[e]]}) // detach를 위해 붙인 이벤트 모으기
@@ -212,12 +216,12 @@ export default class TagManager {
           if (!tagsByClass) continue;
           tagsByClass.forEach((tagByClass) => {
             for (let e = 0; e < this.tags[keys[i]].events.length; e++) {
-              if (!this.baseEvents.includes(this.tags[keys[i]].events[e])) { // 사용자 커스텀 이벤트라면
+              if (this.events[this.tags[keys[i]].events[e]].base) { // 사용자 커스텀 이벤트라면
                 let dispatcher = function () { // base DOM 이벤트에 dispatcher 붙이기
                   tagByClass.dispatchEvent(this.getCustomEvent(this.tags[keys[i]].events[e], keys[i]));
                 }.bind(this)
-                tagByClass.addEventListener(this.events[this.tags[keys[i]].events[e]].dom, dispatcher);
-                this.attachedListeners.push({target: tagByClass, type:this.events[this.tags[keys[i]].events[e]].dom, listener: dispatcher}) // detach를 위해 붙인 이벤트 모으기
+                tagByClass.addEventListener(this.events[this.tags[keys[i]].events[e]].base, dispatcher);
+                this.attachedListeners.push({target: tagByClass, type:this.events[this.tags[keys[i]].events[e]].base, listener: dispatcher}) // detach를 위해 붙인 이벤트 모으기
               }
               tagByClass.addEventListener(this.tags[keys[i]].events[e], this.handlerDict[this.tags[keys[i]].events[e]]); // 해당 eventHandler 붙이기
               this.attachedListeners.push({target: tagByClass, type:this.tags[keys[i]].events[e], listener: this.handlerDict[this.tags[keys[i]].events[e]]}) // detach를 위해 붙인 이벤트 모으기
