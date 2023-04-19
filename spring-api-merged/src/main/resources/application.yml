@@ -31,8 +31,6 @@ spring:
     password: root
     initialization-mode: true
 
-
-
   jpa:
     show-sql: false
     properties:
