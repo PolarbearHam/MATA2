@@ -5,9 +5,9 @@ const SignUp = () => {
     <div id='signUpBackground'>
       <form id='signUpForm'>
         <div id='signUpTitle'>회원가입</div>
-        <input className='inputField' placeholder='이메일'/>
-        <input className='inputField'placeholder='비밀번호'/>
-        <input className='inputField'placeholder='비밀번호 확인'/>
+        <input className='inputField' placeholder='이메일' name='email'/>
+        <input className='inputField'placeholder='비밀번호' name='password'/>
+        <input className='inputField'placeholder='비밀번호 확인' name='password2'/>
         <div id='agreement'>{
           "이용약관은 왜 만들어야 할까요?     \n" +
           "큰 틀에서부터 꼬리에 꼬리를 물어가 봅시다.\n" +
@@ -22,7 +22,7 @@ const SignUp = () => {
           "따라서 위와 같은 목적을 염두에 두고 이용약관을 각자의 서비스에 맞게 잘 작성하는 법, 이를 서비스에 잘 반영하도록 하는 법에 대해 함께 알아보고자 합니다."
         }</div>
         <label id='checkBox'>
-          <input type='checkbox'/>
+          <input type='checkbox' name='agreement'/>
           위 약관에 동의합니다.
         </label> 
         <div id='buttons'>

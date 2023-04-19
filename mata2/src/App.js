@@ -74,9 +74,9 @@ function App() {
           </WelcomeLayout>
         }/>
         <Route path='/service-add' element={
-          <WelcomeLayout state={ {user: user} }>
+          <DashboardLayout state={ {user: user} }>
             <ServiceAdd/>
-          </WelcomeLayout>
+          </DashboardLayout>
         }/>
         <Route path='/start' element={
           <DashboardLayout state={ {user: user} }>
