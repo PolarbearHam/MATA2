@@ -49,6 +49,20 @@ export default class TagManager {
           ],
           path: []
         },
+        click_input: {
+          dom: 'click',
+          param: [],
+          path: [
+            {name: "path", index: 1}
+          ]
+        },
+        click_signup: {
+          dom: 'click',
+          param: [],
+          path: [
+            {name: "path", index: 1}
+          ]
+        }
       },
       tags: {
         button1: {id: 'button', class: '', events: ['click', 'login']},
@@ -56,6 +70,8 @@ export default class TagManager {
         mata: {id: 'MATA', class: '', events: ['click', 'click_mata']},
         main: {id: 'main', class: null, events: ['click_main']},
         header: {id: null, class: 'flex justify-between items-center flex-wrap', events: ['click_header']},
+        inputBox: {id: null, class: 'inputField', events: ['click_input']},
+        signupBtn: {id: null, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full', events: ['click']}
       }
     }
     // *************** JS에 주입돼서 들어가는 영역 ***************
@@ -70,6 +86,20 @@ export default class TagManager {
     this.sessionId = sessionStorage.getItem('TAGMANAGER_SESSION');
     this.bootstrap = this.injection.bootstrap;
     this.serviceToken = this.injection.serviceToken;
+    this.userAgent = (() => {
+      let userAgent = navigator.userAgent.toLowerCase()
+      if(userAgent.indexOf('edge')>-1){
+        return 'edge';
+      }else if(userAgent.indexOf('whale')>-1){
+        return 'whale';
+      }else if(userAgent.indexOf('chrome')>-1){
+        return 'chrome';
+      }else if(userAgent.indexOf('firefox')>-1){
+        return 'firefox';
+      }else{
+        return 'explorer';
+      }
+    })()
     this.events = this.injection.events;
     this.tags = this.injection.tags;
     this.location = document.location;
@@ -138,6 +168,7 @@ export default class TagManager {
       let body = {
         serviceToken: this.serviceToken,
         sessionId: this.sessionId,
+        userAgent: this.userAgent,
         event: eventType,
         targetId: (e && e.target && e.target.id) ? e.target.id : null,
         targetName: (e && e.detail && e.detail['targetName']) ? e.detail['targetName'] : null,
