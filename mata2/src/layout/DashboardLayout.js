@@ -10,7 +10,7 @@ const DashboardLayout = (props) => {
       
       
       <div style={{ display: "flex", flexGrow: "1" }}>
-        <div style={{width:"15%", minWidth:"150px"}}>
+        <div>
         <Sidebar state={props.state}/>
         </div>
         {props.children}
