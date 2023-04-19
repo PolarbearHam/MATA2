@@ -11,7 +11,7 @@ import Logout from "./views/Logout";
 import SignUp from './views/SignUp';
 import ServiceAdd from './views/ServiceAdd';
 import TagManager from "./assets/tagmanager";
-
+import DashboardMain from './dashboards/DashboardMain';
 function App() {
   const location = useLocation();
   const mata = new TagManager();
@@ -78,7 +78,9 @@ function App() {
         }/>
         <Route path='/start' element={
           <DashboardLayout state={ {user: user} }>
-
+            <div style={{flexBasis:"auto"}}>
+              <DashboardMain state={{user: user}}/>
+            </div>
           </DashboardLayout>
         }/>
         <Route path='/service/:id/setting' element={

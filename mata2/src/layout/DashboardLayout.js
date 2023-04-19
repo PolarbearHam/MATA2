@@ -13,11 +13,10 @@ const DashboardLayout = (props) => {
         <div style={{width:"15%", minWidth:"150px"}}>
         <Sidebar state={props.state}/>
         </div>
-        <div style={{flexBasis:"auto"}}>
-          <DashboardMain state={props.state}/>
-        </div>
+        {props.children}
+     
       </div>
-      {props.children}
+      
     </div>
   )
 }
