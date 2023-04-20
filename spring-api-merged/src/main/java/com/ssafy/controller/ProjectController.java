@@ -79,5 +79,28 @@ public class ProjectController {
                 .status(HttpStatus.OK)
                 .build();
     }
+
+    /*
+    @GetMapping("/{serviceId}/settings")
+    public ResponseEntity<ProjectSettingsResponse> projectSettingsList (
+            @PathVariable("serviceId") Long serviceId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        ProjectResponse response = projectService.getProjectDetail(serviceId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @PostMapping("/{serviceId}/setting")
+    public ResponseEntity<ProjectSettingsResponse> projectSettingsList (
+            @PathVariable("serviceId") Long serviceId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        ProjectResponse response = projectService.getProjectDetail(serviceId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+    */
+
 }
 
