@@ -1,16 +1,16 @@
 package com.ssafy.service;
 
-import com.ssafy.dto.member.exception.NoSuchMemberException;
-import com.ssafy.dto.project.exception.NoSuchProjectException;
-import com.ssafy.dto.project.request.ProjectAddRequest;
-import com.ssafy.dto.project.request.ProjectRequest;
-import com.ssafy.dto.project.response.ProjectResponse;
-import com.ssafy.dto.project.response.TokenResponse;
+import com.ssafy.util.NoSuchMemberException;
+import com.ssafy.dto.NoSuchProjectException;
+import com.ssafy.dto.ProjectAddDto;
+import com.ssafy.dto.ProjectDto;
+import com.ssafy.dto.ProjectResponse;
+import com.ssafy.dto.TokenDto;
 import com.ssafy.entity.Member;
 import com.ssafy.entity.Project;
-import com.ssafy.repository.member.MemberRepository;
-import com.ssafy.repository.project.ProjectRepository;
-import com.ssafy.common.validation.Validation;
+import com.ssafy.repository.MemberRepository;
+import com.ssafy.repository.ProjectRepository;
+import com.ssafy.util.Validation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -31,7 +31,7 @@ public class ProjectService {
     private final Validation validation;
 
     @Transactional
-    public void addProject(String email, ProjectAddRequest request) {
+    public void addProject(String email, ProjectAddDto request) {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         log.info(member.toString());
         Project project = request.toEntity(member);
@@ -51,14 +51,14 @@ public class ProjectService {
     }
 
     @Transactional
-    public void delete(ProjectRequest request){
+    public void delete(ProjectDto request){
         Project project = getProject(request);
         projectRepository.delete(project);
     }
 
 
     @Transactional
-    public TokenResponse updateToken(ProjectRequest request){
+    public TokenDto updateToken(ProjectDto request){
         Project project = getProject(request);
 
         if(project.getToken() != null) {
@@ -67,16 +67,16 @@ public class ProjectService {
         project.updateToken();
         validation.setTokenToRedis(project.getToken(), project);
         log.info(project.getToken());
-        return new TokenResponse().fromEntity(project);
+        return new TokenDto().fromEntity(project);
     }
     @Transactional
-    public void deleteToken(ProjectRequest request){
+    public void deleteToken(ProjectDto request){
         Project project = getProject(request);
         project.deleteToken();
     }
 
 
-    private Project getProject(ProjectRequest request){
+    private Project getProject(ProjectDto request){
         Long projectId = request.getProjectId();
         return projectRepository.findById(projectId).orElseThrow(NoSuchProjectException::new);
     }

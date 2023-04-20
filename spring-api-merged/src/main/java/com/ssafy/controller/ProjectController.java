@@ -1,10 +1,10 @@
 package com.ssafy.controller;
 
-import com.ssafy.config.security.SecurityUtils;
-import com.ssafy.dto.project.request.ProjectAddRequest;
-import com.ssafy.dto.project.request.ProjectRequest;
-import com.ssafy.dto.project.response.ProjectResponse;
-import com.ssafy.dto.project.response.TokenResponse;
+import com.ssafy.config.SecurityUtils;
+import com.ssafy.dto.ProjectAddDto;
+import com.ssafy.dto.ProjectDto;
+import com.ssafy.dto.ProjectResponse;
+import com.ssafy.dto.TokenDto;
 import com.ssafy.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class ProjectController {
 
     // 프로젝트 추가
     @PostMapping("/add")
-    public ResponseEntity<Void> addProject(@RequestBody ProjectAddRequest request){
+    public ResponseEntity<Void> addProject(@RequestBody ProjectAddDto request){
         String email = SecurityUtils.getCurrentMemberEmail();
         log.info("email is : "+ email);
         projectService.addProject(email, request);
@@ -55,7 +55,7 @@ public class ProjectController {
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteProject(@RequestBody ProjectRequest request){
+    public ResponseEntity<String> deleteProject(@RequestBody ProjectDto request){
         projectService.delete(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -64,8 +64,8 @@ public class ProjectController {
 
     // Project token 발급 API
     @PostMapping("/token")
-    public ResponseEntity<TokenResponse> publishToken(@RequestBody ProjectRequest request){
-        TokenResponse response = projectService.updateToken(request);
+    public ResponseEntity<TokenDto> publishToken(@RequestBody ProjectDto request){
+        TokenDto response = projectService.updateToken(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
@@ -73,7 +73,7 @@ public class ProjectController {
 
     // Project Token 삭제 API
     @DeleteMapping("/token")
-    public ResponseEntity<Void> removeToken(@RequestBody ProjectRequest request){
+    public ResponseEntity<Void> removeToken(@RequestBody ProjectDto request){
         projectService.deleteToken(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
