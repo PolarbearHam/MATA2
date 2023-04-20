@@ -43,7 +43,9 @@ function App() {
 
   useEffect(() => {
     let accessToken = sessionStorage.getItem("accessToken");
+    console.log('accessToken useeffect전', accessToken);
     accessToken = 'dummy-token'; // 더미 데이터
+    console.log('accesToken 후' , accessToken)
     userInfo(accessToken);
     return () => {
 

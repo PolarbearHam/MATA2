@@ -5,6 +5,7 @@ const SignUp = () => {
     <div id='signUpBackground'>
       <form id='signUpForm'>
         <div id='signUpTitle'>회원가입</div>
+        <input className='inputField' placeholder='이름' name='name'/>
         <input className='inputField' placeholder='이메일' name='email'/>
         <input className='inputField'placeholder='비밀번호' name='password'/>
         <input className='inputField'placeholder='비밀번호 확인' name='password2'/>
