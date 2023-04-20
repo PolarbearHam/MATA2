@@ -1,6 +1,7 @@
 server:
   port: 8080
-
+  servlet:
+    contextPath=/:
 springdoc:
   use-fqn: true
 
@@ -22,7 +23,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://localhost:3306/mata?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    jdbc-url: jdbc:mysql://70.12.246.60:3306/mata?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: root
     initialization-mode: true
@@ -37,7 +38,7 @@ spring:
       ddl-auto: create
   data:
     redis:
-      host: localhost
+      host: 70.12.246.60
       port: 6379
       password: ssafy8a506
     cassandra:
@@ -59,7 +60,7 @@ spring:
 
 hive:
   driver-class-name: org.apache.hive.jdbc.HiveDriver
-  jdbc-url: jdbc:hive2://master01:10000/mata
+  jdbc-url: jdbc:hive2://70.12.246.60:10000/mata
   username: hive
   password: hive
 
