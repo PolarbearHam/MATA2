@@ -4,6 +4,7 @@ import {Nav, NavItem, NavLink, Collapse} from 'reactstrap';
 import './Sidebar.css';
 import itemIcon from '../assets/item-project-icon.svg';
 import serviceAddIcon from '../assets/Service_add_icon.svg';
+import {Link} from "react-router-dom";
 
 const Sidebar = () => {
   const services=['services1','services2','services3']
@@ -24,7 +25,7 @@ const Sidebar = () => {
               </svg>
             </div>
             <NavLink href="/start" className='nav-link'>{service}</NavLink>
-            <div className='nav-item-settings'>
+            <NavLink href='/service/0/setting' className='nav-item-settings'>
               <svg fill="#000000" width="22px" version="1.1" id="Capa_1" viewBox="0 0 478.703 478.703">
                 <g>
                   <g>
@@ -33,7 +34,7 @@ const Sidebar = () => {
                   </g>
                 </g>
               </svg>
-            </div>
+            </NavLink>
           </NavItem>))}
           <NavItem className='nav-item-button'>
             <div className='nav-item-icon'>
