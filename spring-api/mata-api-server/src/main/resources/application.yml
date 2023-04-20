@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 logging:
   level:
@@ -26,7 +26,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://metastore:3306/mata?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    jdbc-url: jdbc:mysql://localhost:3306/mata?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: root
     initialization-mode: true
@@ -43,7 +43,7 @@ spring:
     redis:
       host: localhost
       port: 6379
-      password: ssafy8a506
+      password: ssafy8a309
     cassandra:
       contact-points: 172.16.238.2:9042
       keyspace-name: mykeyspace
