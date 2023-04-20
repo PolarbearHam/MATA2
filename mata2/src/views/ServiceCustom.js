@@ -29,10 +29,10 @@ const ServiceCustom = () => {
   };
 
   return (
-    <div id='form-background' className=''>
-      <div className='w-1/2 md:w-full'>
+    <div id='form-background' className='flex w-100 justify-content-center'>
+      <div className='lg:w-1/2 w-full m-8'>
         <div className=''>
-          <p>토큰 샘플: aaaa-bbbb-cccc</p>
+          <p>스크립트</p>
           <button>토큰 발급</button>
         </div>
 
