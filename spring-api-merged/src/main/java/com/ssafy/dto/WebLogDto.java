@@ -10,7 +10,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WebLog {
+public class WebLogDto {
 
     private String serviceToken;
     private long clientId;

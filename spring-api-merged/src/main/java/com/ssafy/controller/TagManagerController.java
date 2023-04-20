@@ -85,7 +85,7 @@ public class TagManagerController {
             for (int i = 0; i < 500; i++) {
                 // 10개의 event
                 for (int j = 0; j < 10; j++) {
-                    WebLog wl = new WebLog();
+                    WebLogDto wl = new WebLogDto();
                     wl.setServiceId(serviceId);
                     int hashValue = (int) (Math.random() * 100000);
                     int hashValue2 = (int) (Math.random() * 5) + 1;
