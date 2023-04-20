@@ -1,12 +1,11 @@
 package com.ssafy.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ssafy.common.validation.RedisKeyExecption;
-import com.ssafy.dto.WebLog;
-import com.ssafy.dto.project.exception.NoSuchProjectException;
+import com.ssafy.util.RedisKeyExecption;
+import com.ssafy.dto.WebLogDto;
 import com.ssafy.entity.Project;
-import com.ssafy.repository.project.ProjectRepository;
-import com.ssafy.common.validation.Validation;
+import com.ssafy.repository.ProjectRepository;
+import com.ssafy.util.Validation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -31,7 +30,7 @@ public class KafkaProducerService {
     private final ProjectRepository projectRepository;
     private final StringRedisTemplate redisTemplate;
 
-    public void sendToKafka(final WebLog data) throws JsonProcessingException {
+    public void sendToKafka(final WebLogDto data) throws JsonProcessingException {
         final ProducerRecord<String, String> record = data.toProducerRecord(TOPIC_TAG_MANAGER, 0);
         ListenableFuture<SendResult<String, String>> future = template.send(record);
         future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {

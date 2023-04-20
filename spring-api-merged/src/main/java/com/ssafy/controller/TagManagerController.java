@@ -1,6 +1,6 @@
 package com.ssafy.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ssafy.dto.WebLog;
+import com.ssafy.dto.WebLogDto;
 import com.ssafy.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ public class TagManagerController {
 
     private final KafkaProducerService kafkaProducerService;
     @PostMapping("/dump")
-    public ResponseEntity<?> getLogDump(@RequestBody WebLog[] body) {
+    public ResponseEntity<?> getLogDump(@RequestBody WebLogDto[] body) {
 
         Arrays.stream(body).forEach(wl -> {
 //            kafkaProducerService.checkValidation(wl.getServiceToken()); // 토큰 검증 로직
