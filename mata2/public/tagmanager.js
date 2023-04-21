@@ -1,6 +1,7 @@
 export default class TagManager {
 
   constructor() {
+
     // *************** JS에 주입돼서 들어가는 영역 ***************
     this.injection = {
       bootstrap: 'https://dummy-bootstrap.com',
