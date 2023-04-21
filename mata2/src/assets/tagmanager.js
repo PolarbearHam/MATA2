@@ -32,7 +32,9 @@ export default class TagManager {
           param: [
             {name: "productId", key: 'productId'}
           ],
-          path: []
+          path: [
+            {name: "path", index: 0}
+          ]
         },
         mata_easter_egg: {
           base: 'click_mata',
@@ -145,13 +147,19 @@ export default class TagManager {
 
     // 이벤트 핸들러 딕셔너리 초기화
     this.handlerDict = {};
+    // 자체 정의 이벤트 pageenter
     this.handlerDict['pageenter'] = function (e) {
       this.stackLog(e, 'pageenter');
       this.flushLog();
     }.bind(this);
+    // 자체 정의 이벤트 pageleave
     this.handlerDict['pageleave'] = function (e) {
       this.stackLog(e, 'pageleave');
       this.flushLog();
+    }.bind(this);
+    // 자체 정의 이벤트 click_heatmap
+    this.handlerDict['click_heatmap'] = function (e) {
+      this.stackLog(e, 'click_heatmap');
     }.bind(this);
     let keys = Object.keys(this.events);
     for (let i=0; i<keys.length; i++) {
@@ -240,6 +248,13 @@ export default class TagManager {
 
         }
       }
+      // 히트맵 이벤트 부착
+      let dispatcher = function (e) { // base DOM 이벤트에 dispatcher 붙이기
+        this.handlerDict['click_heatmap'](e);
+      }.bind(this)
+      window.addEventListener('click', dispatcher);
+      this.attachedListeners.push({target: window, type: 'click', listener: dispatcher})
+
       // 태그에 종속되지 않는 이벤트 발생시키기
       this.handlerDict['pageenter']({target: window});
     }
