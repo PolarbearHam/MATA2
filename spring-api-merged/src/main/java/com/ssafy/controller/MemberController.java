@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -60,10 +62,10 @@ public class MemberController {
     }
 
     @GetMapping(value = "/info")
-    public ResponseEntity<MemberInfoResponse> info(@RequestBody MemberInfoRequest request){
-        String userEmail = jwtTokenProvider.getUserEmail(request.getAccessToken());
+    public ResponseEntity<MemberInfoResponse> info(@AuthenticationPrincipal UserDetails userDetails){
+        String userName = userDetails.getUsername();
 
-        Member member = memberService.getMemberInfoByUserName(userEmail);
+        Member member = memberService.getMemberInfoByUserName(userName);
 
         MemberInfoResponse memberInfoResponse = new MemberInfoResponse().fromEntity(member);
         int breakpoint = 0;

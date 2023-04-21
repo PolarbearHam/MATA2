@@ -49,7 +49,7 @@ spring:
       keyspace-name: mykeyspace
     hive:
       driver-class-name: org.apache.hive.jdbc.HiveDriver
-      jdbc-url: jdbc:hive2://master01:10000/mata
+      jdbc-url: jdbc:hive2://70.12.246.60:10000/mata
       username: hive
       password: hive
   kafka:
