@@ -3,3 +3,5 @@
 hadoop-cluster/client/notebook
 */__pycache__
 target/
+node_modules/
+build/
