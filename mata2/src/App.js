@@ -12,8 +12,8 @@ import SignUp from './views/SignUp';
 import ServiceAdd from './views/ServiceAdd';
 import DashboardMain from './dashboards/DashboardMain';
 
-// import TagManager from "./assets/tagmanager";
 
+// SPA 제공 코드
 import TagManager from "http://localhost:8080/js/2";
 const mata = new TagManager();
 
