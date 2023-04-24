@@ -22,20 +22,19 @@ const Login = () => {
       'Content-type': 'application/json'
     }
     console.log("로그인 시도",formData)
-    navigate('/start')
+    
     axios.post('//localhost:8081/api/v1/member/login',formData,{headers})
 
-  .then(response => {
-    console.log(response);
-    if (response.status==200) {
-      sessionStorage.setItem('accessToken',response.data.accessToken)  
-
-    }else alert('틀림')
-  })
-  .catch(error => {
-    console.error(error);
-  });
-    
+    .then(response => {
+      console.log(response);
+      if (response.status==200) {
+        sessionStorage.setItem('accessToken',response.data.accessToken)  
+        navigate('/')
+      }else alert('틀림')
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
   return (
     <div id='loginBackground'>

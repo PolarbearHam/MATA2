@@ -1,14 +1,52 @@
 import React from 'react';
 import './SignUp.css'
+import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const SignUp = () => {
+  const navigate=useNavigate()
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  function signup (e) {
+    if (password!=password2) {
+      alert('비밀번호 확인 다름')
+      return}
+    e.preventDefault();
+    const formData={
+      name:name,
+      email:email,
+      password:password,
+      password2:password2,
+    }
+    const headers = {
+      'Content-type': 'application/json'
+    }
+    console.log("회원가입 시도",formData)
+    
+    axios.post('//localhost:8081/api/v1/member/signup',formData,{headers})
+
+    .then(response => {
+      console.log(response);
+      if (response.status==200) {
+        sessionStorage.setItem('accessToken',response.data.accessToken)  
+        navigate('/')
+      }else alert('틀림')
+    })
+    .catch(error => {
+      console.error(error);
+      alert(error.data)
+    });
+  }
   return (
     <div id='signUpBackground'>
-      <form id='signUpForm'>
+      <form id='signUpForm' onSubmit={signup}>
         <div id='signUpTitle'>회원가입</div>
-        <input className='inputField' placeholder='이름' name='name'/>
-        <input className='inputField' placeholder='이메일' name='email'/>
-        <input className='inputField'placeholder='비밀번호' name='password'/>
-        <input className='inputField'placeholder='비밀번호 확인' name='password2'/>
+        <input className='inputField' placeholder='이름' name='name' type='text' onChange={(event) => setName(event.target.value)}/>
+        <input className='inputField' placeholder='이메일' name='email' type='email' onChange={(event) => setEmail(event.target.value)}/>
+        <input className='inputField'placeholder='비밀번호' name='password' type='password' onChange={(event) => setPassword(event.target.value)}/>
+        <input className='inputField'placeholder='비밀번호 확인' name='password2' type='password' onChange={(event) => setPassword2(event.target.value)}/>
         <div id='agreement'>{
           "이용약관은 왜 만들어야 할까요?     \n" +
           "큰 틀에서부터 꼬리에 꼬리를 물어가 봅시다.\n" +
