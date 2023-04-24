@@ -1,9 +1,6 @@
 package com.ssafy.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -13,7 +10,9 @@ import java.util.List;
 
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
+@Setter
 @Entity
 public class Event {
 
@@ -39,10 +38,5 @@ public class Event {
     @JoinColumn(name = "eventPathId")
     private List<EventPath> eventPathList = new ArrayList<>();
 
-    @Builder
-    public Event(String eventName, String eventBase) {
-        this.eventName = eventName;
-        this.eventBase = eventBase;
-    }
 }
 

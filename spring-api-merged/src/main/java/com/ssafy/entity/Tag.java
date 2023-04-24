@@ -1,10 +1,7 @@
 package com.ssafy.entity;
 
 import com.ssafy.util.ProjectCategory;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -19,6 +16,8 @@ import java.util.List;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
+@AllArgsConstructor
 @Entity
 public class Tag {
 
@@ -36,10 +35,5 @@ public class Tag {
     @JoinColumn(name = "tagEventId")
     private List<TagEvent> tagEventList = new ArrayList<>();
 
-    @Builder
-    public Tag(String htmlTagId, String htmlTagClass) {
-        this.htmlTagId = htmlTagId;
-        this.htmlTagClass = htmlTagClass;
-    }
 }
 

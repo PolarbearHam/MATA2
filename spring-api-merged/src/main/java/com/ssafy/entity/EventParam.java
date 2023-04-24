@@ -1,9 +1,6 @@
 package com.ssafy.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -14,6 +11,8 @@ import java.util.List;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
+@AllArgsConstructor
 @Entity
 public class EventParam {
 
@@ -31,12 +30,6 @@ public class EventParam {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @Builder
-    public EventParam(String paramName, String paramKey, Event event) {
-        this.paramName = paramName;
-        this.paramKey = paramKey;
-        this.event = event;
-    }
 }
 
 
