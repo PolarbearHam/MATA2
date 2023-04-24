@@ -5,10 +5,25 @@ import { CodeBlock, dracula } from "react-code-blocks";
 
 const ServiceCustom = () => {
   const [fields, setFields] = useState([[{value: null},{value: null}]]);
+  const [spaChkecked,setSpaChecked]=useState(true)
+  const [params,setParams]= useState([
+    {name: "productName", key: "product"},
+    {name: "productName2", key: "product2"}
+  ]) 
+  const handleAddParams = () => {
+    setParams([...params,{}]);
+  };
 
+  const [paths,setPaths]= useState([
+    {name: "productId", index: 3},
+    {name: "productId2", index: 4}
+  ]) 
+  const handleAddPaths = () => {
+    setPaths([...paths,{}]);
+  };
   const handleAddField = () => {
     const values = [...fields];
-    values.push([{value: null},{value: null}]);
+    values.push([{value:null},{value: null}]);
     setFields(values);
   };
 
@@ -28,6 +43,10 @@ const ServiceCustom = () => {
     values[index][1].value = event.target.value;
     setFields(values);
   };
+  const handleCheckboxChange=(event)=>{
+    setSpaChecked(!spaChkecked)
+    console.log(spaChkecked)
+  }
 
   return (
     <div id='form-background' className='flex w-100 justify-content-center'>
@@ -97,7 +116,7 @@ const location = useLocation();
                 <Input type='text' placeholder='서비스 주소'/>
               </label>
               <label>
-                <Input type='checkbox' name='spa'/>
+                <Input type='checkbox' name='spa'  onChange={handleCheckboxChange}/>
                 <span className='ms-2'>SPA로 구성되었다면 체크해주세요.</span>
               </label>
               <Button>스크립트 재발급</Button>
@@ -124,18 +143,75 @@ const location = useLocation();
                     onChange={(e) => handleChangeName(index, e)}
                     placeholder='이벤트 명'
                   />
-                   <Input
-                     className='mt-1'
-                      type="text"
-                      name={`eventCondition-${index}`}
-                      value={field[1].value || ''}
-                      onChange={(e) => handleChangeCondition(index, e)}
-                      placeholder='이벤트 조건'
-                    />
+                  
+                  <Input
+                    className='mt-1'
+                    type="text"
+                    name={`eventCondition-${index}`}
+                    value={field[1].value || ''}
+                    onChange={(e) => handleChangeCondition(index, e)}
+                    placeholder='이벤트 조건'
+                  />
+                  <div>
+                    params
+                  </div>
+                  {params.map((param,index)=>(
+                    
+                    <FormGroup>
+                      <Input
+                       className='mt-1'
+                        type="text"
+                        name={`eventCondition-${index}`}
+                        value={param.name || ''}
+                        placeholder='param name'
+                      />
+                      <Input
+                       className='mt-1'
+                        type="text"
+                        name={`eventCondition-${index}`}
+                        value={param.key || ''}
+                        placeholder='param key'
+                      />
+                    </FormGroup>
+                  ))}
+                  <Button color="dark" onClick={() => handleAddParams()}>
+                  params 추가
+                  </Button>
+
+                  <div>
+                paths
+              </div>
+              {paths.map((path,index)=>(
+                    
+                    <FormGroup>
+                      <Input
+                       className='mt-1'
+                        type="text"
+                        name={`eventCondition-${index}`}
+                        value={path.name || ''}
+                        placeholder='param name'
+                      />
+                      <Input
+                       className='mt-1'
+                        type="text"
+                        name={`eventCondition-${index}`}
+                        value={path.index || ''}
+                        placeholder='param key'
+                      />
+                    </FormGroup>
+                  ))}
+                  <Button color="dark" onClick={() => handleAddPaths()}>
+                  paths 추가
+                  </Button>
+
+
                 </FormGroup>
               ))}
+             
+
+
               <Button color="dark" onClick={() => handleAddField()}>
-                추가
+                이벤트 추가
               </Button>
             </div>
           </div>
@@ -167,8 +243,22 @@ const location = useLocation();
                     type="text"
                     name={`eventCondition-${index}`}
                     value={field[1].value || ''}
-                    onChange={(e) => handleChangeCondition(index, e)}
-                    placeholder='이벤트 명'
+                    onChange={(e) =>{} }
+                    placeholder='id'
+                  />
+                   <Input
+                    type="text"
+                    name={`eventCondition-${index}`}
+                    value={field[1].value || ''}
+                    onChange={(e) =>{} }
+                    placeholder='클래스'
+                  />
+                   <Input
+                    type="text"
+                    name={`eventCondition-${index}`}
+                    value={field[1].value || ''}
+                    onChange={(e) => {}}
+                    placeholder='이벤트'
                   />
                   </div>
 
