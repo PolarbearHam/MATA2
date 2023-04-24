@@ -10,34 +10,22 @@ import Login from "./views/Login";
 import Logout from "./views/Logout";
 import SignUp from './views/SignUp';
 import ServiceAdd from './views/ServiceAdd';
-// import TagManager from "./assets/tagmanager";
-// import TagManager from "http://localhost:8080/js/2";
-
 import DashboardMain from './dashboards/DashboardMain';
 
-// const mata = new TagManager();
-let mata;
+// import TagManager from "./assets/tagmanager";
 
-fetch('http://localhost:8080/js/2')
-    .then(response => response.text())
-    .then(code => {
-        // 코드를 실행합니다.
-        const script = document.createElement('script');
-        script.innerHTML = code;
-        document.body.appendChild(script);
-        console.log(script)
-        // mata = new TagManager();
-    });
+import TagManager from "http://localhost:8080/js/2";
+const mata = new TagManager();
 
 function App() {
-    
-  // const location = useLocation();
-  // useEffect(() => {
-  //   mata.attach();
-  //   return () => {
-  //     mata.detach();
-  //   }
-  // }, [location])
+  const location = useLocation();
+  console.log(mata);
+  useEffect(() => {
+    mata.attach();
+    return () => {
+      mata.detach();
+    }
+  }, [location])
 
   // GLOBAL: ************** 사용자 정보 **************
   const [user, setUser] = useState(null);
@@ -61,12 +49,10 @@ function App() {
     accessToken = 'dummy-token'; // 더미 데이터
     userInfo(accessToken);
     return () => {
-
     }
   }, []);
 
   return (
-
       <Routes>
         <Route path='/' element={
           <WelcomeLayout state={ {user: user} }>
@@ -108,5 +94,4 @@ function App() {
       </Routes>
   )
 }
-
 export default App;
