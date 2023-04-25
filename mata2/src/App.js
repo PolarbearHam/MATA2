@@ -10,13 +10,16 @@ import Login from "./views/Login";
 import Logout from "./views/Logout";
 import SignUp from './views/SignUp';
 import ServiceAdd from './views/ServiceAdd';
-import TagManager from "./assets/tagmanager";
 import DashboardMain from './dashboards/DashboardMain';
 
+
+// SPA 제공 코드
+import TagManager from "http://localhost:8080/js/2";
 const mata = new TagManager();
 
 function App() {
   const location = useLocation();
+  console.log(mata);
   useEffect(() => {
     mata.attach();
     return () => {
@@ -46,12 +49,10 @@ function App() {
     accessToken = 'dummy-token'; // 더미 데이터
     userInfo(accessToken);
     return () => {
-
     }
   }, []);
 
   return (
-
       <Routes>
         <Route path='/' element={
           <WelcomeLayout state={ {user: user} }>
@@ -74,9 +75,9 @@ function App() {
           </WelcomeLayout>
         }/>
         <Route path='/service-add' element={
-          <WelcomeLayout state={ {user: user} }>
+          <DashboardLayout state={ {user: user} }>
             <ServiceAdd/>
-          </WelcomeLayout>
+          </DashboardLayout>
         }/>
         <Route path='/start' element={
           <DashboardLayout state={ {user: user} }>
@@ -93,5 +94,4 @@ function App() {
       </Routes>
   )
 }
-
 export default App;

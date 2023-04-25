@@ -1,13 +1,13 @@
 package com.ssafy.service;
 
-import com.ssafy.token.JwtTokenProvider;
-import com.ssafy.dto.member.request.MemberLoginRequest;
-import com.ssafy.dto.member.request.MemberSignUpRequest;
-import com.ssafy.dto.member.response.MemberResponse;
-import com.ssafy.dto.member.exception.NoSuchMemberException;
-import com.ssafy.dto.member.exception.DuplicateMemberException;
+import com.ssafy.util.JwtTokenProvider;
+import com.ssafy.dto.MemberLoginDto;
+import com.ssafy.dto.MemberSignUpDto;
+import com.ssafy.dto.MemberDto;
+import com.ssafy.util.NoSuchMemberException;
+import com.ssafy.util.DuplicateMemberException;
 import com.ssafy.entity.Member;
-import com.ssafy.repository.member.MemberRepository;
+import com.ssafy.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -32,14 +32,14 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void signUp(MemberSignUpRequest request){
+    public void signUp(MemberSignUpDto request){
         isExistEmail(request.getEmail());
         String password = passwordEncoder.encode(request.getPassword());
         Member member = request.toEntity(password);
         memberRepository.save(member);
     }
 
-    public MemberResponse login(MemberLoginRequest request){
+    public MemberDto login(MemberLoginDto request){
 
         Member member = memberRepository.findByEmail(request.getEmail()).orElseThrow(NoSuchMemberException::new);
         log.info(member.getEmail());
@@ -56,7 +56,7 @@ public class MemberService {
         log.info("============ access authentication ==============");
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        MemberResponse tokenInfo = jwtTokenProvider.generateToken(authentication, member, true, "");
+        MemberDto tokenInfo = jwtTokenProvider.generateToken(authentication, member, true, "");
         log.info("============ access token ==============");
 
         // 4. RefreshToken Redis 저장 (expirationTime 설정을 통해 자동 삭제 처리)

@@ -1,20 +1,17 @@
 package com.ssafy.controller;
 
-import com.ssafy.dto.member.request.MemberInfoRequest;
-import com.ssafy.dto.member.request.MemberLoginRequest;
-import com.ssafy.dto.member.request.MemberSignUpRequest;
-import com.ssafy.dto.member.response.MemberInfoResponse;
-import com.ssafy.dto.member.response.MemberResponse;
+import com.ssafy.dto.MemberInfoDto;
+import com.ssafy.dto.MemberLoginDto;
+import com.ssafy.dto.MemberSignUpDto;
+import com.ssafy.dto.MemberInfoResponse;
+import com.ssafy.dto.MemberDto;
 import com.ssafy.entity.Member;
-import com.ssafy.service.CustomUserDetailsService;
 import com.ssafy.service.MemberService;
-import com.ssafy.token.JwtTokenProvider;
+import com.ssafy.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +29,7 @@ public class MemberController {
 
 
     @PostMapping(value="/signup")
-    public ResponseEntity<Void> signUp(@Validated @RequestBody MemberSignUpRequest request){
+    public ResponseEntity<Void> signUp(@Validated @RequestBody MemberSignUpDto request){
         memberService.signUp(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -40,8 +37,8 @@ public class MemberController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<MemberResponse> login(@Validated @RequestBody MemberLoginRequest request){
-        MemberResponse response = memberService.login(request);
+    public ResponseEntity<MemberDto> login(@Validated @RequestBody MemberLoginDto request){
+        MemberDto response = memberService.login(request);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

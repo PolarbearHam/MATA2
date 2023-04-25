@@ -32,7 +32,9 @@ export default class TagManager {
           param: [
             {name: "productId", key: 'productId'}
           ],
-          path: []
+          path: [
+            {name: "path", index: 0}
+          ]
         },
         mata_easter_egg: {
           base: 'click_mata',
@@ -109,6 +111,7 @@ export default class TagManager {
     })()
     this.events = this.injection.events;
     this.tags = this.injection.tags;
+    this.title = null;
     this.location = null;
     this.prevLocation = null;
     this.referrer = null;
@@ -144,13 +147,19 @@ export default class TagManager {
 
     // 이벤트 핸들러 딕셔너리 초기화
     this.handlerDict = {};
+    // 자체 정의 이벤트 pageenter
     this.handlerDict['pageenter'] = function (e) {
       this.stackLog(e, 'pageenter');
       this.flushLog();
     }.bind(this);
+    // 자체 정의 이벤트 pageleave
     this.handlerDict['pageleave'] = function (e) {
       this.stackLog(e, 'pageleave');
       this.flushLog();
+    }.bind(this);
+    // 자체 정의 이벤트 click_heatmap
+    this.handlerDict['click_heatmap'] = function (e) {
+      this.stackLog(e, 'click_heatmap');
     }.bind(this);
     let keys = Object.keys(this.events);
     for (let i=0; i<keys.length; i++) {
@@ -181,6 +190,7 @@ export default class TagManager {
         targetName: (e && e.detail && e.detail['targetName']) ? e.detail['targetName'] : null,
         positionX: e && e.pageX ? e.pageX : null,
         positionY: e && e.pageY ? e.pageY : null,
+        title: this.title,
         location: this.location,
         referrer: this.referrer,
         timestamp: Date.now(),
@@ -194,11 +204,9 @@ export default class TagManager {
 
     // Tagmanager 부착/제거 로직
     this.attach = function () {
+      this.title = document.title;
       this.location = document.location.href;
-      console.log('location: '+this.location)
-      console.log('prev: '+this.prevLocation)
       this.referrer = this.spa ? (this.prevLocation ? this.prevLocation : document.referrer) : document.referrer;
-      console.log('referrer: '+this.referrer)
 
       let keys = Object.keys(this.tags);
       for (let i=0; i<keys.length; i++) { // 모든 태그 중
@@ -240,6 +248,13 @@ export default class TagManager {
 
         }
       }
+      // 히트맵 이벤트 부착
+      let dispatcher = function (e) { // base DOM 이벤트에 dispatcher 붙이기
+        this.handlerDict['click_heatmap'](e);
+      }.bind(this)
+      window.addEventListener('click', dispatcher);
+      this.attachedListeners.push({target: window, type: 'click', listener: dispatcher})
+
       // 태그에 종속되지 않는 이벤트 발생시키기
       this.handlerDict['pageenter']({target: window});
     }

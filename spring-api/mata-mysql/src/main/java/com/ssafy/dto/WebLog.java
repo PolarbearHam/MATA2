@@ -31,8 +31,8 @@ public class WebLog {
 
     public ProducerRecord<String, String> toProducerRecord(String topic, Integer partition) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        this.clientId = 1L;
-        this.serviceId = 2L;
+//        this.clientId = 1L;
+//        this.serviceId = 2L;
         return new ProducerRecord<>(topic, partition, this.timestamp, this.sessionId+"-"+this.timestamp, mapper.writeValueAsString(this));
     }
 

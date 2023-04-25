@@ -1,6 +1,7 @@
 export default class TagManager {
 
   constructor() {
+
     // *************** JS에 주입돼서 들어가는 영역 ***************
     this.injection = {
       bootstrap: 'https://dummy-bootstrap.com',
@@ -109,6 +110,7 @@ export default class TagManager {
     })()
     this.events = this.injection.events;
     this.tags = this.injection.tags;
+    this.title = null;
     this.location = null;
     this.prevLocation = null;
     this.referrer = null;
@@ -181,6 +183,7 @@ export default class TagManager {
         targetName: (e && e.detail && e.detail['targetName']) ? e.detail['targetName'] : null,
         positionX: e && e.pageX ? e.pageX : null,
         positionY: e && e.pageY ? e.pageY : null,
+        title: this.title,
         location: this.location,
         referrer: this.referrer,
         timestamp: Date.now(),
@@ -194,11 +197,9 @@ export default class TagManager {
 
     // Tagmanager 부착/제거 로직
     this.attach = function () {
+      this.title = document.title;
       this.location = document.location.href;
-      console.log('location: '+this.location)
-      console.log('prev: '+this.prevLocation)
       this.referrer = this.spa ? (this.prevLocation ? this.prevLocation : document.referrer) : document.referrer;
-      console.log('referrer: '+this.referrer)
 
       let keys = Object.keys(this.tags);
       for (let i=0; i<keys.length; i++) { // 모든 태그 중
