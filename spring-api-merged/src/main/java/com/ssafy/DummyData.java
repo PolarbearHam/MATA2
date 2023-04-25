@@ -40,10 +40,11 @@ public class DummyData implements CommandLineRunner {
         addMember();
         addProject();
         addEvent();
+        addTag();
     }
 
     private void addEvent() throws IOException {
-        String stringDummy = "{\"events\": { \"login\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"purchase\": { \"base\": \"click\", \"param\": [ {\"name\": \"productName\", \"key\": \"product\"}, {\"name\": \"productName2\", \"key\": \"product2\"} ], \"path\": [ {\"name\": \"productId\", \"index\": 3} ] } }}";
+        String stringDummy = "{\"events\": { \"login\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"click_main\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"click\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"purchase\": { \"base\": \"click\", \"param\": [ {\"name\": \"productName\", \"key\": \"product\"}, {\"name\": \"productName2\", \"key\": \"product2\"} ], \"path\": [ {\"name\": \"productId\", \"index\": 3} ] } }}";
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(stringDummy);
         for (Iterator<Map.Entry<String, JsonNode>> it = jsonNode.get("events").getFields(); it.hasNext(); ) {
@@ -52,19 +53,51 @@ public class DummyData implements CommandLineRunner {
                     .eventName(event.getKey())
                     .eventBase(event.getValue().get("base").toString())
                     .build();
-            eventRepository.save(temp);
+            eventRepository.saveAndFlush(temp);
             for (JsonNode param : event.getValue().get("param")) {
-                eventParamRepository.save(EventParam.builder()
+                eventParamRepository.saveAndFlush(EventParam.builder()
                         .event(temp)
                         .paramKey(param.get("key").toString())
                         .paramName(param.get("name").toString())
                         .build());
             }
-            for (JsonNode param : event.getValue().get("path")) {
-                eventPathRepository.save(EventPath.builder()
+            for (JsonNode path : event.getValue().get("path")) {
+                eventPathRepository.saveAndFlush(EventPath.builder()
                         .event(temp)
-                        .pathIndex(param.get("index").toString())
-                        .pathName(param.get("name").toString())
+                        .pathIndex(path.get("index").toString())
+                        .pathName(path.get("name").toString())
+                        .build());
+            }
+        }
+    }
+
+    private void addTag() throws IOException {
+        String stringDummy = "{\"tags\": { \"button1\": { \"id\": \"button\", \"class\": \"\", \"events\": [\"click\", \"login\"] }, \"button2\": { \"id\": \"button2\", \"class\": \"primary\", \"events\": [\"purchase\"] }, \"main\": { \"id\": \"main\", \"class\": \"\", \"events\": [\"click_main\"] } }}";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(stringDummy);
+        for (Iterator<Map.Entry<String, JsonNode>> it = jsonNode.get("tags").getFields(); it.hasNext(); ) {
+            Map.Entry<String, JsonNode> tag = it.next();
+
+            Tag temp = Tag.builder()
+                    .htmlTagName(tag.getKey())
+                    .htmlTagId(tag.getValue().get("id").toString())
+                    .htmlTagClass(tag.getValue().get("class").toString())
+                    .build();
+            tagRepository.saveAndFlush(temp);
+
+            Iterator<JsonNode> eventNameList = tag.getValue().get("events").getElements();
+
+            while (eventNameList.hasNext()) {
+                JsonNode eventName = eventNameList.next();
+                Event event = eventRepository.findByEventName(eventName.getTextValue()).get();
+
+                System.out.println(eventName.getTextValue());
+                System.out.println("tagId: " + temp.getId());
+                System.out.println("eventId: " + event.getId());
+
+                tagEventRepository.save(TagEvent.builder()
+                        .tag(temp)
+                        .event(event)
                         .build());
             }
         }
