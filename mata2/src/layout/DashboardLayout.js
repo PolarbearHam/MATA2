@@ -4,9 +4,7 @@ import Sidebar from "../components/Sidebar";
 import DashboardMain from "../dashboards/DashboardMain";
 import { useEffect } from "react";
 const DashboardLayout = (props) => {
-  useEffect(()=>{
-    console.log("서비스 목록은", props.state)
-  })
+  
   console.log("서비스 목록은", props.state)
   return (
     <div>
