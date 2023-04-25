@@ -177,7 +177,10 @@ public class EventService {
                         "        referrer: this.referrer,\n" +
                         "        timestamp: Date.now(),\n" +
                         "        pageDuration: Date.now() - this.enterTimer,\n" +
-                        "        data: e.detail ? e.detail : null\n" +
+                        "        data: e.detail ? e.detail : null,\n" +
+                        "        screenSizeX: window.innerWidth,\n" +
+                        "        screenSizeY: window.innerHeight,\n" +
+                        "        userLanguage: navigator.language\n" +
                         "      }\n" +
                         "      this.logStash.push(body)\n" +
                         "      console.log(this.logStash);\n" +
