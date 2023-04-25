@@ -26,13 +26,15 @@ public class Tag {
     private Long id;
 
     @Size(max = 255)
+    private String htmlTagName;
+
+    @Size(max = 255)
     private String htmlTagId;
 
     @Size(max = 255)
     private String htmlTagClass;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tagEventId")
+    @OneToMany(mappedBy = "tag")
     private List<TagEvent> tagEventList = new ArrayList<>();
 
 }

@@ -26,16 +26,13 @@ public class Event {
     @Size(max = 255)
     private String eventBase;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tagEventId")
+    @OneToMany(mappedBy = "event")
     private List<TagEvent> tagEventList = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "eventParamId")
+    @OneToMany(mappedBy = "event")
     private List<EventParam> eventParamList = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "eventPathId")
+    @OneToMany(mappedBy = "event")
     private List<EventPath> eventPathList = new ArrayList<>();
 
 }
