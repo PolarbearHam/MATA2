@@ -1,9 +1,6 @@
 package com.ssafy.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -12,7 +9,9 @@ import java.time.LocalDateTime;
 
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
+@Setter
 @Entity
 public class TagEvent {
 
@@ -31,10 +30,5 @@ public class TagEvent {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @Builder
-    public TagEvent(Tag tag, Event event) {
-        this.tag = tag;
-        this.event = event;
-    }
 }
 

@@ -32,6 +32,12 @@ public class EventController {
     // 설정 페이지 기본 값 제공
 
     // 설정 페이지 수정
+    @PostMapping("/{serviceId}/setting")
+    public ResponseEntity<?> customSetting(
+            @RequestBody ){
+
+        return null;
+    }
 
     // 설정 페이지
 
