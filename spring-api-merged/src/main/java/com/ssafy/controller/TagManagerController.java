@@ -27,6 +27,7 @@ public class TagManagerController {
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+
     @PostMapping("/dump")
     public ResponseEntity<?> getLogDump(@RequestBody WebLogDto[] body) {
 

@@ -2,29 +2,38 @@ package com.ssafy.dto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.json.JSONObject;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class WebLogDto {
 
-    private String serviceToken;
     private long clientId;
-    private long serviceId;
-    private String sessionId;
+    private JSONObject data;
     private String event;
-    private String targetId;
+    private String location;
+    private long pageDuration;
     private int positionX;
     private int positionY;
-    private String location;
     private String prevLocation;
     private String referrer;
+    private int screenSizeX; //window.innerWidth
+    private int screenSizeY; //window.innerHeight
+    private String serviceToken;
+    private String sessionId;
+    private long serviceId;
+    private String targetId;
+    private String targetName;
     private long timestamp;
-    private long pageDuration;
+    private String title;
+    private String userAgent;
+    private String userLanguage;
 
     public ProducerRecord<String, String> toProducerRecord(String topic, Integer partition) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
