@@ -54,6 +54,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     @ElementCollection(fetch = FetchType.LAZY)
     private Set<String> privilege;
+    private String grantType;
+    private String refreshToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
