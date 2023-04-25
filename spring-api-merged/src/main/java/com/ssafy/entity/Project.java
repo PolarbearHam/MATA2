@@ -13,6 +13,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @DynamicInsert
@@ -50,6 +52,12 @@ public class Project {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "project")
+    private List<Tag> tagList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project")
+    private List<Event> eventList = new ArrayList<>();
 
     @Builder
     public Project(String url, String name, ProjectCategory category, Member member) {

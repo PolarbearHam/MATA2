@@ -27,22 +27,24 @@ public class Event {
     @Size(max = 255)
     private String eventBase;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tagEventId")
+    @OneToMany(mappedBy = "event")
     private List<TagEvent> tagEventList = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "eventParamId")
+    @OneToMany(mappedBy = "event")
     private List<EventParam> eventParamList = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "eventPathId")
+    @OneToMany(mappedBy = "event")
     private List<EventPath> eventPathList = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
     @Builder
-    public Event(String eventName, String eventBase) {
+    public Event(String eventName, String eventBase, Project project) {
         this.eventName = eventName;
         this.eventBase = eventBase;
+        this.project = project;
     }
 }
 
