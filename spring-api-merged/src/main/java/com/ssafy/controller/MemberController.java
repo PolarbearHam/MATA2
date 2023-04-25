@@ -67,7 +67,7 @@ public class MemberController {
         Member member = memberService.getMemberInfoByUserName(userName);
 
         MemberInfoResponse memberInfoResponse = new MemberInfoResponse().fromEntity(member);
-        int breakpoint = 0;
+
         return ResponseEntity.status(HttpStatus.OK).body(memberInfoResponse);
     }
 }
