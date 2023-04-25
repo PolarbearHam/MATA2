@@ -27,19 +27,27 @@ public class Tag {
     private Long id;
 
     @Size(max = 255)
+    private String htmlTagName;
+
+    @Size(max = 255)
     private String htmlTagId;
 
     @Size(max = 255)
     private String htmlTagClass;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tagEventId")
+    @OneToMany(mappedBy = "tag")
     private List<TagEvent> tagEventList = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
     @Builder
-    public Tag(String htmlTagId, String htmlTagClass) {
+    public Tag(String htmlTagName, String htmlTagId, String htmlTagClass, Project project) {
+        this.htmlTagName = htmlTagName;
         this.htmlTagId = htmlTagId;
         this.htmlTagClass = htmlTagClass;
+        this.project = project;
     }
 }
 
