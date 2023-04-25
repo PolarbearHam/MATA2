@@ -415,11 +415,14 @@ export HADOOP_PID_DIR="${HADOOP_HOME}/pids"
 # It uses the format of (command)_(subcommand)_USER.
 #
 # For example, to limit who can execute the namenode command,
-export HDFS_NAMENODE_USER="root"
-export HDFS_DATANODE_USER="root"
-export HDFS_SECONDARYNAMENODE_USER="root"
-export YARN_RESOURCEMANAGER_USER="root"
-export YARN_NODEMANAGER_USER="root"
+export HDFS_NAMENODE_USER="ubuntu"
+export HDFS_DATANODE_USER="ubuntu"
+export HDFS_SECONDARYNAMENODE_USER="ubuntu"
+export HDFS_JOURNALNODE_USER="ubuntu"
+export HDFS_ZKFC_USER="ubuntu"
+export YARN_RESOURCEMANAGER_USER="ubuntu"
+export YARN_NODEMANAGER_USER="ubuntu"
+export YARN_PROXYSERVER_USER="ubuntu"
 
 ###
 # Registry DNS specific parameters
