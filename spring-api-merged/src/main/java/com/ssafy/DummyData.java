@@ -45,27 +45,29 @@ public class DummyData implements CommandLineRunner {
 
     private void addEvent() throws IOException {
         String stringDummy = "{\"events\": { \"login\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"click_main\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"click\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"purchase\": { \"base\": \"click\", \"param\": [ {\"name\": \"productName\", \"key\": \"product\"}, {\"name\": \"productName2\", \"key\": \"product2\"} ], \"path\": [ {\"name\": \"productId\", \"index\": 3} ] } }}";
+        Project project = projectRepository.findById(2l).get();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(stringDummy);
         for (Iterator<Map.Entry<String, JsonNode>> it = jsonNode.get("events").getFields(); it.hasNext(); ) {
             Map.Entry<String, JsonNode> event = it.next();
             Event temp = Event.builder()
                     .eventName(event.getKey())
-                    .eventBase(event.getValue().get("base").toString())
+                    .eventBase(event.getValue().get("base").toString().replace("\"", ""))
+                    .project(project)
                     .build();
             eventRepository.saveAndFlush(temp);
             for (JsonNode param : event.getValue().get("param")) {
                 eventParamRepository.saveAndFlush(EventParam.builder()
                         .event(temp)
-                        .paramKey(param.get("key").toString())
-                        .paramName(param.get("name").toString())
+                        .paramKey(param.get("key").toString().replace("\"", ""))
+                        .paramName(param.get("name").toString().replace("\"", ""))
                         .build());
             }
             for (JsonNode path : event.getValue().get("path")) {
                 eventPathRepository.saveAndFlush(EventPath.builder()
                         .event(temp)
                         .pathIndex(path.get("index").toString())
-                        .pathName(path.get("name").toString())
+                        .pathName(path.get("name").toString().replace("\"", ""))
                         .build());
             }
         }
@@ -73,6 +75,7 @@ public class DummyData implements CommandLineRunner {
 
     private void addTag() throws IOException {
         String stringDummy = "{\"tags\": { \"button1\": { \"id\": \"button\", \"class\": \"\", \"events\": [\"click\", \"login\"] }, \"button2\": { \"id\": \"button2\", \"class\": \"primary\", \"events\": [\"purchase\"] }, \"main\": { \"id\": \"main\", \"class\": \"\", \"events\": [\"click_main\"] } }}";
+        Project project = projectRepository.findById(2l).get();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(stringDummy);
         for (Iterator<Map.Entry<String, JsonNode>> it = jsonNode.get("tags").getFields(); it.hasNext(); ) {
@@ -80,8 +83,9 @@ public class DummyData implements CommandLineRunner {
 
             Tag temp = Tag.builder()
                     .htmlTagName(tag.getKey())
-                    .htmlTagId(tag.getValue().get("id").toString())
-                    .htmlTagClass(tag.getValue().get("class").toString())
+                    .htmlTagId(tag.getValue().get("id").toString().replace("\"", ""))
+                    .htmlTagClass(tag.getValue().get("class").toString().replace("\"", ""))
+                    .project(project)
                     .build();
             tagRepository.saveAndFlush(temp);
 
@@ -90,10 +94,6 @@ public class DummyData implements CommandLineRunner {
             while (eventNameList.hasNext()) {
                 JsonNode eventName = eventNameList.next();
                 Event event = eventRepository.findByEventName(eventName.getTextValue()).get();
-
-                System.out.println(eventName.getTextValue());
-                System.out.println("tagId: " + temp.getId());
-                System.out.println("eventId: " + event.getId());
 
                 tagEventRepository.save(TagEvent.builder()
                         .tag(temp)

@@ -53,18 +53,15 @@ public class Project {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "project")
-    private List<Tag> tagList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "project")
-    private List<Event> eventList = new ArrayList<>();
+    private boolean spa;
 
     @Builder
-    public Project(String url, String name, ProjectCategory category, Member member) {
+    public Project(String url, String name, ProjectCategory category, Member member, boolean spa) {
         this.url = url;
         this.name = name;
         this.category = category;
         this.member = member;
+        this.spa = spa;
     }
 
     public void updateToken(){
