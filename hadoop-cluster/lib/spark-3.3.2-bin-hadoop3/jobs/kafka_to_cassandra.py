@@ -17,16 +17,23 @@ topic = 'tagmanager'
 # Kafka Producer record의 value 필드에 직렬화 되어있는 JSON 객체의 스키마 정
 schema = StructType(
         [
-                StructField("serviceToken", StringType()),
                 StructField("clientId", LongType()),
-                StructField("serviceId", LongType()),
-                StructField("sessionId", StringType()),
+                StructField("data", DataType()),
                 StructField("event", StringType()),
-                StructField("targetId", StringType()),
+                StructField("location", StringType()),
+                StructField("pageDuration", LongType()),
                 StructField("positionX", IntegerType()),
                 StructField("positionY", IntegerType()),
-                StructField("location", StringType()),
-                StructField("timestamp", LongType())
+                StructField("prevLocation", StringType()),
+                StructField("referrer", StringType()),
+                StructField("serviceId", LongType()),
+                StructField("serviceToken", StringType()),
+                StructField("sessionId", StringType()),
+                StructField("targetId", StringType()),
+                StructField("timestamp", LongType()),
+                StructField("title", StringType()),
+                StructField("userAgent", StringType()),
+                StructField("userLanguage", StringType()),
         ]
 )
 
