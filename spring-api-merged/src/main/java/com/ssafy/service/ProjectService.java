@@ -1,14 +1,9 @@
 package com.ssafy.service;
 
 import com.ssafy.dto.*;
-import com.ssafy.entity.Servi;
-import com.ssafy.repository.EventRepository;
-import com.ssafy.repository.ServiceRepository;
+import com.ssafy.entity.*;
+import com.ssafy.repository.*;
 import com.ssafy.util.NoSuchMemberException;
-import com.ssafy.entity.Member;
-import com.ssafy.entity.Project;
-import com.ssafy.repository.MemberRepository;
-import com.ssafy.repository.ProjectRepository;
 import com.ssafy.util.Validation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +25,7 @@ public class ProjectService {
     private final Validation validation;
     private final ServiceRepository serviceRepository;
     private final EventRepository eventRepository;
+    private final TagRepository tagRepository;
 
     public void addProject(String email, ProjectAddDto request) {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
@@ -80,7 +76,7 @@ public class ProjectService {
 
     public boolean setService(ServiceDto serviceDto) {
         Servi servi = serviceDto.toEntity();
-        if(serviceRepository.findById(servi.getId())!=null){
+        if(serviceRepository.findById(servi.getId()).isPresent()){
             serviceRepository.save(servi);
             return true;
         }else{
@@ -88,8 +84,33 @@ public class ProjectService {
         }
     }
 
-    public boolean isServiceById(Long id){
-        if(eventRepository.findById(id).isPresent()) return true;
+    public boolean setEvent(EventDto eventDto){
+        Event event = eventDto.toEntity();
+        if(eventRepository.findById(event.getId()).isPresent()){
+            eventRepository.save(event);
+            return true;
+        }
         return false;
+    }
+
+    public boolean setTag(TagDto tagDto){
+        Tag tag = tagDto.toEntity();
+        if(tagRepository.findById(tag.getId()).isPresent()){
+            tagRepository.save(tag);
+            return true;
+        }
+        return false;
+    }
+
+    public SettingDto setServiceSettings(long serviceId){
+        ServiceDto serviceDto = ServiceDto.toDto(serviceRepository.findById(serviceId).get());
+        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(serviceId));
+        List<TagDto> tagDtoList = TagDto.toDtoList(tagRepository.findAllByProjectId(serviceId));
+        SettingDto settingDto = SettingDto.builder()
+                .serviceDto(serviceDto)
+                .eventDtoList(eventDtoList)
+                .tagDtoList(tagDtoList)
+                .build();
+        return settingDto;
     }
 }

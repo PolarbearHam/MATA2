@@ -61,4 +61,34 @@ public class EventDto {
                 .project(project)
                 .build();
     }
+
+    public static List<EventDto> toDtoList(List<Event> eventList){
+        List<EventDto> eventDtoList = null;
+
+        for (Event e : eventList){
+            List<EventParam> fromEventParamList = e.getEventParamList();
+            List<EventPath> fromEventPathList = e.getEventPathList();
+
+            List<EventParamDto> toEventParamDtoList = new ArrayList<>();
+            List<EventPathDto> toEventPathDtoList = new ArrayList<>();
+
+            for(int i=0; i<fromEventParamList.size(); i++){
+                toEventParamDtoList.add(EventParamDto.toDto(fromEventParamList.get(i)));
+            }
+            for(int i=0; i<fromEventPathList.size(); i++){
+                toEventPathDtoList.add(EventPathDto.toDto(fromEventPathList.get(i)));
+            }
+
+            eventDtoList.add(new EventDto(
+                    e.getId(),
+                    e.getEventName(),
+                    e.getEventBase(),
+                    toEventParamDtoList,
+                    toEventPathDtoList,
+                    e.getProject()
+            ));
+        }
+
+        return eventDtoList;
+    }
 }

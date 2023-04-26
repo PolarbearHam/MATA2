@@ -52,4 +52,24 @@ public class TagDto {
                 .project(project)
                 .build();
     }
+
+    public static List<TagDto> toDtoList(List<Tag> tagList){
+        List<TagDto> tagDtoList = null;
+        for(Tag t : tagList){
+            List<TagEvent> fromTagEventList = t.getTagEventList();
+            List<TagEventDto> toTagEventDtoList = new ArrayList<>();
+            for(int i=0; i<fromTagEventList.size(); i++){
+                toTagEventDtoList.add(TagEventDto.toDto(fromTagEventList.get(i)));
+            }
+            tagDtoList.add(new TagDto(
+                    t.getId(),
+                    t.getHtmlTagName(),
+                    t.getHtmlTagId(),
+                    t.getHtmlTagClass(),
+                    toTagEventDtoList,
+                    t.getProject()
+            ));
+        }
+        return tagDtoList;
+    }
 }

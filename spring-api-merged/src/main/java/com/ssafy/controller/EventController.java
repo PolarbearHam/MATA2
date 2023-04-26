@@ -1,18 +1,12 @@
 package com.ssafy.controller;
 
-import com.ssafy.dto.EventDto;
-import com.ssafy.dto.ProjectDto;
-import com.ssafy.dto.ServiceDto;
-import com.ssafy.repository.EventRepository;
+
 import com.ssafy.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @RestController
