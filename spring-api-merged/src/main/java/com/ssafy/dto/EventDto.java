@@ -21,17 +21,12 @@ public class EventDto {
 
     public static EventDto toDto(Event event){
         //entity 리스트에서 dto 리스트로
-        List<TagEvent> fromTagEventList = event.getTagEventList();
         List<EventParam> fromEventParamList = event.getEventParamList();
         List<EventPath> fromEventPathList = event.getEventPathList();
 
-        List<TagEventDto> toTagEventDtoList = new ArrayList<>();
         List<EventParamDto> toEventParamDtoList = new ArrayList<>();
         List<EventPathDto> toEventPathDtoList = new ArrayList<>();
 
-        for(int i=0; i<fromTagEventList.size(); i++){
-            toTagEventDtoList.add(TagEventDto.toDto(fromTagEventList.get(i)));
-        }
         for(int i=0; i<fromEventParamList.size(); i++){
             toEventParamDtoList.add(EventParamDto.toDto(fromEventParamList.get(i)));
         }
