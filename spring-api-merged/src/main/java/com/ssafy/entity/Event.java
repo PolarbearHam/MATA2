@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @DynamicInsert
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-@Setter
 @Entity
+@Builder
+@NoArgsConstructor
 public class Event {
 
     @Id @Column(name = "eventId")
@@ -35,5 +35,8 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<EventPath> eventPathList = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
 }
 

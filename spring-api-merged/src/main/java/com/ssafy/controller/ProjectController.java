@@ -1,10 +1,7 @@
 package com.ssafy.controller;
 
 import com.ssafy.config.SecurityUtils;
-import com.ssafy.dto.ProjectAddDto;
-import com.ssafy.dto.ProjectDto;
-import com.ssafy.dto.ProjectResponse;
-import com.ssafy.dto.TokenDto;
+import com.ssafy.dto.*;
 import com.ssafy.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -80,27 +80,30 @@ public class ProjectController {
                 .build();
     }
 
-    /*
-    @GetMapping("/{serviceId}/settings")
-    public ResponseEntity<ProjectSettingsResponse> projectSettingsList (
-            @PathVariable("serviceId") Long serviceId,
-            @AuthenticationPrincipal UserDetails userDetails) {
-        ProjectResponse response = projectService.getProjectDetail(serviceId);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
-    }
+    //서비스 아이디와 url 받는 부분
+    @PostMapping("/{serviceId}/service")
+    public ResponseEntity<?> customService(
+            @PathVariable Long serviceId, @RequestBody ServiceDto serviceDto){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status;
 
-    @PostMapping("/{serviceId}/setting")
-    public ResponseEntity<ProjectSettingsResponse> projectSettingsList (
-            @PathVariable("serviceId") Long serviceId,
-            @AuthenticationPrincipal UserDetails userDetails) {
-        ProjectResponse response = projectService.getProjectDetail(serviceId);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+        if(projectService.setService(serviceDto)){
+            resultMap.put("message", "SUCCESS");
+            status = HttpStatus.OK;
+        }else{
+            resultMap.put("message", "FAIL");
+            status = HttpStatus.ACCEPTED;
+        }
+        return new ResponseEntity<>(resultMap, status);
     }
-    */
+    // 서비스 이벤트 받는 부분
+    @PostMapping("/{serviceId}/events")
+    public ResponseEntity<?> customEvents(
+            @PathVariable Long serviceId, @RequestBody EventDto eventDto){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status;
 
+        return null;
+    }
 }
 

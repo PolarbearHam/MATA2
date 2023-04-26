@@ -23,6 +23,13 @@ public class EventParamDto {
         );
     }
     public EventParam toEntity(){
-        return new EventParam(id, paramName, paramKey, eventDto.toEntity());
+
+//        return new EventParam(id, paramName, paramKey, eventDto.toEntity());
+        return EventParam.builder()
+                .id(id)
+                .paramName(paramName)
+                .paramKey(paramKey)
+                .event(eventDto.toEntity())
+                .build();
     }
 }

@@ -10,8 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @DynamicInsert
@@ -20,9 +18,9 @@ import java.util.UUID;
 @Entity
 @Builder
 @NoArgsConstructor
-public class Project {
+public class Servi {
 
-    @Id @Column(name = "projectId")
+    @Id @Column(name = "serviceId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -52,11 +50,8 @@ public class Project {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "project")
-    private List<Tag> tagList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "project")
-    private List<Event> eventList = new ArrayList<>();
+    @ColumnDefault("false")
+    private boolean spa;
 
     public void updateToken(){
         UUID uuid = UUID.randomUUID();

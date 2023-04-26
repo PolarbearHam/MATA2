@@ -26,6 +26,12 @@ public class TagEventDto {
         );
     }
     public TagEvent toEntity(){
-        return new TagEvent(id, createAt, tag, event);
+//        return new TagEvent(id, createAt, tag, event);
+        return TagEvent.builder()
+                .id(id)
+                .createAt(createAt)
+                .tag(tag)
+                .event(event)
+                .build();
     }
 }

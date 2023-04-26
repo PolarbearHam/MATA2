@@ -1,11 +1,12 @@
 export default class TagManager {
 
   constructor() {
+
     // *************** JS에 주입돼서 들어가는 영역 ***************
     this.injection = {
       bootstrap: 'https://dummy-bootstrap.com',
       serviceToken: 'dummy-serviceToken',
-      spa: true,
+      spa: false,
       events: {
         click: {base: null, param: [], path: []}, // 기본 DOM 이벤트
         mouseenter: {base: null, param: [], path: []}, // 기본 DOM 이벤트
@@ -32,9 +33,7 @@ export default class TagManager {
           param: [
             {name: "productId", key: 'productId'}
           ],
-          path: [
-            {name: "path", index: 0}
-          ]
+          path: []
         },
         mata_easter_egg: {
           base: 'click_mata',
@@ -115,8 +114,8 @@ export default class TagManager {
     this.location = null;
     this.prevLocation = null;
     this.referrer = null;
-    this.pageDuration = 0;
     this.data = {};
+
 
     // 추가적으로 필요한 데이터
     this.attachedListeners = [];
@@ -147,19 +146,13 @@ export default class TagManager {
 
     // 이벤트 핸들러 딕셔너리 초기화
     this.handlerDict = {};
-    // 자체 정의 이벤트 pageenter
     this.handlerDict['pageenter'] = function (e) {
       this.stackLog(e, 'pageenter');
       this.flushLog();
     }.bind(this);
-    // 자체 정의 이벤트 pageleave
     this.handlerDict['pageleave'] = function (e) {
       this.stackLog(e, 'pageleave');
       this.flushLog();
-    }.bind(this);
-    // 자체 정의 이벤트 click_heatmap
-    this.handlerDict['click_heatmap'] = function (e) {
-      this.stackLog(e, 'click_heatmap');
     }.bind(this);
     let keys = Object.keys(this.events);
     for (let i=0; i<keys.length; i++) {
@@ -195,7 +188,10 @@ export default class TagManager {
         referrer: this.referrer,
         timestamp: Date.now(),
         pageDuration: Date.now() - this.enterTimer,
-        data: e.detail ? e.detail : null
+        data: e.detail ? e.detail : null,
+        screenSizeX: window.innerWidth,
+        screenSizeY: window.innerHeight,
+        userLanguage: navigator.language
       }
       this.logStash.push(body)
 
@@ -248,13 +244,6 @@ export default class TagManager {
 
         }
       }
-      // 히트맵 이벤트 부착
-      let dispatcher = function (e) { // base DOM 이벤트에 dispatcher 붙이기
-        this.handlerDict['click_heatmap'](e);
-      }.bind(this)
-      window.addEventListener('click', dispatcher);
-      this.attachedListeners.push({target: window, type: 'click', listener: dispatcher})
-
       // 태그에 종속되지 않는 이벤트 발생시키기
       this.handlerDict['pageenter']({target: window});
     }
@@ -266,7 +255,8 @@ export default class TagManager {
       // 태그에 종속되지 않는 이벤트 발생시키기
       this.handlerDict['pageleave']({target: window});
     }
-
   };
-
 }
+
+let mata = new TagManager();
+
