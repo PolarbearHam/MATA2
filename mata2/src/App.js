@@ -189,7 +189,7 @@ function App() {
         }/>
         <Route path='/service/:id/setting' element={
           <DashboardLayout state={ {user: user,serviceList:serviceList} }>
-            <ServiceCustom/>
+            <ServiceCustom state={ {user: user,serviceList:serviceList} }/>
           </DashboardLayout>
         }/>
       </Routes>

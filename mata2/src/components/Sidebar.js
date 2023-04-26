@@ -26,7 +26,7 @@ const Sidebar = (props) => {
               </svg>
             </div>
             <NavLink href="/start" className='nav-link'>{service.name}</NavLink>
-            <NavLink href='/service/0/setting' className='nav-item-settings'>
+            <NavLink href={`/service/${service.id}/setting`} className='nav-item-settings'>
               <svg fill="#000000" width="18px" version="1.1" id="Capa_1" viewBox="0 0 478.703 478.703">
                 <g>
                   <g>
