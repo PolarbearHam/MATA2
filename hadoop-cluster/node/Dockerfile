@@ -139,7 +139,6 @@ ENV PYTHONPATH=$PYTHONPATH:$AIRFLOW_HOME/dags/lib
 
 # Airflow env settings
 COPY ../lib/apache-airflow-2.5.0/conf/airflow.cfg $AIRFLOW_HOME/conf
-ENV AIRFLOW_CONN_HIVE_CLI_DEFAULT=jdbc:hive2://hive:hive@localhost:10000/real_estate
 
 # Python packages for Airflow DAGs
 RUN \

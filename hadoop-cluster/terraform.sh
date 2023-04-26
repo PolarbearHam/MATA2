@@ -8,8 +8,8 @@ sudo apt-get install ssh -y && \
 sudo apt-get install build-essential gcc g++ make -y
 
 # Build essentials setup
-sudo apt-get install zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libbz2-dev libsasl2-dev -y && \
-sudo apt-get install sqlite3 libsqlite3-dev -y && \
+sudo apt-get install zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libbz2-dev libsasl2-dev python3-dev -y && \
+sudo apt-get install sqlite3 libsqlite3-dev libmysqlclient-dev -y && \
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 
 # Java installation
@@ -33,13 +33,12 @@ wget https://www.python.org/ftp/python/3.9.5/Python-3.9.5.tgz && \
 tar -xzf Python-3.9.5.tgz && \
 sudo mv Python-3.9.5 /usr/local/lib/python-3.9.5 && \
 cd /usr/local/lib/python-3.9.5 && \
-./configure --enable-optimizations && \
-make -j 12 && \
+sudo ./configure --enable-optimizations && \
+sudo make -j 12 && \
 sudo make altinstall && \
 sudo python3.9 -m pip install pip --upgrade && \
 sudo pip install --upgrade setuptools && \
-cd ~ && \
-sudo apt install python3-dev -y
+cd ~
 
 # Hadoop installation
 wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz && \
@@ -77,7 +76,10 @@ cp lib/hadoop-3.3.4/etc/hadoop/workers /usr/local/lib/hadoop-3.3.4/etc/hadoop/wo
 #########################
 sudo apt-get install mysql-server -y
 CREATE DATABASE hive;
+CREATE USER 'hive'@'%' IDENTIFIED WITH mysql_native_password BY 'hive';
 GRANT ALL PRIVILEGES ON hive.* TO 'hive'@'%';
+CREATE USER 'airflow'@'%' IDENTIFIED WITH mysql_native_password BY 'airflow';
+GRANT ALL PRIVILEGES ON airflow.* TO 'airflow'@'%';
 
 # Hive installation
 wget https://dlcdn.apache.org/hive/hive-3.1.3/apache-hive-3.1.3-bin.tar.gz && \
@@ -101,3 +103,39 @@ echo 'export PATH=$PATH:$CASSANDRA_HOME/bin' >> ~/.bashrc
 
 # Cassandra env settings
 cp lib/apache-cassandra-4.0.8/conf/cassandra.yaml /usr/local/lib/apache-cassandra-4.0.9/conf/cassandra.yaml
+
+# Spark Installation
+wget https://dlcdn.apache.org/spark/spark-3.3.2/spark-3.3.2-bin-hadoop3.tgz && \
+tar -xzf spark-3.3.2-bin-hadoop3.tgz && \
+sudo mv spark-3.3.2-bin-hadoop3 /usr/local/lib/spark-3.3.2-bin-hadoop3 && \
+echo 'export SPARK_HOME=/usr/local/lib/spark-3.3.2-bin-hadoop3' >> ~/.bashrc && \
+echo 'export PATH=$PATH:$SPARK_HOME/bin' >> ~/.bashrc
+
+# Spark env settings
+cp lib/spark-3.3.2-bin-hadoop3/conf/spark-defaults.conf /usr/local/lib/spark-3.3.2-bin-hadoop3/conf/spark-defaults.conf && \
+cp lib/spark-3.3.2-bin-hadoop3/conf/spark-env.sh /usr/local/lib/spark-3.3.2-bin-hadoop3/conf/spark-env.sh
+
+# RabbitMQ installation
+#########################
+# ONLY IN master01 NODE #
+#########################
+
+### RabbitMQ official site - https://www.rabbitmq.com/install-debian.html#apt-launchpad-erlang
+
+
+# Airflow Installation
+sudo pip install mysqlclient mysql-connector-python && \
+sudo pip install apache-airflow[mysql,celery]==2.5.0 && \
+mkdir apache-airflow-2.5.0 && \
+mkdir apache-airflow-2.5.0/logs && \
+mkdir apache-airflow-2.5.0/dags && \
+mkdir apache-airflow-2.5.0/plugins && \
+mkdir apache-airflow-2.5.0/conf && \
+sudo mv apache-airflow-2.5.0 /usr/local/lib/apache-airflow-2.5.0 && \
+echo 'export AIRFLOW_HOME=/usr/local/lib/apache-airflow-2.5.0' >> ~/.bashrc && \
+echo 'export AIRFLOW_CONFIG=/usr/local/lib/apache-airflow-2.5.0/conf/airflow.cfg' >> ~/.bashrc && \
+echo 'export DAGS_FOLDER=/usr/local/lib/apache-airflow-2.5.0/dags' >> ~/.bashrc && \
+echo 'export PYTHONPATH=$PYTHONPATH:/usr/local/lib/apache-airflow-2.5.0/dags/lib' >> ~/.bashrc && \
+
+# Airflow env settings
+cp lib/apache-airflow-2.5.0/conf/airflow.cfg /usr/local/lib/apache-airflow-2.5.0/conf/airflow.cfg
