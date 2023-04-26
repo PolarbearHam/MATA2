@@ -22,7 +22,13 @@ public class EventPathDto {
         );
     }
     public EventPath toEntity(){
-        return new EventPath(id, pathName, pathIndex, eventDto.toEntity());
+//        return new EventPath(id, pathName, pathIndex, eventDto.toEntity());
+        return EventPath.builder()
+                .id(id)
+                .pathName(pathName)
+                .pathIndex(pathIndex)
+                .event(eventDto.toEntity())
+                .build();
     }
 
 }

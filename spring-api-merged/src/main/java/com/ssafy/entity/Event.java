@@ -35,5 +35,8 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<EventPath> eventPathList = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
 }
 

@@ -1,10 +1,7 @@
 package com.ssafy.entity;
 
 import com.ssafy.util.ProjectCategory;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -18,9 +15,11 @@ import java.util.List;
 import java.util.UUID;
 
 @DynamicInsert
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 @Entity
+@Builder
+@NoArgsConstructor
 public class Project {
 
     @Id @Column(name = "projectId")
@@ -53,16 +52,11 @@ public class Project {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private boolean spa;
+    @OneToMany(mappedBy = "project")
+    private List<Tag> tagList = new ArrayList<>();
 
-    @Builder
-    public Project(String url, String name, ProjectCategory category, Member member, boolean spa) {
-        this.url = url;
-        this.name = name;
-        this.category = category;
-        this.member = member;
-        this.spa = spa;
-    }
+    @OneToMany(mappedBy = "project")
+    private List<Event> eventList = new ArrayList<>();
 
     public void updateToken(){
         UUID uuid = UUID.randomUUID();

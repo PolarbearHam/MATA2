@@ -37,5 +37,8 @@ public class Tag {
     @OneToMany(mappedBy = "tag")
     private List<TagEvent> tagEventList = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
 }
 

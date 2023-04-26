@@ -1,9 +1,6 @@
 package com.ssafy.dto;
 
-import com.ssafy.entity.Event;
-import com.ssafy.entity.EventParam;
-import com.ssafy.entity.EventPath;
-import com.ssafy.entity.TagEvent;
+import com.ssafy.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,51 +15,55 @@ public class EventDto {
     private Long id;
     private String eventName;
     private String eventBase;
-//    private List<TagEventDto> tagEventList;
     private List<EventParamDto> eventParamDtoList;
     private List<EventPathDto> eventPathDtoList;
+    private Project project;
+
     public static EventDto toDto(Event event){
         //entity 리스트에서 dto 리스트로
-        List<TagEvent> fromEvent = event.getTagEventList();
-        List<EventParam> fromParam = event.getEventParamList();
-        List<EventPath> fromPath = event.getEventPathList();
+        List<TagEvent> fromTagEventList = event.getTagEventList();
+        List<EventParam> fromEventParamList = event.getEventParamList();
+        List<EventPath> fromEventPathList = event.getEventPathList();
 
-        List<TagEventDto> toEvent = new ArrayList<>();
-        List<EventParamDto> toParam = new ArrayList<>();
-        List<EventPathDto> toPath = new ArrayList<>();
-        for(int i=0; i<fromEvent.size(); i++){
-            toEvent.add(TagEventDto.toDto(fromEvent.get(i)));
+        List<TagEventDto> toTagEventDtoList = new ArrayList<>();
+        List<EventParamDto> toEventParamDtoList = new ArrayList<>();
+        List<EventPathDto> toEventPathDtoList = new ArrayList<>();
+
+        for(int i=0; i<fromTagEventList.size(); i++){
+            toTagEventDtoList.add(TagEventDto.toDto(fromTagEventList.get(i)));
         }
-        for(int i=0; i<fromParam.size(); i++){
-            toParam.add(EventParamDto.toDto(fromParam.get(i)));
+        for(int i=0; i<fromEventParamList.size(); i++){
+            toEventParamDtoList.add(EventParamDto.toDto(fromEventParamList.get(i)));
         }
-        for(int i=0; i<fromPath.size(); i++){
-            toPath.add(EventPathDto.toDto(fromPath.get(i)));
+        for(int i=0; i<fromEventPathList.size(); i++){
+            toEventPathDtoList.add(EventPathDto.toDto(fromEventPathList.get(i)));
         }
         //여기까지
         return new EventDto(
                 event.getId(),
                 event.getEventName(),
                 event.getEventBase(),
-//                toEvent,
-                toParam,
-                toPath
+                toEventParamDtoList,
+                toEventPathDtoList,
+                event.getProject()
         );
     }
     public Event toEntity(){
-//        List<TagEvent> toEvent = new ArrayList<>();
         List<EventParam> toParam = new ArrayList<>();
         List<EventPath> toPath = new ArrayList<>();
-//        for(int i=0; i<tagEventList.size(); i++){
-//            toEvent.add(tagEventList.get(i).toEntity());
-//        }
         for(int i=0; i<eventParamDtoList.size(); i++){
             toParam.add(eventParamDtoList.get(i).toEntity());
         }
         for(int i=0; i<eventPathDtoList.size(); i++){
             toPath.add(eventPathDtoList.get(i).toEntity());
         }
-        return Event.builder().id(id).eventName(eventName).eventBase(eventBase)
-                .eventParamList(toParam).eventPathList(toPath).build();
+        return Event.builder()
+                .id(id)
+                .eventName(eventName)
+                .eventBase(eventBase)
+                .eventParamList(toParam)
+                .eventPathList(toPath)
+                .project(project)
+                .build();
     }
 }

@@ -22,6 +22,12 @@ public class ServiceDto {
         );
     }
     public Servi toEntity(){
-        return new Servi(id, url, name, null, null, null, false, null, spa);
+//        return new Servi(id, url, name, null, null, null, false, null, spa);
+        return Servi.builder()
+                .id(id)
+                .url(url)
+                .name(name)
+                .spa(spa)
+                .build();
     }
 }
