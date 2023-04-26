@@ -2,6 +2,7 @@ package com.ssafy.service;
 
 import com.ssafy.dto.*;
 import com.ssafy.entity.Servi;
+import com.ssafy.repository.EventRepository;
 import com.ssafy.repository.ServiceRepository;
 import com.ssafy.util.NoSuchMemberException;
 import com.ssafy.entity.Member;
@@ -28,6 +29,7 @@ public class ProjectService {
     private final StringRedisTemplate stringRedisTemplate;
     private final Validation validation;
     private final ServiceRepository serviceRepository;
+    private final EventRepository eventRepository;
 
     public void addProject(String email, ProjectAddDto request) {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
@@ -86,4 +88,8 @@ public class ProjectService {
         }
     }
 
+    public boolean isServiceById(Long id){
+        if(eventRepository.findById(id).isPresent()) return true;
+        return false;
+    }
 }
