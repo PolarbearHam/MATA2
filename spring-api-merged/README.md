@@ -5,7 +5,7 @@
 > kafka-console-consumer.sh --topic tagmanager --from-beginning --bootstrap-server localhost:9092
 ## 출력 예시
 {
-    "serviceToken":"tag-manager-service-token",
+    "serviceToken":"tag-manager-servi-token",
     "sessionId":"test-session-id",
     "event":"click",
     "targetId":"button-to-second",

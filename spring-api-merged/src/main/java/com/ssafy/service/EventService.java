@@ -1,5 +1,6 @@
 package com.ssafy.service;
 
+import com.ssafy.dto.ServiceDto;
 import com.ssafy.entity.*;
 import com.ssafy.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,10 @@ public class EventService {
     private final EventRepository eventRepository;
     private final EventPathRepository eventPathRepository;
     private final EventParamRepository eventParamRepository;
+    private final ServiceRepository serviceRepository;
 
 
     // Todo : js코드 난독화 필요
-    @Transactional
     public String callJsCode(long projectId) {
         String code_head =
                 "export default class TagManager {\n" +
@@ -247,4 +248,6 @@ public class EventService {
         System.out.println(code_head+code_main+code_tail);
         return code_head + code_main + code_tail;
     }
+
+
 }

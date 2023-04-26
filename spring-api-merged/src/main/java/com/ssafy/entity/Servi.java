@@ -10,17 +10,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @DynamicInsert
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-@Setter
 @Entity
-public class Service {
+@Builder
+@NoArgsConstructor
+public class Servi {
 
     @Id @Column(name = "serviceId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,8 +47,8 @@ public class Service {
     private boolean isQuit;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ColumnDefault("false")
     private boolean spa;
