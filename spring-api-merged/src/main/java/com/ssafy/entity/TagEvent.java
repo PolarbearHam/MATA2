@@ -8,11 +8,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @DynamicInsert
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-@Setter
 @Entity
+@Builder
+@NoArgsConstructor
 public class TagEvent {
 
     @Id @Column(name = "tagEventId")

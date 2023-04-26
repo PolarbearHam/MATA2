@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @DynamicInsert
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
-@Setter
 @AllArgsConstructor
+@Getter
 @Entity
+@Builder
+@NoArgsConstructor
 public class EventParam {
 
     @Id @Column(name = "eventParamId")

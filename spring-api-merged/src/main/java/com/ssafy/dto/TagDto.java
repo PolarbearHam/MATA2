@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TagDto {
     private Long id;
+    private String htmlTagName;
     private String htmlTagId;
     private String htmlTagClass;
     private List<TagEventDto> tagEventDtoList;
@@ -25,6 +26,7 @@ public class TagDto {
         }
         return new TagDto(
                 tag.getId(),
+                tag.getHtmlTagName(),
                 tag.getHtmlTagId(),
                 tag.getHtmlTagClass(),
                 toList
@@ -36,6 +38,6 @@ public class TagDto {
         for(int i=0; i<fromList.size(); i++){
             toList.add(tagEventDtoList.get(i).toEntity());
         }
-        return new Tag(id, htmlTagId, htmlTagClass, toList);
+        return new Tag(id, htmlTagName, htmlTagId, htmlTagClass, toList);
     }
 }
