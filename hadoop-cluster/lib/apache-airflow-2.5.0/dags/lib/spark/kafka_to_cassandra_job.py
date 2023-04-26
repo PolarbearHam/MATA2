@@ -5,8 +5,6 @@ findspark.init("/usr/local/lib/spark-3.3.2-bin-hadoop3")
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 from pyspark.sql import *
-from datetime import datetime
-from datetime import timedelta
 
 def kafka_to_cassandra_pipeline():
 
@@ -20,6 +18,22 @@ def kafka_to_cassandra_pipeline():
 
     kafka_bootstrap_servers = 'master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092'
     topic = 'tagmanager'
+
+    # WebLogDto
+    # {serviceToken = 'dummy-serviceToken'
+    # , clientId = 0
+    # , serviceId = 0
+    # , sessionId = '2187633598746759'
+    # , event = 'pageenter'
+    # , targetId = 'null'
+    # , positionX = 0
+    # , positionY = 0
+    # , location = 'http://localhost:3000/'
+    # , prevLocation = 'null'
+    # , referrer = ''
+    # , timestamp = 1682493162505
+    # , pageDuration = 57
+    # }
 
     schema = StructType(
         [

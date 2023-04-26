@@ -15,7 +15,7 @@ import org.json.JSONObject;
 public class WebLogDto {
 
     private long clientId;
-    private JSONObject data;
+    private String data;
     private String event;
     private String location;
     private long pageDuration;
@@ -34,6 +34,33 @@ public class WebLogDto {
     private String title;
     private String userAgent;
     private String userLanguage;
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("WebLogDto{").append("\n");
+        sb.append("clientId=").append(clientId).append("\n");
+        sb.append(", data=").append(data.toString()).append("\n");
+        sb.append(", event='").append(event).append('\'' + "\n");
+        sb.append(", location='").append(location).append('\'' + "\n");
+        sb.append(", pageDuration=").append(pageDuration).append("\n");
+        sb.append(", positionX=").append(positionX).append("\n");
+        sb.append(", positionY=").append(positionY).append("\n");
+        sb.append(", prevLocation='").append(prevLocation).append('\'' + "\n");
+        sb.append(", referrer='").append(referrer).append('\'' + "\n");
+        sb.append(", screenSizeX=").append(screenSizeX).append("\n");
+        sb.append(", screenSizeY=").append(screenSizeY).append("\n");
+        sb.append(", serviceToken='").append(serviceToken).append('\'' + "\n");
+        sb.append(", sessionId='").append(sessionId).append('\'' + "\n");
+        sb.append(", serviceId=").append(serviceId).append("\n");
+        sb.append(", targetId='").append(targetId).append('\'' + "\n");
+        sb.append(", targetName='").append(targetName).append('\'' + "\n");
+        sb.append(", timestamp=").append(timestamp).append("\n");
+        sb.append(", title='").append(title).append('\'' + "\n");
+        sb.append(", userAgent='").append(userAgent).append('\'' + "\n");
+        sb.append(", userLanguage='").append(userLanguage).append('\'' + "\n");
+        sb.append('}');
+        return sb.toString();
+    }
 
     public ProducerRecord<String, String> toProducerRecord(String topic, Integer partition) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

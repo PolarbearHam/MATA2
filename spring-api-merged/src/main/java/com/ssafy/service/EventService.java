@@ -31,7 +31,7 @@ public class EventService {
                         "    this.injection = {\n" +
                         "      bootstrap: 'http://localhost:8080/api/v1/dump',\n" +
                         "      serviceToken: 'dummy-serviceToken',\n" +
-                        "      spa: false,\n" +
+                        "      spa: true,\n" +
                         "      events: {\n" +
                         "        click: {base: null, param: [], path: []}," +
                         "        mouseenter: {base: null, param: [], path: []},\n" +
@@ -178,7 +178,7 @@ public class EventService {
                         "        referrer: this.referrer,\n" +
                         "        timestamp: Date.now(),\n" +
                         "        pageDuration: Date.now() - this.enterTimer,\n" +
-                        "        data: e.detail ? e.detail : null,\n" +
+                        "        data: e.detail ? JSON.stringify(e.detail) : '{}',\n" +
                         "        screenSizeX: window.innerWidth,\n" +
                         "        screenSizeY: window.innerHeight,\n" +
                         "        userLanguage: navigator.language\n" +
@@ -238,14 +238,6 @@ public class EventService {
                         "      }\n" +
                         "      this.handlerDict['pageleave']({target: window});\n" +
                         "    }\n" +
-                        "    window.addEventListener(\"load\", function (e) {\n" +
-                        "      this.attach();\n" +
-                        "      console.log(\"loaded\")\n" +
-                        "    }.bind(this));\n" +
-                        "    window.addEventListener(\"unload\", function (e) {\n" +
-                        "      this.detach();\n" +
-                        "      console.log(\"unloaded\")\n" +
-                        "    }.bind(this));\n" +
                         "  };\n" +
                         "}";
         System.out.println(code_head+code_main+code_tail);
