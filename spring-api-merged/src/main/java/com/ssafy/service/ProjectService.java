@@ -105,7 +105,11 @@ public class ProjectService {
         return saveEventOK;
     }
 
-    public boolean setTag(TagDto tagDto){
+    public boolean saveTag(TagSaveListDto tagSaveListDto){
+        for(TagSaveDto tagSaveDto : tagSaveListDto){
+
+        }
+
         Tag tag = tagDto.toEntity();
         if(tagRepository.findById(tag.getId()).isPresent()){
             tagRepository.save(tag);

@@ -8,12 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -122,11 +120,11 @@ public class ProjectController {
     @PostMapping("/{serviceId}/tags")
     public ResponseEntity<?> customTags(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long serviceId, @RequestBody TagDto tagDto){
+            @PathVariable Long serviceId, @RequestBody TagSaveListDto tagSaveListDto){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
 
-        if(projectService.setTag(tagDto)){
+        if(projectService.saveTag(tagSaveListDto)){
             resultMap.put("message", "SUCCESS");
             status = HttpStatus.OK;
         }
