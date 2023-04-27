@@ -85,11 +85,11 @@ public class ProjectController {
     @PostMapping("/{serviceId}/service")
     public ResponseEntity<?> customService(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long serviceId, @RequestBody ServiceDto serviceDto){
+            @PathVariable Long serviceId, @RequestBody ProjectDto projectDto){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
 
-        if(projectService.setService(serviceDto)){
+        if(projectService.setProject(projectDto)){
             resultMap.put("message", "SUCCESS");
             status = HttpStatus.OK;
         }else{
@@ -141,7 +141,7 @@ public class ProjectController {
     public ResponseEntity<SettingDto> getServiceSettings(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long serviceId) {
-        SettingDto settingDto = projectService.setServiceSettings(serviceId);
+        SettingDto settingDto = projectService.setProjectSettings(serviceId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(settingDto);

@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class SettingDto {
-    private ServiceDto serviceDto;
+    private ProjectDto projectDto;
     private List<EventDto> eventDtoList;
     private List<TagDto> tagDtoList;
 }

@@ -70,14 +70,14 @@ public class ProjectService {
 
 
     private Project getProject(ProjectDto request){
-        Long projectId = request.getProjectId();
+        Long projectId = request.getId();
         return projectRepository.findById(projectId).orElseThrow(NoSuchProjectException::new);
     }
 
-    public boolean setService(ServiceDto serviceDto) {
-        Servi servi = serviceDto.toEntity();
-        if(serviceRepository.findById(servi.getId()).isPresent()){
-            serviceRepository.save(servi);
+    public boolean setProject(ProjectDto projectDto) {
+        Project project = projectDto.toEntity();
+        if(projectRepository.findById(project.getId()).isPresent()){
+            projectRepository.save(project);
             return true;
         }else{
             return false;
@@ -102,12 +102,12 @@ public class ProjectService {
         return false;
     }
 
-    public SettingDto setServiceSettings(long serviceId){
-        ServiceDto serviceDto = ServiceDto.toDto(serviceRepository.findById(serviceId).get());
-        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(serviceId));
-        List<TagDto> tagDtoList = TagDto.toDtoList(tagRepository.findAllByProjectId(serviceId));
+    public SettingDto setProjectSettings(long projectId){
+        ProjectDto projectDto = ProjectDto.toDto(projectRepository.findById(projectId).get());
+        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(projectId));
+        List<TagDto> tagDtoList = TagDto.toDtoList(tagRepository.findAllByProjectId(projectId));
         SettingDto settingDto = SettingDto.builder()
-                .serviceDto(serviceDto)
+                .projectDto(projectDto)
                 .eventDtoList(eventDtoList)
                 .tagDtoList(tagDtoList)
                 .build();
