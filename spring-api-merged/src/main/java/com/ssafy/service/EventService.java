@@ -1,6 +1,6 @@
 package com.ssafy.service;
 
-import com.ssafy.dto.ServiceDto;
+import com.ssafy.dto.ProjectDto;
 import com.ssafy.entity.*;
 import com.ssafy.repository.*;
 import lombok.RequiredArgsConstructor;

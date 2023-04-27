@@ -58,6 +58,9 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<Event> eventList = new ArrayList<>();
 
+    @ColumnDefault("false")
+    private boolean spa;
+
     public void updateToken(){
         UUID uuid = UUID.randomUUID();
         this.token = uuid.toString();
