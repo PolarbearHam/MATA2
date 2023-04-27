@@ -1,6 +1,7 @@
 export default class TagManager {
 
   constructor() {
+
     // *************** JS에 주입돼서 들어가는 영역 ***************
     this.injection = {
       bootstrap: 'https://dummy-bootstrap.com',
@@ -113,8 +114,11 @@ export default class TagManager {
     this.location = null;
     this.prevLocation = null;
     this.referrer = null;
-    this.pageDuration = 0;
     this.data = {};
+    this.screenSizeX = window.innerWidth;
+    this.screenSizeY = window.innerHeight;
+    this.userLanguage = navigator.language;
+
 
     // 추가적으로 필요한 데이터
     this.attachedListeners = [];
@@ -187,7 +191,10 @@ export default class TagManager {
         referrer: this.referrer,
         timestamp: Date.now(),
         pageDuration: Date.now() - this.enterTimer,
-        data: e.detail ? e.detail : null
+        data: e.detail ? e.detail : null,
+        screenSizeX: this.screenSizeX,
+        screenSizeY: this.screenSizeY,
+        userLanguage: this.userLanguage
       }
       this.logStash.push(body)
 

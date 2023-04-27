@@ -10,10 +10,12 @@ import Login from "./views/Login";
 import Logout from "./views/Logout";
 import SignUp from './views/SignUp';
 import ServiceAdd from './views/ServiceAdd';
-import TagManager from "./assets/tagmanager";
 import DashboardMain from './dashboards/DashboardMain';
 import axios from "axios";
 
+
+// SPA 제공 코드
+import TagManager from "http://localhost:8080/js/2";
 const mata = new TagManager();
 
 function App() {
@@ -134,7 +136,6 @@ function App() {
     // accessToken = 'dummy-token'; // 더미 데이터
     // userInfo(accessToken);
     return () => {
-
     }
   },[]);
   // useEffect(() => {
@@ -184,7 +185,6 @@ function App() {
 
 
   return (
-
       <Routes>
         <Route path='/' element={
           <WelcomeLayout state={ {user: user} }>
@@ -224,5 +224,4 @@ function App() {
       </Routes>
   )
 }
-
 export default App;
