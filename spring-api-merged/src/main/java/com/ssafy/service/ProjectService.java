@@ -106,26 +106,26 @@ public class ProjectService {
     }
 
     public boolean saveTag(TagSaveListDto tagSaveListDto){
-        for(TagSaveDto tagSaveDto : tagSaveListDto){
-
-        }
-
-        Tag tag = tagDto.toEntity();
-        if(tagRepository.findById(tag.getId()).isPresent()){
-            tagRepository.save(tag);
-            return true;
-        }
+//        for(TagSaveDto tagSaveDto : tagSaveListDto){
+//
+//        }
+//
+//        Tag tag = tagDto.toEntity();
+//        if(tagRepository.findById(tag.getId()).isPresent()){
+//            tagRepository.save(tag);
+//            return true;
+//        }
         return false;
     }
 
     public SettingDto setProjectSettings(long projectId){
         ProjectDto projectDto = ProjectDto.toDto(projectRepository.findById(projectId).get());
         List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(projectId));
-        List<TagDto> tagDtoList = TagDto.toDtoList(tagRepository.findAllByProjectId(projectId));
+        //List<TagDto> tagDtoList = TagDto.toDtoList(tagRepository.findAllByProjectId(projectId));
         SettingDto settingDto = SettingDto.builder()
                 .projectDto(projectDto)
                 .eventDtoList(eventDtoList)
-                .tagDtoList(tagDtoList)
+                //.tagDtoList(tagDtoList)
                 .build();
         return settingDto;
     }
