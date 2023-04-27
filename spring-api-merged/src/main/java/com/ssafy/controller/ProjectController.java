@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -102,11 +103,11 @@ public class ProjectController {
     @PostMapping("/{serviceId}/events")
     public ResponseEntity<?> customEvents(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long serviceId, @RequestBody EventDto eventDto){
+            @PathVariable Long serviceId, @RequestBody EventSaveListDto events){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
 
-        if(projectService.setEvent(eventDto)){
+        if(projectService.saveEvent(events, serviceId)){
             resultMap.put("message", "SUCCESS");
             status = HttpStatus.OK;
         }
@@ -115,7 +116,7 @@ public class ProjectController {
             status = HttpStatus.ACCEPTED;
         }
 
-        return new ResponseEntity<>(resultMap, status);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @PostMapping("/{serviceId}/tags")

@@ -25,6 +25,8 @@ public class ProjectService {
     private final Validation validation;
     private final ServiceRepository serviceRepository;
     private final EventRepository eventRepository;
+    private final EventParamRepository eventParamRepository;
+    private final EventPathRepository eventPathRepository;
     private final TagRepository tagRepository;
 
     public void addProject(String email, ProjectAddDto request) {
@@ -84,13 +86,23 @@ public class ProjectService {
         }
     }
 
-    public boolean setEvent(EventDto eventDto){
-        Event event = eventDto.toEntity();
-        if(eventRepository.findById(event.getId()).isPresent()){
+    public boolean saveEvent(EventSaveListDto eventSaveListDto, Long serviceId){
+        boolean saveEventOK = true;
+        for(EventSaveDto eventSaveDto : eventSaveListDto.getEvents()){
+            Event event = eventSaveDto.toEventEntity(projectRepository.findById(serviceId).get());
             eventRepository.save(event);
-            return true;
+
+            for(EventSaveParamDto eventSaveParamDto : eventSaveDto.getParam()){
+                EventParam eventParam = eventSaveParamDto.toEntity(event);
+                eventParamRepository.save(eventParam);
+            }
+
+            for(EventSavePathDto eventSavePathDto : eventSaveDto.getPath()){
+                EventPath eventPath = eventSavePathDto.toEntity(event);
+                eventPathRepository.save(eventPath);
+            }
         }
-        return false;
+        return saveEventOK;
     }
 
     public boolean setTag(TagDto tagDto){
