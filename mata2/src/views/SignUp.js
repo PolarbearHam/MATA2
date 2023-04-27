@@ -25,7 +25,7 @@ const SignUp = () => {
     }
     console.log("회원가입 시도",formData)
     
-    axios.post('//localhost:8081/api/v1/member/signup',formData,{headers})
+    axios.post('//localhost:8080/api/v1/member/signup',formData,{headers})
 
     .then(response => {
       console.log(response);

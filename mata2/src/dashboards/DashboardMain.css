@@ -28,6 +28,7 @@
 
 .chart-row > * {
     flex-basis: 50%;
+    /* flex-grow: 1; */
 }
 
 .chart-col {

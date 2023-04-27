@@ -23,7 +23,7 @@ const Login = () => {
     }
     console.log("로그인 시도",formData)
     
-    axios.post('//localhost:8081/api/v1/member/login',formData,{headers})
+    axios.post('//localhost:8080/api/v1/member/login',formData,{headers})
 
     .then(response => {
       console.log(response);

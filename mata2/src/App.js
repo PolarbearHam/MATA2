@@ -19,6 +19,7 @@ const mata = new TagManager();
 function App() {
   const location = useLocation();
   const [serviceList,setServiceList]=useState([])
+
   useEffect(() => {
     mata.attach();
     return () => {
@@ -69,12 +70,10 @@ function App() {
       "grantType": "Bearer",
       "accessToken": accessToken
     }
-    
-    console.log("axios보냄",formData,headers)
     axios({
       //request
       method: "get",
-      url: "//localhost:8081/api/v1/member/info",
+      url: "//localhost:8080/api/v1/member/info",
       responseType: "type",
       headers: headers
   }).then(function (response) {
@@ -94,26 +93,17 @@ function App() {
   // GLOBAL: ************** 사용자 정보 **************
 
   useEffect(() => {
-    
-
-    
-    
-    
-    console.log('user',user, "userInfo")
     let accessToken = sessionStorage.getItem("accessToken");
     
     const headers = {
       "Authorization": `Bearer ${accessToken}`,
     }
     if (accessToken) {
-      console.log('accessToken 있다')
-      axios({method:"get",url:"//localhost:8081/api/v1/project/",headers:headers})
+      axios({method:"get",url:"//localhost:8080/api/v1/project/",headers:headers})
       .then(res=>{
         setServiceList(res.data)
-        console.log("최종 서비스 리스트",serviceList)
       })
       .catch(err=>{
-        console.log(err)
       })
     }
     
@@ -121,11 +111,10 @@ function App() {
       "grantType": "Bearer",
       "accessToken": accessToken
     }
-    console.log("axios보냄",formData,headers)
     axios({
       //request
       method: "get",
-      url: "//localhost:8081/api/v1/member/info",
+      url: "//localhost:8080/api/v1/member/info",
       responseType: "type",
       headers: headers
   }).then(function (response) {
@@ -142,15 +131,57 @@ function App() {
         console.error(error);
     });
     
-    accessToken = 'dummy-token'; // 더미 데이터
-    console.log('accesToken 후' , accessToken)
-    userInfo(accessToken);
-    console.log('user',user, "userInfo")
+    // accessToken = 'dummy-token'; // 더미 데이터
+    // userInfo(accessToken);
     return () => {
 
     }
-  }, []);
-  window.addEventListener('storage', () => console.log("storage changed"));
+  },[]);
+  // useEffect(() => {
+  //   let accessToken = sessionStorage.getItem("accessToken");
+    
+  //   const headers = {
+  //     "Authorization": `Bearer ${accessToken}`,
+  //   }
+  //   if (accessToken) {
+  //     axios({method:"get",url:"//localhost:8080/api/v1/project/",headers:headers})
+  //     .then(res=>{
+  //       setServiceList(res.data)
+  //     })
+  //     .catch(err=>{
+  //     })
+  //   }
+    
+  //   const formData= {
+  //     "grantType": "Bearer",
+  //     "accessToken": accessToken
+  //   }
+  //   axios({
+  //     //request
+  //     method: "get",
+  //     url: "//localhost:8080/api/v1/member/info",
+  //     responseType: "type",
+  //     headers: headers
+  // }).then(function (response) {
+  //     console.log(response)
+  //     const userResponse=JSON.parse(response.data)
+  //     console.log(userResponse)
+  //     setUser({
+  //       id: userResponse.id,
+  //       email: userResponse.email,
+  //       name: userResponse.name
+  //     });
+
+  // })
+  //   .catch(error => {
+  //       console.error(error);
+  //   });
+    
+
+ 
+  // },[sessionStorage.getItem('accessToken')]);
+
+
 
   return (
 
@@ -182,9 +213,7 @@ function App() {
         }/>
         <Route path='/start' element={
           <DashboardLayout state={ {user: user,serviceList:serviceList} }>
-            <div style={{flexBasis:"auto"}}>
               <DashboardMain state={{user: user}}/>
-            </div>
           </DashboardLayout>
         }/>
         <Route path='/service/:id/setting' element={

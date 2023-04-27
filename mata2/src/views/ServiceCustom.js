@@ -3,19 +3,42 @@ import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import './ServiceCustom.css'
 import { CodeBlock, dracula } from "react-code-blocks";
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 const ServiceCustom = (props) => {
   const saveEvent= (e)=>{
     e.preventDefault();
     const payload=[]
-    const event={}
-    events.forEach(element => {
-      event[element.eventName]={
+    const event={events:[]}
+    events.forEach((element,index1) => {
+      event.events[index1]={
+        name:element.eventName,
         base:element.base,
         param:element.params,
         path:element.paths
       }
+    }
+    )
+    
+    const url='//localhost:8080/api/v1/project/'+serviceId.id+'/events';
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
+      'Content-type': 'application/json',
+    }
+    console.log("이벤트 설정 저장 시작 보내는 건:", url,event,{headers} )
+        axios.post(url,event,{headers})
+
+    .then(response => {
+      console.log(response);
+      // if (response.status==200) {
+      //   sessionStorage.setItem('accessToken',response.data.accessToken)  
+      //   navigate('/')
+      // }else alert('틀림')
+    })
+    .catch(error => {
+      console.error(error);
+      alert(error.data)
     });
-    console.log(event)
+    
   }
 
   const test=()=>{
@@ -28,7 +51,6 @@ const ServiceCustom = (props) => {
 
 
   const handleAddPath = (index1) => {
-    console.log('index는', index1)
     const values = [...events]
     values[index1].paths.push({name:'',index:''})
     setEvents(values)
@@ -62,10 +84,8 @@ const ServiceCustom = (props) => {
   };
   const handleCheckboxChange=(event)=>{
     setSpaChecked(!spaChkecked)
-    console.log(spaChkecked)
   }
   const handleAddParam = (index1) => {
-    console.log('index는', index1)
     const values = [...events]
     values[index1].params.push({name:'',key:''})
     setEvents(values)
@@ -73,17 +93,14 @@ const ServiceCustom = (props) => {
   const handleRemoveParam = (index1,index2) => {
     const values = [...events];
     values[index1].params.splice(index2, 1);
-    console.log('잘라낸후',values[index1].params)
     setEvents(values);
   };
   const handleChangeParamName=(index1,index2,e)=>{
-    console.log(index1,index2,e.target.value)
     const values=[...events]
     values[index1].params[index2].name=e.target.value
     setEvents(values)
   }
   const handleChangeParamKey=(index1,index2,e)=>{
-    console.log(index1,index2,e.target.value)
     const values=[...events]
     values[index1].params[index2].key=e.target.value
     setEvents(values)
@@ -114,9 +131,7 @@ const ServiceCustom = (props) => {
   const handleAddTagEvent = (index) => {
     
     const values = [...tags]
-    console.log('index는', values[index].events)
     values[index].events.push(null)
-    console.log('index는', values[index].events)
     setTags(values)
   };
   const handleRemoveTagEvent = (index,index2) => {
@@ -144,26 +159,39 @@ const ServiceCustom = (props) => {
     values[index].events[index2] = e.target.value;
     setTags(values);
   };
+  const saveTag= (e)=>{
+    e.preventDefault();
+    const payload=[]
+    const tag={tags:[]}
+    tags.forEach((element,index) => {
+      tag.tags[index]={
+        name:element.tagName,
+        id:element.id,
+        class:element.class,
+        events:element.events
+      }
+
+    }
+    );
+    console.log(tag)
+  }
 
   let currentService={}
   const [origin,setOrigin]=useState('')
   const  serviceId  = useParams();
   useEffect(()=>{
-    console.log('useeffect시작',serviceId.id ,props.state.serviceList)
     props.state.serviceList.map( (service) => {
       if(serviceId.id==service.id){
         currentService=service
-        console.log(currentService)
         setOrigin(currentService.url)
       }else{}
     });
-    console.log('useeffect 끝')
   })
 
   
   return (
     <div id='form-background' className='flex w-100 justify-content-center'>
-      <div className='lg:w-1/2 w-full m-8'>
+      <div className='lg:w-3/5 w-full m-8'>
         <div className='bg-white mt-3 p-3 rounded-3xl'>
           <p>스크립트</p>
           <div>
@@ -243,11 +271,11 @@ const location = useLocation();
             <div className='d-flex flex-column justify-content-center align-items-center gap-3 bg-white rounded Service'>
               {events.map((event, index1) => (
                 <FormGroup key={index1}>
-                  <div>
+                  <div className='d-flex flex-auto gap-3'>
                     <Button
                       color="danger"
                       onClick={() => handleRemoveEvent(index1)}
-                      className="mt-2"
+                    
                       key={index1}
                     >
                       삭제
@@ -342,23 +370,24 @@ const location = useLocation();
 
           <div className='bg-white mt-3 p-3 rounded-3xl'>
             <p>태그 설정</p>
-            <button>태그 저장</button>
+            <button onClick={saveTag}>태그 저장</button>
             <div className='d-flex flex-column justify-content-center align-items-center gap-3 bg-white rounded Service'>
 
 
               {tags.map((tag, index) => (
 
                 <FormGroup key={index}>
-                  <Button
-                    color="danger"
-                    className="mt-2"
-                    onClick={()=>{handleRemoveTag(index)}}
-                  >
-                    태그 삭제
-                  </Button>
-                  <Button color="dark" onClick={() => handleAddTagEvent(index)}>
-                    tags {index} 이벤트 추가
-                  </Button>
+                  <div className='d-flex flex-auto gap-3'>
+                    <Button
+                      color="danger"
+                      onClick={()=>{handleRemoveTag(index)}}
+                    >
+                      태그 삭제
+                    </Button>
+                    <Button color="dark" onClick={() => handleAddTagEvent(index)}>
+                      tags {index} 이벤트 추가
+                    </Button>
+                  </div>
                   <div className='inputSet'>
                   <Input
                     type="text"
