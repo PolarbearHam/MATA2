@@ -63,7 +63,7 @@ public class EventDto {
     }
 
     public static List<EventDto> toDtoList(List<Event> eventList){
-        List<EventDto> eventDtoList = null;
+        List<EventDto> eventDtoList = new ArrayList<>();
 
         for (Event e : eventList){
             List<EventParam> fromEventParamList = e.getEventParamList();

@@ -54,7 +54,7 @@ public class TagDto {
     }
 
     public static List<TagDto> toDtoList(List<Tag> tagList){
-        List<TagDto> tagDtoList = null;
+        List<TagDto> tagDtoList = new ArrayList<>();
         for(Tag t : tagList){
             List<TagEvent> fromTagEventList = t.getTagEventList();
             List<TagEventDto> toTagEventDtoList = new ArrayList<>();
