@@ -98,17 +98,14 @@ public class TagManagerController {
 
                     wl.setServiceToken("serviceToken");
                     wl.setSessionId(String.valueOf(String.valueOf(hashValue).hashCode()));
-                    wl.setPrevLocation("none");
                     long nowTime = System.currentTimeMillis();
                     long time = nowTime - nowTime % 10000000;
 
                     // 외부 접속
                     if (i % 5 == 0) {
-                        wl.setPrevLocation("none");
                         wl.setLocation("http://ec2-3-38-85-143.ap-northeast-2.compute.amazonaws.com:3000" + urlList.get(i % 3));
                     } else {
                         // 내부 이동
-                        wl.setPrevLocation("http://ec2-3-38-85-143.ap-northeast-2.compute.amazonaws.com:3000" + urlList.get(hashValue % 10));
                         wl.setLocation("http://ec2-3-38-85-143.ap-northeast-2.compute.amazonaws.com:3000" + urlList.get(((hashValue % 10) + hashValue2) % 10));
                     }
                     long duTime = 10 + hashValue % 1000;
@@ -136,10 +133,6 @@ public class TagManagerController {
                         wl.setPositionY(hashValue % 520 + hashValue3 % 10);
                     }
 
-                    if (wl.getPrevLocation().equals("none")) {
-                        // none -> 특정 주소로 변경...
-                        wl.setReferrer((String) referlist.get((int) (Math.random() * 300)));
-                    }
                     try {
                         kafkaProducerService.sendToKafka(wl);
                     } catch (JsonProcessingException e) {

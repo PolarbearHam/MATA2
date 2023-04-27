@@ -14,50 +14,48 @@ import org.json.JSONObject;
 @AllArgsConstructor
 public class WebLogDto {
 
-    private long clientId;
-    private String data;
-    private String event;
-    private String location;
-    private long pageDuration;
-    private int positionX;
-    private int positionY;
-    private String prevLocation;
-    private String referrer;
-    private int screenSizeX; //window.innerWidth
-    private int screenSizeY; //window.innerHeight
+//    private long clientId;
+//    private String prevLocation;
+    private long serviceId;
     private String serviceToken;
     private String sessionId;
-    private long serviceId;
+    private String event;
     private String targetId;
     private String targetName;
-    private long timestamp;
     private String title;
+    private String location;
+    private String referrer;
+    private long timestamp;
+    private long pageDuration;
     private String userAgent;
+    private String data;
     private String userLanguage;
+    private int screenSizeX; //window.innerWidth
+    private int screenSizeY; //window.innerHeight
+    private int positionX;
+    private int positionY;
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("WebLogDto{").append("\n");
-        sb.append("clientId=").append(clientId).append("\n");
-        sb.append(", data=").append(data.toString()).append("\n");
-        sb.append(", event='").append(event).append('\'' + "\n");
-        sb.append(", location='").append(location).append('\'' + "\n");
-        sb.append(", pageDuration=").append(pageDuration).append("\n");
-        sb.append(", positionX=").append(positionX).append("\n");
-        sb.append(", positionY=").append(positionY).append("\n");
-        sb.append(", prevLocation='").append(prevLocation).append('\'' + "\n");
-        sb.append(", referrer='").append(referrer).append('\'' + "\n");
-        sb.append(", screenSizeX=").append(screenSizeX).append("\n");
-        sb.append(", screenSizeY=").append(screenSizeY).append("\n");
-        sb.append(", serviceToken='").append(serviceToken).append('\'' + "\n");
-        sb.append(", sessionId='").append(sessionId).append('\'' + "\n");
-        sb.append(", serviceId=").append(serviceId).append("\n");
-        sb.append(", targetId='").append(targetId).append('\'' + "\n");
-        sb.append(", targetName='").append(targetName).append('\'' + "\n");
-        sb.append(", timestamp=").append(timestamp).append("\n");
-        sb.append(", title='").append(title).append('\'' + "\n");
-        sb.append(", userAgent='").append(userAgent).append('\'' + "\n");
-        sb.append(", userLanguage='").append(userLanguage).append('\'' + "\n");
+        final StringBuilder sb = new StringBuilder("WebLogDto{");
+        sb.append("serviceId=").append(serviceId);
+        sb.append(", serviceToken='").append(serviceToken).append('\'');
+        sb.append(", sessionId='").append(sessionId).append('\'');
+        sb.append(", event='").append(event).append('\'');
+        sb.append(", targetId='").append(targetId).append('\'');
+        sb.append(", targetName='").append(targetName).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", location='").append(location).append('\'');
+        sb.append(", referrer='").append(referrer).append('\'');
+        sb.append(", timestamp=").append(timestamp);
+        sb.append(", pageDuration=").append(pageDuration);
+        sb.append(", userAgent='").append(userAgent).append('\'');
+        sb.append(", data='").append(data).append('\'');
+        sb.append(", userLanguage='").append(userLanguage).append('\'');
+        sb.append(", screenSizeX=").append(screenSizeX);
+        sb.append(", screenSizeY=").append(screenSizeY);
+        sb.append(", positionX=").append(positionX);
+        sb.append(", positionY=").append(positionY);
         sb.append('}');
         return sb.toString();
     }

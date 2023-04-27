@@ -167,21 +167,21 @@ public class EventService {
                         "      let body = {\n" +
                         "        serviceToken: this.serviceToken,\n" +
                         "        sessionId: this.sessionId,\n" +
-                        "        userAgent: this.userAgent,\n" +
                         "        event: eventType,\n" +
                         "        targetId: (e && e.target && e.target.id) ? e.target.id : null,\n" +
                         "        targetName: (e && e.detail && e.detail['targetName']) ? e.detail['targetName'] : null,\n" +
-                        "        positionX: e && e.pageX ? e.pageX : null,\n" +
-                        "        positionY: e && e.pageY ? e.pageY : null,\n" +
                         "        title: this.title,\n" +
                         "        location: this.location,\n" +
                         "        referrer: this.referrer,\n" +
                         "        timestamp: Date.now(),\n" +
                         "        pageDuration: Date.now() - this.enterTimer,\n" +
+                        "        userAgent: this.userAgent,\n" +
                         "        data: e.detail ? JSON.stringify(e.detail) : '{}',\n" +
+                        "        userLanguage: navigator.language,\n" +
                         "        screenSizeX: window.innerWidth,\n" +
                         "        screenSizeY: window.innerHeight,\n" +
-                        "        userLanguage: navigator.language\n" +
+                        "        positionX: e && e.pageX ? e.pageX : null,\n" +
+                        "        positionY: e && e.pageY ? e.pageY : null,\n" +
                         "      }\n" +
                         "      this.logStash.push(body)\n" +
                         "      console.log(this.logStash);\n" +

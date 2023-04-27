@@ -19,22 +19,6 @@ def kafka_to_cassandra_pipeline():
     kafka_bootstrap_servers = 'master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092'
     topic = 'tagmanager'
 
-    # WebLogDto
-    # {serviceToken = 'dummy-serviceToken'
-    # , clientId = 0
-    # , serviceId = 0
-    # , sessionId = '2187633598746759'
-    # , event = 'pageenter'
-    # , targetId = 'null'
-    # , positionX = 0
-    # , positionY = 0
-    # , location = 'http://localhost:3000/'
-    # , prevLocation = 'null'
-    # , referrer = ''
-    # , timestamp = 1682493162505
-    # , pageDuration = 57
-    # }
-
     schema = StructType(
         [
             StructField("serviceToken", StringType()),
@@ -46,10 +30,16 @@ def kafka_to_cassandra_pipeline():
             StructField("positionX", IntegerType()),
             StructField("positionY", IntegerType()),
             StructField("location", StringType()),
-            StructField("prevLocation", StringType()),
             StructField("referrer", StringType()),
             StructField("timestamp", LongType()),
-            StructField("pageDuration", LongType())
+            StructField("pageDuration", LongType()),
+            StructField("data", StringType()),
+            StructField("screenSizeX", LongType()),
+            StructField("screenSizeY", LongType()),
+            StructField("targetName", StringType()),
+            StructField("title", StringType()),
+            StructField("userAgent", StringType()),
+            StructField("userLanguage", StringType())
         ]
     )
 
@@ -78,7 +68,14 @@ def kafka_to_cassandra_pipeline():
         .withColumnRenamed("prevLocation", "prev_location") \
         .withColumnRenamed("referrer", "referrer") \
         .withColumnRenamed("timestamp", "creation_timestamp") \
-        .withColumnRenamed("pageDuration", "page_duration")
+        .withColumnRenamed("pageDuration", "page_duration") \
+        .withColumnRenamed("data", "data") \
+        .withColumnRenamed("screenSizeX", "screen_size_x") \
+        .withColumnRenamed("screenSizeY", "screen_size_y") \
+        .withColumnRenamed("targetName", "target_name") \
+        .withColumnRenamed("title", "title") \
+        .withColumnRenamed("userAgent", "user_agent") \
+        .withColumnRenamed("userLanguage", "user_language")
 
     cassandra_keyspace = "tagmanager"
     cassandra_table = "stream"
