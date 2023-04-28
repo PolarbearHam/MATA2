@@ -1,6 +1,5 @@
 package com.ssafy.service;
 
-import com.ssafy.dto.ProjectDto;
 import com.ssafy.entity.*;
 import com.ssafy.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EventService {
+public class InjectionService {
     private final TagRepository tagRepository;
     private final TagEventRepository tagEventRepository;
     private final EventRepository eventRepository;

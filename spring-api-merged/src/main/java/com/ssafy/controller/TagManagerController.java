@@ -1,6 +1,7 @@
 package com.ssafy.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.dto.WebLogDto;
+import com.ssafy.service.InjectionService;
 import com.ssafy.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,16 +17,17 @@ import java.util.*;
 public class TagManagerController {
 
     private final KafkaProducerService kafkaProducerService;
+    private final InjectionService injectionService;
 
-    @GetMapping("/{projectToken}")
-    public ResponseEntity<?> getScript(@PathVariable("projectToken") String projectToken) {
-//        kafkaProducerService.checkValidation(projectToken); // 토큰 검증 로직
-//        String serviceId = kafkaProducerService.getProjectId(wl.getServiceToken())); // 토큰으로 서비스 아이디 가져오기
-
-        // TODO: 서비스 ID로 서비스 설정을 가져와서 스크립트에 넣기
-        // TODO: 생성된 스크립트를 javascript 형태로 전달
-
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    // 로그 수집 코드 주입 , 추후 토큰으로 바뀔 듯
+    @GetMapping("/{serviceId}")
+    public ResponseEntity<?> getEventInjection(
+            @PathVariable("serviceId") Long serviceId) {
+        String code = injectionService.callJsCode(serviceId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type", "application/javascript")
+                .body(code);
     }
 
     @PostMapping("/dump")
