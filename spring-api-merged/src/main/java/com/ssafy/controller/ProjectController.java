@@ -124,7 +124,8 @@ public class ProjectController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
 
-        if(projectService.saveTag(tagSaveListDto)){
+        if(projectService.saveTag(tagSaveListDto, serviceId)
+                && projectService.saveTagEvent(tagSaveListDto, serviceId)){
             resultMap.put("message", "SUCCESS");
             status = HttpStatus.OK;
         }

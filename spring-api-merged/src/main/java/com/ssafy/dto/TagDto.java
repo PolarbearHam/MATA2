@@ -53,4 +53,20 @@ public class TagDto {
                 .build();
     }
 
+    public static TagDto toDtoList(Tag tag){
+        List<TagEvent> fromTagEventList = tag.getTagEventList();
+        List<TagEventDto> toTagEventDtoList = new ArrayList<>();
+        for(int i=0; i<fromTagEventList.size(); i++){
+            toTagEventDtoList.add(TagEventDto.toDto(fromTagEventList.get(i)));
+        }
+        return new TagDto(
+                tag.getId(),
+                tag.getHtmlTagName(),
+                tag.getHtmlTagId(),
+                tag.getHtmlTagClass(),
+                toTagEventDtoList,
+                tag.getProject()
+        );
+    }
+
 }

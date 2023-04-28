@@ -12,4 +12,7 @@ import java.util.Optional;
 public interface TagRepository extends JpaRepository<Tag, Long> {
 //    Optional<Tag> findById(long tagId);
     List<Tag> findAllByProjectId(long projectId);
+    List<Tag> findAllByProjectIdAndIsEnabledIsTrue(long projectId);
+    Optional<Tag> findByHtmlTagIdAndProjectId(String htmlTagId, long projectId);
+    Optional<Tag> findByHtmlTagIdAndProjectIdAndIsEnabledIsTrue(String htmlTagId, long projectId);
 }
