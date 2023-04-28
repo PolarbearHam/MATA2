@@ -138,49 +138,49 @@ function App() {
     return () => {
     }
   },[]);
-  // useEffect(() => {
-  //   let accessToken = sessionStorage.getItem("accessToken");
+  useEffect(() => {
+    let accessToken = sessionStorage.getItem("accessToken");
     
-  //   const headers = {
-  //     "Authorization": `Bearer ${accessToken}`,
-  //   }
-  //   if (accessToken) {
-  //     axios({method:"get",url:"//localhost:8080/api/v1/project/",headers:headers})
-  //     .then(res=>{
-  //       setServiceList(res.data)
-  //     })
-  //     .catch(err=>{
-  //     })
-  //   }
+    const headers = {
+      "Authorization": `Bearer ${accessToken}`,
+    }
+    if (accessToken) {
+      axios({method:"get",url:"//localhost:8080/api/v1/project/",headers:headers})
+      .then(res=>{
+        setServiceList(res.data)
+      })
+      .catch(err=>{
+      })
+    }
     
-  //   const formData= {
-  //     "grantType": "Bearer",
-  //     "accessToken": accessToken
-  //   }
-  //   axios({
-  //     //request
-  //     method: "get",
-  //     url: "//localhost:8080/api/v1/member/info",
-  //     responseType: "type",
-  //     headers: headers
-  // }).then(function (response) {
-  //     console.log(response)
-  //     const userResponse=JSON.parse(response.data)
-  //     console.log(userResponse)
-  //     setUser({
-  //       id: userResponse.id,
-  //       email: userResponse.email,
-  //       name: userResponse.name
-  //     });
+    const formData= {
+      "grantType": "Bearer",
+      "accessToken": accessToken
+    }
+    axios({
+      //request
+      method: "get",
+      url: "//localhost:8080/api/v1/member/info",
+      responseType: "type",
+      headers: headers
+  }).then(function (response) {
+      console.log(response)
+      const userResponse=JSON.parse(response.data)
+      console.log(userResponse)
+      setUser({
+        id: userResponse.id,
+        email: userResponse.email,
+        name: userResponse.name
+      });
 
-  // })
-  //   .catch(error => {
-  //       console.error(error);
-  //   });
+  })
+    .catch(error => {
+        console.error(error);
+    });
     
 
  
-  // },[sessionStorage.getItem('accessToken')]);
+  },[sessionStorage.getItem('accessToken')]);
 
 
 
