@@ -186,7 +186,58 @@ const ServiceCustom = (props) => {
         setOrigin(currentService.url)
       }else{}
     });
-  })
+    const currentSetting={
+      "service": {
+          "serviceId": "32",
+          "origin": "http:localhost:3000",
+          "spa": false
+      },
+      "events": [
+          {
+              "evnetName": "login",
+              "base": "click",
+              "param": [],
+              "path": [
+                {"name": "userId", "index": 2}
+              ]
+          }, 
+          {
+              "eventName": "purchase",
+              "base": "click",
+              "param": [
+                  {"name": "productName", "key": "product"}
+              ],
+              "path": [
+                  {"name": "productId", "index": 3}
+              ]
+            },
+          ],
+      "tags": [
+          {
+              "tagName": "button1",
+              "id": "button",
+              "class": "",
+              "events": ["click", "login"]
+          },
+          {
+              "tagName": "button2",
+              "id": "button2",
+              "class": "primary",
+              "events": ["purchase"]
+          },
+          {
+              "tagName": "main",
+              "id": "main",
+              "class": "",
+              "events": ["click_main"]
+          },
+        ],
+  }
+  console.log('받은 세팅은',currentSetting)
+  const currentEvents=currentSetting.events
+  // setEvents(currentEvents)
+  },[])
+  
 
   
   return (
