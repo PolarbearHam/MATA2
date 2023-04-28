@@ -25,7 +25,7 @@ const ServiceCustom = (props) => {
       'Content-type': 'application/json',
     }
     console.log("이벤트 설정 저장 시작 보내는 건:", url,event,{headers} )
-        axios.post(url,event,{headers})
+    axios.post(url,event,{headers})
 
     .then(response => {
       console.log(response);
@@ -312,25 +312,29 @@ const location = useLocation();
                   {events[index1].params.map((param,index2)=>(
                     
                     <FormGroup>
-                      <Button onClick={()=>handleRemoveParam(index1,index2)}>event{index1} param{index2}삭제</Button>
-                      <Input
-                       className='mt-1'
-                        type="text"
-                        name={`paramName-${index2}`}
-                        // value={param.name || ''}
-                        placeholder='param name'
-                        onChange={(e)=>handleChangeParamName(index1,index2,e)}
-                        value={events[index1].params[index2].name}
-                      />
-                      <Input
-                       className='mt-1'
-                        type="text"
-                        name={`paramKey-${index2}`}
-                        // value={param.key || ''}
-                        placeholder='param key'
-                        onChange={(e)=>{handleChangeParamKey(index1,index2,e)}}
-                        value={events[index1].params[index2].key}
-                      />
+                      <div className='d-flex flex-row gap-3 '>
+                        <div className='flex-grow'>
+                          <Input
+                           className='mt-1'
+                            type="text"
+                            name={`paramName-${index2}`}
+                            // value={param.name || ''}
+                            placeholder='param name'
+                            onChange={(e)=>handleChangeParamName(index1,index2,e)}
+                            value={events[index1].params[index2].name}
+                          />
+                          <Input
+                           className='mt-1'
+                            type="text"
+                            name={`paramKey-${index2}`}
+                            // value={param.key || ''}
+                            placeholder='param key'
+                            onChange={(e)=>{handleChangeParamKey(index1,index2,e)}}
+                            value={events[index1].params[index2].key}
+                          />
+                        </div>
+                        <Button className='w-1/6' onClick={()=>handleRemoveParam(index1,index2)}>event{index1} param{index2}삭제</Button>
+                      </div>
                     </FormGroup>
                   ))}
               <div>
@@ -339,25 +343,30 @@ const location = useLocation();
               {events[index1].paths.map((path,index2)=>(
                     
                     <FormGroup>
-                      <Button onClick={()=>{handleRemovePath(index1,index2)}}>event{index1} path {index2}삭제</Button>
-                      <Input
-                       className='mt-1'
-                        type="text"
-                        name={`pathName-${index2}`}
-                        // value={path.name || ''}
-                        placeholder='path name'
-                        onChange={(e)=>{handleChangePathName(index1,index2,e)}}
-                        value={events[index1].paths[index2].name}
-                      />
-                      <Input
-                       className='mt-1'
-                        type="text"
-                        name={`pathKey-${index2}`}
-                        // value={path.index || ''}
-                        placeholder='path index'
-                        onChange={(e)=>{handleChangePathIndex(index1,index2,e)}}
-                        value={events[index1].paths[index2].index}
-                      />
+                      <div className='d-flex flex-row gap-3'>
+                        <div className='flex-grow '> 
+                          <Input
+                           className='mt-1'
+                            type="text"
+                            name={`pathName-${index2}`}
+                            // value={path.name || ''}
+                            placeholder='path name'
+                            onChange={(e)=>{handleChangePathName(index1,index2,e)}}
+                            value={events[index1].paths[index2].name}
+                          />
+                          <Input
+                           className='mt-1'
+                            type="text"
+                            name={`pathKey-${index2}`}
+                            // value={path.index || ''}
+                            placeholder='path index'
+                            onChange={(e)=>{handleChangePathIndex(index1,index2,e)}}
+                            value={events[index1].paths[index2].index}
+                          />
+                        </div>
+                        <Button className='w-1/6' onClick={()=>{handleRemovePath(index1,index2)}}>event{index1} path {index2}삭제</Button>
+                      </div>
+
                     </FormGroup>
                   ))}
                 </FormGroup>
@@ -371,7 +380,7 @@ const location = useLocation();
           <div className='bg-white mt-3 p-3 rounded-3xl'>
             <p>태그 설정</p>
             <button onClick={saveTag}>태그 저장</button>
-            <div className='d-flex flex-column justify-content-center align-items-center gap-3 bg-white rounded Service'>
+            <div className='d-flex flex-column justify-content-center align-items-center gap-3 flex-auto bg-white rounded Service'>
 
 
               {tags.map((tag, index) => (
@@ -411,8 +420,8 @@ const location = useLocation();
                     value={tags[index].class}
                   />
                   {tags[index].events.map((event,index2)=>(
-                    <FormGroup>
-                    <Button onClick={()=>{handleRemoveTagEvent(index,index2)}}>tags{index} event {index2}삭제</Button>
+                    <FormGroup className='d-flex flex-row gap-3'> 
+                    
                     <Input
                       type="text"
                       name={`eventCondition-${index}`}
@@ -420,6 +429,7 @@ const location = useLocation();
                       placeholder='이벤트'
                       value={tags[index].events[index2]}
                     />
+                    <Button className='w-1/6 h-1/1' onClick={()=>{handleRemoveTagEvent(index,index2)}}> 삭제</Button>
                     </FormGroup>
                   ))}
 
