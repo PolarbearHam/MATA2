@@ -87,14 +87,14 @@ def batching_cassandra(base_time, amount, unit):
 
     #########
     # components 테이블 집계
-    component_df = batch_df.select("total_click", "target_id", "location", "update_timestamp", "service_id") \
+    component_df = batch_df.select("total_click", "target_id", "location", "update_timestamp", "project_id") \
         .where(col("creation_timestamp") \
                .between(*timestamp_range(base_time, amount, unit))) \
         .where(col("event").like("click")) \
-        .groupBy("service_id", "target_id", "location").agg( \
+        .groupBy("project_id", "target_id", "location").agg( \
         count("key").alias("total_click"), \
         ).withColumn("update_timestamp", base_timestamp) \
-        .select("total_click", "target_id", "location", "update_timestamp", "service_id")
+        .select("total_click", "target_id", "location", "update_timestamp", "project_id")
     component_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.components_{}{}".format(str(amount), unit))
@@ -105,10 +105,10 @@ def batching_cassandra(base_time, amount, unit):
         .where(col("creation_timestamp") \
                .between(*timestamp_range(base_time, amount, unit))) \
         .where(col("event").like("click")) \
-        .groupBy("service_id", "position_x", "position_y", "location").agg( \
+        .groupBy("project_id", "position_x", "position_y", "location").agg( \
         count("key").alias("total_click"), \
         ).withColumn("update_timestamp", base_timestamp) \
-        .select("total_click", "position_x", "position_y", "location", "update_timestamp", "service_id")
+        .select("total_click", "position_x", "position_y", "location", "update_timestamp", "project_id")
     click_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.clicks_{}{}".format(str(amount), unit))
@@ -118,11 +118,11 @@ def batching_cassandra(base_time, amount, unit):
     page_durations_df = batch_df.select("*") \
         .where(col("creation_timestamp") \
                .between(timestamp_range(base_time, amount, unit))) \
-        .groupBy("service_id", "location", "service_id").agg( \
+        .groupBy("project_id", "location", "project_id").agg( \
         count("").alias("total_session"), \
         sum("page_duration").alias("total_duration"), \
         ).withColumn("update_timestamp", base_timestamp) \
-        .select("total_duration", "total_session", "location", "update_timestamp", "service_id")
+        .select("total_duration", "total_session", "location", "update_timestamp", "project_id")
     page_durations_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.page_durations_{}{}".format(str(amount), unit))
@@ -132,11 +132,11 @@ def batching_cassandra(base_time, amount, unit):
     page_journals_df = batch_df.select("*") \
         .where(col("creation_timestamp") \
                .between(timestamp_range(base_time, amount, unit))) \
-        .groupBy("service_id", "prev_location", "location").agg( \
+        .groupBy("project_id", "prev_location", "location").agg( \
         count("").alias("total_journal"), \
         ).withColumn("update_timestamp", base_timestamp) \
         .select("total_journal", col("prev_location").alias("location_from"), col("location").alias("location_to"),
-                "update_timestamp", "service_id")
+                "update_timestamp", "project_id")
     page_journals_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.page_journals_{}{}".format(str(amount), unit))
@@ -169,10 +169,10 @@ def batching_hive(base_date, amount, unit):
         .select("*") \
         .where(col("update_timestamp") \
                .between(*timestamp_range(base_time, -amount, unit))) \
-        .groupBy("service_id", "target_id", "location").agg(
+        .groupBy("project_id", "target_id", "location").agg(
         sum("total_click").alias("total_click") \
         ).withColumn("update_timestamp", base_timestamp) \
-        .select("total_click", "target_id", "location", "update_timestamp", "service_id")
+        .select("total_click", "target_id", "location", "update_timestamp", "project_id")
     component_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.components_{}{}".format(amount, unit))
@@ -185,10 +185,10 @@ def batching_hive(base_date, amount, unit):
         .select("*") \
         .where(col("update_timestamp") \
                .between(*timestamp_range(base_time, -amount, unit))) \
-        .groupBy("service_id", "position_x", "position_y", "location").agg( \
+        .groupBy("project_id", "position_x", "position_y", "location").agg( \
         sum("total_click").alias("total_click"), \
         ).withColumn("update_timestamp", base_timestamp) \
-        .select("total_click", "position_x", "position_y", "location", "update_timestamp", "service_id")
+        .select("total_click", "position_x", "position_y", "location", "update_timestamp", "project_id")
     click_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.clicks_{}{}".format(amount, unit))
@@ -201,11 +201,11 @@ def batching_hive(base_date, amount, unit):
         .select("*") \
         .where(col("creation_timestamp") \
                .between(timestamp_range(base_time, -amount, unit))) \
-        .groupBy("service_id", "location").agg( \
+        .groupBy("project_id", "location").agg( \
         sum("total_session").alias("total_session"), \
         sum("total_duration").alias("total_duration"), \
         ).withColumn("update_timestamp", base_timestamp) \
-        .select("total_duration", "total_session", "location", "update_timestamp", "service_id")
+        .select("total_duration", "total_session", "location", "update_timestamp", "project_id")
     page_durations_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.page_durations_{}{}".format(amount, unit))
@@ -218,10 +218,10 @@ def batching_hive(base_date, amount, unit):
         .select("*") \
         .where(col("creation_timestamp") \
                .between(timestamp_range(base_time, -amount, unit))) \
-        .groupBy("service_id", "location_from", "location_to", ).agg( \
+        .groupBy("project_id", "location_from", "location_to", ).agg( \
         sum("total_journal").alias("total_journal"), \
         ).withColumn("update_timestamp", base_timestamp) \
-        .select("total_journal", "location_from" "location_to", "update_timestamp", "service_id")
+        .select("total_journal", "location_from" "location_to", "update_timestamp", "project_id")
     page_journals_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.page_journals_{}{}".format(amount, unit))

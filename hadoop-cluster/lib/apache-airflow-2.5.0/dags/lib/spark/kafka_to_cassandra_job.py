@@ -21,9 +21,9 @@ def kafka_to_cassandra_pipeline():
 
     schema = StructType(
         [
-            StructField("serviceToken", StringType()),
+            StructField("projectToken", StringType()),
             StructField("clientId", LongType()),
-            StructField("serviceId", LongType()),
+            StructField("projectId", LongType()),
             StructField("sessionId", StringType()),
             StructField("event", StringType()),
             StructField("targetId", StringType()),
@@ -56,9 +56,9 @@ def kafka_to_cassandra_pipeline():
         .withColumn("value", from_json(col("value").cast("string"), schema))
 
     streaming_query = streaming_df.select("key", "value.*") \
-        .withColumnRenamed("serviceToken", "service_token") \
+        .withColumnRenamed("projectToken", "project_token") \
         .withColumnRenamed("clientId", "client_id") \
-        .withColumnRenamed("serviceId", "service_id") \
+        .withColumnRenamed("projectId", "project_id") \
         .withColumnRenamed("sessionId", "session_id") \
         .withColumnRenamed("event", "event") \
         .withColumnRenamed("targetId", "target_id") \

@@ -16,8 +16,8 @@ public class WebLogDto {
 
 //    private long clientId;
 //    private String prevLocation;
-    private long serviceId;
-    private String serviceToken;
+    private long projectId;
+    private String projectToken;
     private String sessionId;
     private String event;
     private String targetId;
@@ -38,8 +38,8 @@ public class WebLogDto {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("WebLogDto{");
-        sb.append("serviceId=").append(serviceId);
-        sb.append(", serviceToken='").append(serviceToken).append('\'');
+        sb.append("projectId=").append(projectId);
+        sb.append(", projectToken='").append(projectToken).append('\'');
         sb.append(", sessionId='").append(sessionId).append('\'');
         sb.append(", event='").append(event).append('\'');
         sb.append(", targetId='").append(targetId).append('\'');
@@ -63,7 +63,7 @@ public class WebLogDto {
     public ProducerRecord<String, String> toProducerRecord(String topic, Integer partition) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 //         this.clientId = 1L;
-//         this.serviceId = 2L;
+//         this.projectId = 2L;
         return new ProducerRecord<>(topic, partition, this.timestamp, this.sessionId+"-"+this.timestamp, mapper.writeValueAsString(this));
     }
 

@@ -55,7 +55,7 @@ public class TagManagerController {
         for (long k = 1; k < 15; k++) {
             Thread.sleep(3000);
 
-            long serviceId = k;
+            long projectId = k;
 
             List referlist = new ArrayList<>();
             for (int i = 0; i < 100; i++) {
@@ -92,11 +92,11 @@ public class TagManagerController {
                 // 10개의 event
                 for (int j = 0; j < 10; j++) {
                     WebLogDto wl = new WebLogDto();
-                    wl.setServiceId(serviceId);
+                    wl.setProjectId(projectId);
                     int hashValue = (int) (Math.random() * 100000);
                     int hashValue2 = (int) (Math.random() * 5) + 1;
 
-                    wl.setServiceToken("serviceToken");
+                    wl.setProjectToken("projectToken");
                     wl.setSessionId(String.valueOf(String.valueOf(hashValue).hashCode()));
                     long nowTime = System.currentTimeMillis();
                     long time = nowTime - nowTime % 10000000;
