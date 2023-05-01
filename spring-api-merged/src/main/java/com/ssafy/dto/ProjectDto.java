@@ -28,7 +28,7 @@ public class ProjectDto {
                 .id(id)
                 .url(url)
                 .name(name)
-                .spa(spa)
+                .isSpa(spa)
                 .build();
     }
 }

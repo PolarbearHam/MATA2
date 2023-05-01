@@ -1,21 +1,48 @@
-import React from 'react';
+import React , { useState } from 'react';
 import './Login.css';
 import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
 const Login = () => {
   const navigate=useNavigate()
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   function handleClick(e) {
     e.preventDefault();
     
     console.log('Button clicked!');
     navigate('/signup')
   }
+  function login (e) {
+    e.preventDefault();
+    const formData={
+      email:email,
+      password:password
+    }
+    const headers = {
+      'Content-type': 'application/json'
+    }
+    console.log("로그인 시도",formData)
+    
+    axios.post('//localhost:8080/api/v1/member/login',formData,{headers})
+
+    .then(response => {
+      console.log(response);
+      if (response.status==200) {
+        sessionStorage.setItem('accessToken',response.data.accessToken)  
+        navigate('/')
+      }else alert('틀림')
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
   return (
     <div id='loginBackground'>
       
-      <form id='loginForm'>
+      <form id='loginForm' onSubmit={login}>
         <div id='loginLogo'>로그인</div>
-        <input className='inputField' placeholder='email' name='email'/>
-        <input className='inputField' placeholder='암호' name='password'/>
+        <input className='inputField' placeholder='email' name='email' onChange={(event) => setEmail(event.target.value)}/>
+        <input className='inputField' placeholder='암호' name='password' onChange={(event) => setPassword(event.target.value)}/>
         
         <button id='loginButton' >로그인</button>
         

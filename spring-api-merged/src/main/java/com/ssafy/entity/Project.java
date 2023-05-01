@@ -59,7 +59,7 @@ public class Project {
     private List<Event> eventList = new ArrayList<>();
 
     @ColumnDefault("false")
-    private boolean spa;
+    private boolean isSpa;
 
     public void updateToken(){
         UUID uuid = UUID.randomUUID();

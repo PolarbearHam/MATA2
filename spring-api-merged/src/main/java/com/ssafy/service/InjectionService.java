@@ -1,6 +1,5 @@
 package com.ssafy.service;
 
-import com.ssafy.dto.ProjectDto;
 import com.ssafy.entity.*;
 import com.ssafy.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -14,24 +13,25 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EventService {
+public class InjectionService {
     private final TagRepository tagRepository;
     private final TagEventRepository tagEventRepository;
     private final EventRepository eventRepository;
     private final EventPathRepository eventPathRepository;
     private final EventParamRepository eventParamRepository;
-    private final ServiceRepository serviceRepository;
+    private final ProjectRepository projectRepository;
 
 
     // Todo : js코드 난독화 필요
     public String callJsCode(long projectId) {
+        System.out.println(projectRepository.findById(projectId).get().isSpa());
         String code_head =
                 "export default class TagManager {\n" +
                         "  constructor() {\n" +
                         "    this.injection = {\n" +
                         "      bootstrap: 'http://localhost:8080/api/v1/dump',\n" +
                         "      serviceToken: 'dummy-serviceToken',\n" +
-                        "      spa: false,\n" +
+                        "      spa: " + projectRepository.findById(projectId).get().isSpa() +",\n" +
                         "      events: {\n" +
                         "        click: {base: null, param: [], path: []}," +
                         "        mouseenter: {base: null, param: [], path: []},\n" +
@@ -167,21 +167,21 @@ public class EventService {
                         "      let body = {\n" +
                         "        serviceToken: this.serviceToken,\n" +
                         "        sessionId: this.sessionId,\n" +
-                        "        userAgent: this.userAgent,\n" +
                         "        event: eventType,\n" +
                         "        targetId: (e && e.target && e.target.id) ? e.target.id : null,\n" +
                         "        targetName: (e && e.detail && e.detail['targetName']) ? e.detail['targetName'] : null,\n" +
-                        "        positionX: e && e.pageX ? e.pageX : null,\n" +
-                        "        positionY: e && e.pageY ? e.pageY : null,\n" +
                         "        title: this.title,\n" +
                         "        location: this.location,\n" +
                         "        referrer: this.referrer,\n" +
                         "        timestamp: Date.now(),\n" +
                         "        pageDuration: Date.now() - this.enterTimer,\n" +
-                        "        data: e.detail ? e.detail : null,\n" +
+                        "        userAgent: this.userAgent,\n" +
+                        "        data: e.detail ? JSON.stringify(e.detail) : '{}',\n" +
+                        "        userLanguage: navigator.language,\n" +
                         "        screenSizeX: window.innerWidth,\n" +
                         "        screenSizeY: window.innerHeight,\n" +
-                        "        userLanguage: navigator.language\n" +
+                        "        positionX: e && e.pageX ? e.pageX : null,\n" +
+                        "        positionY: e && e.pageY ? e.pageY : null,\n" +
                         "      }\n" +
                         "      this.logStash.push(body)\n" +
                         "      console.log(this.logStash);\n" +
@@ -238,6 +238,9 @@ public class EventService {
                         "      }\n" +
                         "      this.handlerDict['pageleave']({target: window});\n" +
                         "    }\n" +
+                        (projectRepository.findById(projectId).get().isSpa() ?
+                        "  };\n" +
+                        "}" :
                         "    window.addEventListener(\"load\", function (e) {\n" +
                         "      this.attach();\n" +
                         "      console.log(\"loaded\")\n" +
@@ -247,8 +250,9 @@ public class EventService {
                         "      console.log(\"unloaded\")\n" +
                         "    }.bind(this));\n" +
                         "  };\n" +
-                        "}";
-        System.out.println(code_head+code_main+code_tail);
+                        "}" +
+                        "let mata = new TagManager();"
+                        );
         return code_head + code_main + code_tail;
     }
 
