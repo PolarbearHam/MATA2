@@ -1,0 +1,17 @@
+name: Integration-Test
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run pwd
+      run: pwd
+    - name: Run ls -al
+      run: ls -al
