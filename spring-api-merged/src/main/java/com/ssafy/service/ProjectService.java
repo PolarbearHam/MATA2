@@ -138,11 +138,12 @@ public class ProjectService {
     public SettingDto setProjectSettings(long projectId){
         ProjectDto projectDto = ProjectDto.toDto(projectRepository.findById(projectId).get());
         List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(projectId));
-        //List<TagDto> tagDtoList = TagDto.toDtoList(tagRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId));
+        List<TagDto> tagDtoList = TagDto.toDtoList(tagRepository.findAllByProjectId(projectId));
+
         SettingDto settingDto = SettingDto.builder()
                 .projectDto(projectDto)
                 .eventDtoList(eventDtoList)
-                //.tagDtoList(tagDtoList)
+                .tagDtoList(tagDtoList)
                 .build();
         return settingDto;
     }
