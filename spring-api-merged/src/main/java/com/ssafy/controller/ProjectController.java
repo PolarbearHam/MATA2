@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -102,11 +101,11 @@ public class ProjectController {
     @PostMapping("/{serviceId}/events")
     public ResponseEntity<?> customEvents(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long serviceId, @RequestBody EventDto eventDto){
+            @PathVariable Long serviceId, @RequestBody EventSaveListDto events){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
 
-        if(projectService.setEvent(eventDto)){
+        if(projectService.saveEvent(events, serviceId)){
             resultMap.put("message", "SUCCESS");
             status = HttpStatus.OK;
         }
@@ -115,17 +114,18 @@ public class ProjectController {
             status = HttpStatus.ACCEPTED;
         }
 
-        return new ResponseEntity<>(resultMap, status);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @PostMapping("/{serviceId}/tags")
     public ResponseEntity<?> customTags(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long serviceId, @RequestBody TagDto tagDto){
+            @PathVariable Long serviceId, @RequestBody TagSaveListDto tagSaveListDto){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
 
-        if(projectService.setTag(tagDto)){
+        if(projectService.saveTag(tagSaveListDto, serviceId)
+                && projectService.saveTagEvent(tagSaveListDto, serviceId)){
             resultMap.put("message", "SUCCESS");
             status = HttpStatus.OK;
         }
