@@ -31,9 +31,7 @@ function App() {
 
   // GLOBAL: ************** 사용자 정보 **************
   const [user, setUser] = useState({
-    id: 1,
-    email: "dummy@dummy.dum",
-    name: "dummy"
+
   });
   const userInfo = async (accessToken) => {
     if(!accessToken || accessToken=='') return;
