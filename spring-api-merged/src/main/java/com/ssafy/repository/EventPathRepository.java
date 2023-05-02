@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface EventPathRepository extends JpaRepository<EventPath, Long> {
     List<EventPath> findAllByEventId(long eventId);
+    Optional<EventPath> findByPathIndexAndPathNameAndEvent_Id(String pathIndex, String pathName, long eventId);
 }

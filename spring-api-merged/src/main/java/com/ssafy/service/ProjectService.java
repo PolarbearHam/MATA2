@@ -7,6 +7,7 @@ import com.ssafy.util.NoSuchMemberException;
 import com.ssafy.util.Validation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,16 +94,23 @@ public class ProjectService {
 
         for(SaveEventDto saveEventDto : saveEventListDto.getEvents()){
             Event event = saveEventDto.toEntity(projectRepository.findById(projectId).get());
-            eventRepository.saveAndFlush(event);
+            Optional<Event> optionalEvent =
+                    eventRepository.findByEventNameAndEventBaseAndProjectIdAndIsEnabledIsTrue(event.getEventName(), event.getEventBase(), projectId);
+            if (!optionalEvent.isPresent()) eventRepository.saveAndFlush(event);
+            else event = optionalEvent.get(); // 중복 시
 
-            for(SaveEventParamDto saveEventParamDto : saveEventDto.getEventParam()){
+            for(SaveEventParamDto saveEventParamDto : ListUtils.emptyIfNull(saveEventDto.getEventParam())){
                 EventParam eventParam = saveEventParamDto.toEntity(event);
-                eventParamRepository.save(eventParam);
+                Optional<EventParam> optionalEventParam =
+                        eventParamRepository.findByParamNameAndParamKeyAndEvent_Id(eventParam.getParamName(),eventParam.getParamKey(),eventParam.getEvent().getId());
+                if(!optionalEventParam.isPresent()) eventParamRepository.save(eventParam);
             }
 
-            for(SaveEventPathDto saveEventPathDto : saveEventDto.getEventPath()){
+            for(SaveEventPathDto saveEventPathDto : ListUtils.emptyIfNull(saveEventDto.getEventPath())){
                 EventPath eventPath = saveEventPathDto.toEntity(event);
-                eventPathRepository.save(eventPath);
+                Optional<EventPath> optionalEventPath
+                        = eventPathRepository.findByPathIndexAndPathNameAndEvent_Id(eventPath.getPathIndex(), eventPath.getPathName(), eventPath.getEvent().getId());
+                if(!optionalEventPath.isPresent())  eventPathRepository.save(eventPath);
             }
         }
         return saveEventOK;
