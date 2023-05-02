@@ -19,10 +19,10 @@
 //    private static final String FAIL = "fail in EventController";
 //
 //    // 로그 수집 코드 주입 , 추후 토큰으로 바뀔 듯
-//    @GetMapping("/{serviceId}")
+//    @GetMapping("/{projectId}")
 //    public ResponseEntity<?> getEventInjection(
-//            @PathVariable("serviceId") Long serviceId) {
-//        String code = injectionService.callJsCode(serviceId);
+//            @PathVariable("projectId") Long projectId) {
+//        String code = injectionService.callJsCode(projectId);
 //        return ResponseEntity
 //                .status(HttpStatus.OK)
 //                .header("Content-Type", "application/javascript")

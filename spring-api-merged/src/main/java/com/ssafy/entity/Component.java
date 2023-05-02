@@ -11,6 +11,6 @@ public class Component {
     private String targetId;
     private String location;
     private Timestamp updateTimestamp;
-    private long serviceId;
+    private long projectId;
 
 }

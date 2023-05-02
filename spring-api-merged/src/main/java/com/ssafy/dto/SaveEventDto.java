@@ -1,32 +1,29 @@
 package com.ssafy.dto;
 
 import com.ssafy.entity.Event;
-import com.ssafy.entity.EventParam;
-import com.ssafy.entity.EventPath;
 import com.ssafy.entity.Project;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventSaveDto {
+public class SaveEventDto {
 
-    private String name;
-    private String base;
-    private List<EventSaveParamDto> param;
-    private List<EventSavePathDto> path;
+    private String eventName;
+    private String eventBase;
+    private List<SaveEventParamDto> eventParam;
+    private List<SaveEventPathDto> eventPath;
 
-    public Event toEventEntity(Project project) {
+    public Event toEntity(Project project) {
         return Event.builder()
-                .eventName(name)
-                .eventBase(base)
+                .eventName(eventName)
+                .eventBase(eventBase)
                 .project(project)
                 .build();
     }

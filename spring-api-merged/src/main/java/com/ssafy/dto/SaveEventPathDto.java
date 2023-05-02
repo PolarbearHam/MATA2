@@ -11,14 +11,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventSavePathDto {
-    private String name;
-    private String index;
+public class SaveEventPathDto {
+    private String pathName;
+    private String pathIndex;
     public EventPath toEntity(Event event){
 //        return new EventPath(id, pathName, pathIndex, eventDto.toEntity());
         return EventPath.builder()
-                .pathName(name)
-                .pathIndex(index)
+                .pathName(pathName)
+                .pathIndex(pathIndex)
                 .event(event)
                 .build();
     }

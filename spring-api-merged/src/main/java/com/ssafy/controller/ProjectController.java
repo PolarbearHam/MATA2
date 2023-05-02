@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -33,11 +34,11 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("/{serviceId}")
+    @GetMapping("/{projectId}")
     public ResponseEntity<ProjectResponse> getProjectDetail(
-            @PathVariable("serviceId") Long serviceId,
+            @PathVariable("projectId") Long projectId,
             @AuthenticationPrincipal UserDetails userDetails) {
-        ProjectResponse response = projectService.getProjectDetail(serviceId);
+        ProjectResponse response = projectService.getProjectDetail(projectId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
@@ -81,10 +82,10 @@ public class ProjectController {
     }
 
     //서비스 아이디와 url 받는 부분
-    @PostMapping("/{serviceId}/service")
+    @PostMapping("/{projectId}/service")
     public ResponseEntity<?> customService(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long serviceId, @RequestBody ProjectDto projectDto){
+            @PathVariable Long projectId, @RequestBody ProjectDto projectDto){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
 
@@ -98,34 +99,14 @@ public class ProjectController {
         return new ResponseEntity<>(resultMap, status);
     }
     // 서비스 이벤트 받는 부분
-    @PostMapping("/{serviceId}/events")
+    @PostMapping("/{projectId}/events")
     public ResponseEntity<?> customEvents(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long serviceId, @RequestBody EventSaveListDto events){
+            @PathVariable Long projectId, @RequestBody SaveEventListDto saveEventListDto){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
 
-        if(projectService.saveEvent(events, serviceId)){
-            resultMap.put("message", "SUCCESS");
-            status = HttpStatus.OK;
-        }
-        else{
-            resultMap.put("message", "FAIL");
-            status = HttpStatus.ACCEPTED;
-        }
-
-        return new ResponseEntity<>(resultMap, HttpStatus.OK);
-    }
-
-    @PostMapping("/{serviceId}/tags")
-    public ResponseEntity<?> customTags(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long serviceId, @RequestBody TagSaveListDto tagSaveListDto){
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status;
-
-        if(projectService.saveTag(tagSaveListDto, serviceId)
-                && projectService.saveTagEvent(tagSaveListDto, serviceId)){
+        if(projectService.saveEvent(saveEventListDto, projectId)){
             resultMap.put("message", "SUCCESS");
             status = HttpStatus.OK;
         }
@@ -137,14 +118,48 @@ public class ProjectController {
         return new ResponseEntity<>(resultMap, status);
     }
 
-    @GetMapping("/{serviceId}/settings")
+    @PostMapping("/{projectId}/tags")
+    public ResponseEntity<?> customTags(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Long projectId, @RequestBody SaveTagListDto tagSaveListDto){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status;
+
+//        if(projectService.saveTag(tagSaveListDto, projectId)
+//                && projectService.saveTagEvent(tagSaveListDto, projectId)){
+//            resultMap.put("message", "SUCCESS");
+//            status = HttpStatus.OK;
+//        }
+        if(projectService.saveTag(tagSaveListDto, projectId)){
+            resultMap.put("message", "SUCCESS");
+            status = HttpStatus.OK;
+        }
+        else{
+            resultMap.put("message", "FAIL");
+            status = HttpStatus.ACCEPTED;
+        }
+
+        return new ResponseEntity<>(resultMap, status);
+    }
+
+    @GetMapping("/{projectId}/settings")
     public ResponseEntity<SettingDto> getServiceSettings(
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long serviceId) {
-        SettingDto settingDto = projectService.setProjectSettings(serviceId);
+            @PathVariable Long projectId) {
+        SettingDto settingDto = projectService.getProjectSettings(projectId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(settingDto);
+    }
+
+    @GetMapping("{projectId}/events")
+    public ResponseEntity<List<EventDto>> getEventList(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Long projectId) {
+        List<EventDto> eventDtoList = projectService.getEventList(projectId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(eventDtoList);
     }
 }
 

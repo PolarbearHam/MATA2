@@ -11,6 +11,6 @@ public class PageRefer {
     private long totalPageenter;
     private Timestamp updateTimestamp;
     private long referrerId;
-    private long serviceId;
+    private long projectId;
 
 }

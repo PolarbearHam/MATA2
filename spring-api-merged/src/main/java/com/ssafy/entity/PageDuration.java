@@ -11,6 +11,6 @@ public class PageDuration {
     private int totalSession;
     private String location;
     private Timestamp updateTimestamp;
-    private long serviceId;
+    private long projectId;
 
 }

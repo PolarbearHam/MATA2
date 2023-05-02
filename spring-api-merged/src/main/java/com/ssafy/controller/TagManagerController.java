@@ -20,10 +20,10 @@ public class TagManagerController {
     private final InjectionService injectionService;
 
     // 로그 수집 코드 주입 , 추후 토큰으로 바뀔 듯
-    @GetMapping("/{serviceId}")
+    @GetMapping("/{projectId}")
     public ResponseEntity<?> getEventInjection(
-            @PathVariable("serviceId") Long serviceId) {
-        String code = injectionService.callJsCode(serviceId);
+            @PathVariable("projectId") Long projectId) {
+        String code = injectionService.callJsCode(projectId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header("Content-Type", "application/javascript")
@@ -36,7 +36,7 @@ public class TagManagerController {
         System.out.println("이벤트 개수............." + body.length);
         Arrays.stream(body).forEach(wl -> {
 //            kafkaProducerService.checkValidation(wl.getServiceToken()); // 토큰 검증 로직
-//            wl.setServiceId(kafkaProducerService.getProjectId(wl.getServiceToken())); // 토큰으로 서비 아이디 가져오기
+//            wl.setProjectId(kafkaProducerService.getProjectId(wl.getServiceToken())); // 토큰으로 서비 아이디 가져오기
             System.out.println(wl.toString());
             try {
                 kafkaProducerService.sendToKafka(wl);
@@ -52,7 +52,7 @@ public class TagManagerController {
     public ResponseEntity<?> dummyDataSetting() throws InterruptedException {
 
 //        kafkaProducerService.checkValidation(serviceToken); // 토큰 검증 로직
-//        Long serviceId = kafkaProducerService.getProjectId(serviceToken);
+//        Long projectId = kafkaProducerService.getProjectId(serviceToken);
 
         for (long k = 1; k < 15; k++) {
             Thread.sleep(3000);

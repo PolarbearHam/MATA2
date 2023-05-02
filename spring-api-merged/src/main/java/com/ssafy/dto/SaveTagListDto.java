@@ -12,7 +12,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventSaveListDto {
-    private List<EventSaveDto> events = new ArrayList<>();
-
+public class SaveTagListDto {
+    List<SaveTagDto> tags;
 }

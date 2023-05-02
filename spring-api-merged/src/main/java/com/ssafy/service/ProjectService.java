@@ -11,7 +11,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,6 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final StringRedisTemplate stringRedisTemplate;
     private final Validation validation;
-    private final ServiceRepository serviceRepository;
     private final EventRepository eventRepository;
     private final EventParamRepository eventParamRepository;
     private final EventPathRepository eventPathRepository;
@@ -80,7 +78,8 @@ public class ProjectService {
 
     public boolean setProject(ProjectDto projectDto) {
         Project project = projectDto.toEntity();
-        if(projectRepository.findById(project.getId()).isPresent()){
+        // 없으면 추가
+        if(!projectRepository.findById(project.getId()).isPresent()){
             projectRepository.save(project);
             return true;
         }else{
@@ -88,54 +87,50 @@ public class ProjectService {
         }
     }
 
-    public boolean saveEvent(EventSaveListDto eventSaveListDto, Long serviceId){
+    public boolean saveEvent(SaveEventListDto saveEventListDto, Long projectId){
         boolean saveEventOK = true;
-        for(EventSaveDto eventSaveDto : eventSaveListDto.getEvents()){
-            Event event = eventSaveDto.toEventEntity(projectRepository.findById(serviceId).get());
-            eventRepository.save(event);
 
-            for(EventSaveParamDto eventSaveParamDto : eventSaveDto.getParam()){
-                EventParam eventParam = eventSaveParamDto.toEntity(event);
+        for(SaveEventDto saveEventDto : saveEventListDto.getEvents()){
+            Event event = saveEventDto.toEntity(projectRepository.findById(projectId).get());
+            eventRepository.saveAndFlush(event);
+
+            for(SaveEventParamDto saveEventParamDto : saveEventDto.getEventParam()){
+                EventParam eventParam = saveEventParamDto.toEntity(event);
                 eventParamRepository.save(eventParam);
             }
 
-            for(EventSavePathDto eventSavePathDto : eventSaveDto.getPath()){
-                EventPath eventPath = eventSavePathDto.toEntity(event);
+            for(SaveEventPathDto saveEventPathDto : saveEventDto.getEventPath()){
+                EventPath eventPath = saveEventPathDto.toEntity(event);
                 eventPathRepository.save(eventPath);
             }
         }
         return saveEventOK;
     }
 
-    public boolean saveTag(TagSaveListDto tagSaveListDto, Long projectId){
+    public boolean saveTag(SaveTagListDto saveTagListDto, Long projectId){
+        boolean saveTagOK = true;
+        for(SaveTagDto tagSaveDto : saveTagListDto.getTags()){
+            Tag tag = tagSaveDto.toTagEntity(projectRepository.findById(projectId).get());
+            tagRepository.saveAndFlush(tag);
 
-        for(TagSaveDto tagSaveDto : tagSaveListDto.getTags()){
-            if(tagRepository.findByHtmlTagIdAndProjectIdAndIsEnabledIsTrue(tagSaveDto.getHtmlTagId(),projectId).isPresent()) continue;
-            tagRepository.save(Tag.builder()
-                    .htmlTagName(tagSaveDto.getHtmlTagName())
-                    .htmlTagId(tagSaveDto.getHtmlTagId())
-                    .htmlTagClass(tagSaveDto.getHtmlTagClass())
-                    .project(projectRepository.findById(projectId).get())
-                    .build());
-        }
-        return true;
-    }
-
-    public boolean saveTagEvent(TagSaveListDto tagSaveListDto, Long projectId){
-        for(TagSaveDto tagSaveDto : tagSaveListDto.getTags()){
-            for(String s : tagSaveDto.getTagEventList()){
-                Event event = eventRepository.findByEventNameAndProjectIdAndIsEnabledIsTrue(s, projectId).get();
-                Tag tag = tagRepository.findByHtmlTagIdAndProjectIdAndIsEnabledIsTrue(tagSaveDto.getHtmlTagId(), projectId).get();
-                tagEventRepository.save(TagEvent.builder()
-                                .tag(tag)
-                                .event(event)
-                                .build());
+            // 여기...............
+            for(String tagEventName : tagSaveDto.getTagEvents()){
+                if(eventRepository.findByEventNameAndProjectIdAndIsEnabledTrue(tagEventName, projectId).isPresent()) {
+                    tagEventRepository.save(TagEvent.builder()
+                            .tag(tag)
+                            .event(eventRepository.findByEventNameAndProjectIdAndIsEnabledTrue(tagEventName, projectId).get())
+                            .build());
+                } else {
+                    System.out.println("등록된 이벤트가 아님...");
+                    saveTagOK = false;
+                }
             }
         }
-        return true;
+        return saveTagOK;
+
     }
 
-    public SettingDto setProjectSettings(long projectId){
+    public SettingDto getProjectSettings(long projectId){
         ProjectDto projectDto = ProjectDto.toDto(projectRepository.findById(projectId).get());
         List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(projectId));
         List<TagDto> tagDtoList = TagDto.toDtoList(tagRepository.findAllByProjectId(projectId));
@@ -146,5 +141,10 @@ public class ProjectService {
                 .tagDtoList(tagDtoList)
                 .build();
         return settingDto;
+    }
+
+    public List<EventDto> getEventList(Long projectId) {
+        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(projectId));
+        return eventDtoList;
     }
 }

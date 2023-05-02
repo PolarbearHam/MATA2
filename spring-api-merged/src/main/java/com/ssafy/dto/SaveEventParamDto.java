@@ -11,14 +11,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventSaveParamDto {
-    private String name;
-    private String key;
+public class SaveEventParamDto {
+    private String paramName;
+    private String paramKey;
     public EventParam toEntity(Event event){
 //        return new EventParam(id, paramName, paramKey, eventDto.toEntity());
         return EventParam.builder()
-                .paramName(name)
-                .paramKey(key)
+                .paramName(paramName)
+                .paramKey(paramKey)
                 .event(event)
                 .build();
     }
