@@ -14,5 +14,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     Optional<Event> findByEventName(String eventName);
     Optional<Event> findByEventNameAndIsEnabledTrue(String eventName);
     List<Event> findAllByProjectId(long projectId);
-    Optional<Event> findByEventNameAndProjectIdAndIsEnabledTrue(String eventName, long projectId);
+    Optional<Event> findByEventNameAndProjectIdAndIsEnabledIsTrue(String eventName, long projectId);
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -109,16 +110,21 @@ public class ProjectService {
 
     public boolean saveTag(SaveTagListDto saveTagListDto, Long projectId){
         boolean saveTagOK = true;
+
         for(SaveTagDto tagSaveDto : saveTagListDto.getTags()){
             Tag tag = tagSaveDto.toTagEntity(projectRepository.findById(projectId).get());
-            tagRepository.saveAndFlush(tag);
+            Optional<Tag> optionalTag = tagRepository.findByHtmlTagIdAndProjectIdAndIsEnabledIsTrue(tag.getHtmlTagId(), projectId);
+            if(!optionalTag.isPresent()) tagRepository.saveAndFlush(tag);
+            else tag = optionalTag.get(); // 태그 중복의 경우 업데이트를 위해 검색된 객체 사용
 
-            // 여기...............
             for(String tagEventName : tagSaveDto.getTagEvents()){
-                if(eventRepository.findByEventNameAndProjectIdAndIsEnabledTrue(tagEventName, projectId).isPresent()) {
+                Optional<Event> optionalEvent = eventRepository.findByEventNameAndProjectIdAndIsEnabledIsTrue(tagEventName, projectId);
+                if(optionalEvent.isPresent()) {
+                    Optional<TagEvent> optionalTagEvent = tagEventRepository.findByTagIdAndEventId(tag.getId(),optionalEvent.get().getId());
+                    if(optionalTagEvent.isPresent()) continue; // 중복 태그-이벤트 의 경우 건너뜀
                     tagEventRepository.save(TagEvent.builder()
                             .tag(tag)
-                            .event(eventRepository.findByEventNameAndProjectIdAndIsEnabledTrue(tagEventName, projectId).get())
+                            .event(optionalEvent.get())
                             .build());
                 } else {
                     System.out.println("등록된 이벤트가 아님...");
