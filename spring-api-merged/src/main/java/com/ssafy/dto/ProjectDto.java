@@ -14,6 +14,7 @@ public class ProjectDto {
     private String name;
     private boolean spa;
     public static ProjectDto toDto(Project project){
+
         return new ProjectDto(
                 project.getId(),
                 project.getUrl(),
@@ -27,7 +28,7 @@ public class ProjectDto {
                 .id(id)
                 .url(url)
                 .name(name)
-                .spa(spa)
+                .isSpa(spa)
                 .build();
     }
 }

@@ -21,7 +21,7 @@ public class HiveRepository {
         component.setTargetId(resultSet.getString("target_id"));
         component.setLocation(resultSet.getString("location"));
         component.setUpdateTimestamp(resultSet.getTimestamp("update_timestamp"));
-        component.setServiceId(resultSet.getLong("service_id"));
+        component.setProjectId(resultSet.getLong("project_id"));
         return component;
     };
     private final RowMapper<Click> clickRowMapper = (resultSet, rowNum) -> {
@@ -31,7 +31,7 @@ public class HiveRepository {
         click.setPositionY(resultSet.getInt("position_y"));
         click.setLocation(resultSet.getString("location"));
         click.setUpdateTimestamp(resultSet.getTimestamp("update_timestamp"));
-        click.setServiceId(resultSet.getLong("service_id"));
+        click.setProjectId(resultSet.getLong("project_id"));
         return click;
     };
     private final RowMapper<PageDuration> pageDurationRowMapper = (resultSet, rowNum) -> {
@@ -40,7 +40,7 @@ public class HiveRepository {
         pageDuration.setTotalSession(resultSet.getInt("total_session"));
         pageDuration.setLocation(resultSet.getString("location"));
         pageDuration.setUpdateTimestamp(resultSet.getTimestamp("update_timestamp"));
-        pageDuration.setServiceId(resultSet.getLong("service_id"));
+        pageDuration.setProjectId(resultSet.getLong("project_id"));
         return pageDuration;
     };
     private final RowMapper<PageJournal> pageJournalRowMapper = (resultSet, rowNum) -> {
@@ -49,7 +49,7 @@ public class HiveRepository {
         pageJournal.setLocationFrom(resultSet.getString("location_from"));
         pageJournal.setLocationTo(resultSet.getString("location_to"));
         pageJournal.setUpdateTimestamp(resultSet.getTimestamp("update_timestamp"));
-        pageJournal.setServiceId(resultSet.getLong("service_id"));
+        pageJournal.setProjectId(resultSet.getLong("project_id"));
         return pageJournal;
     };
     private final RowMapper<PageRefer> pageReferRowMapper = (resultSet, rowNum) -> {
@@ -58,7 +58,7 @@ public class HiveRepository {
         pageRefer.setTotalPageenter(resultSet.getLong("total_pageenter"));
         pageRefer.setUpdateTimestamp(resultSet.getTimestamp("update_timestamp"));
         pageRefer.setReferrerId(resultSet.getLong("referrer_id"));
-        pageRefer.setServiceId(resultSet.getLong("service_id"));
+        pageRefer.setProjectId(resultSet.getLong("project_id"));
         return pageRefer;
     };
     private final RowMapper<Referrer> referrerRowMapper = (resultSet, rowNum) -> {
@@ -72,44 +72,44 @@ public class HiveRepository {
         String sql = "SHOW DATABASES;";
         return jdbcTemplate.queryForList(sql);
     }
-    public List<Component> selectComponent(long baseTime, String interval, long serviceId) {
+    public List<Component> selectComponent(long baseTime, String interval, long projectId) {
         String sql = String.format(//language=sql
                 "SELECT * FROM mata.components_%s "+
-                    "WHERE service_id=%d "+
+                    "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 100", interval, serviceId, baseTime);
+                    "LIMIT 100", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, componentRowMapper);
     }
-    public List<Click> selectClick(long baseTime, String interval, long serviceId) {
+    public List<Click> selectClick(long baseTime, String interval, long projectId) {
         String sql = String.format(//language=sql
                 "SELECT * FROM mata.clicks_%s "+
-                    "WHERE service_id=%d "+
+                    "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 100", interval, serviceId, baseTime);
+                    "LIMIT 100", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, clickRowMapper);
     }
-    public List<PageDuration> selectPageDuration(long baseTime, String interval, long serviceId) {
+    public List<PageDuration> selectPageDuration(long baseTime, String interval, long projectId) {
         String sql = String.format(//language=sql
                 "SELECT * FROM mata.page_durations_%s "+
-                    "WHERE service_id=%d "+
+                    "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 100", interval, serviceId, baseTime);
+                    "LIMIT 100", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, pageDurationRowMapper);
     }
-    public List<PageJournal> selectPageJournal(long baseTime, String interval, long serviceId) {
+    public List<PageJournal> selectPageJournal(long baseTime, String interval, long projectId) {
         String sql = String.format(//language=sql
                 "SELECT * FROM mata.page_journals_%s "+
-                    "WHERE service_id=%d "+
+                    "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 100", interval, serviceId, baseTime);
+                    "LIMIT 100", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, pageJournalRowMapper);
     }
-    public List<PageRefer> selectpageRefer(long baseTime, String interval, long serviceId) {
+    public List<PageRefer> selectpageRefer(long baseTime, String interval, long projectId) {
         String sql = String.format(//language=sql
                 "SELECT * FROM mata.page_refers_%s "+
-                "WHERE service_id=%d "+
+                "WHERE project_id=%d "+
                     "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                "LIMIT 100", interval, serviceId, baseTime);
+                "LIMIT 100", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, pageReferRowMapper);
     }
     public List<Referrer> selectReferrer() {
@@ -117,12 +117,12 @@ public class HiveRepository {
         return jdbcTemplate.query(sql, referrerRowMapper);
     }
 
-    public List<PageDuration> selectPageUser(long baseTime, String interval, long serviceId) {
+    public List<PageDuration> selectPageUser(long baseTime, String interval, long projectId) {
         String sql = String.format(//language=sql
                 "SELECT * FROM mata.page_durations_%s "+
-                    "WHERE service_id=%d "+
+                    "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 100", interval, serviceId, baseTime);
+                    "LIMIT 100", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, pageDurationRowMapper);
     }
 }

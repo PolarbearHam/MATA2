@@ -1,6 +1,5 @@
 package com.ssafy.service;
 
-import com.ssafy.dto.ProjectDto;
 import com.ssafy.entity.*;
 import com.ssafy.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -14,24 +13,25 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class EventService {
+public class InjectionService {
     private final TagRepository tagRepository;
     private final TagEventRepository tagEventRepository;
     private final EventRepository eventRepository;
     private final EventPathRepository eventPathRepository;
     private final EventParamRepository eventParamRepository;
-    private final ServiceRepository serviceRepository;
+    private final ProjectRepository projectRepository;
 
 
     // Todo : js코드 난독화 필요
     public String callJsCode(long projectId) {
+        System.out.println(projectRepository.findById(projectId).get().isSpa());
         String code_head =
                 "export default class TagManager {\n" +
                         "  constructor() {\n" +
                         "    this.injection = {\n" +
                         "      bootstrap: 'http://localhost:8080/api/v1/dump',\n" +
                         "      serviceToken: 'dummy-serviceToken',\n" +
-                        "      spa: true,\n" +
+                        "      spa: " + projectRepository.findById(projectId).get().isSpa() +",\n" +
                         "      events: {\n" +
                         "        click: {base: null, param: [], path: []}," +
                         "        mouseenter: {base: null, param: [], path: []},\n" +
@@ -238,9 +238,21 @@ public class EventService {
                         "      }\n" +
                         "      this.handlerDict['pageleave']({target: window});\n" +
                         "    }\n" +
+                        (projectRepository.findById(projectId).get().isSpa() ?
                         "  };\n" +
-                        "}";
-        System.out.println(code_head+code_main+code_tail);
+                        "}" :
+                        "    window.addEventListener(\"load\", function (e) {\n" +
+                        "      this.attach();\n" +
+                        "      console.log(\"loaded\")\n" +
+                        "    }.bind(this));\n" +
+                        "    window.addEventListener(\"unload\", function (e) {\n" +
+                        "      this.detach();\n" +
+                        "      console.log(\"unloaded\")\n" +
+                        "    }.bind(this));\n" +
+                        "  };\n" +
+                        "}" +
+                        "let mata = new TagManager();"
+                        );
         return code_head + code_main + code_tail;
     }
 

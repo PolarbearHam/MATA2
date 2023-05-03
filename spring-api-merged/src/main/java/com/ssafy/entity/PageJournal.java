@@ -11,6 +11,6 @@ public class PageJournal {
     private String locationFrom;
     private String locationTo;
     private Timestamp updateTimestamp;
-    private long serviceId;
+    private long projectId;
 
 }

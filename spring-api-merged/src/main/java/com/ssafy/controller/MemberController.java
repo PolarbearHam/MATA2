@@ -62,12 +62,9 @@ public class MemberController {
 
     @GetMapping(value = "/info")
     public ResponseEntity<MemberInfoResponse> info(@AuthenticationPrincipal UserDetails userDetails){
-        String userName = userDetails.getUsername();
-
-        Member member = memberService.getMemberInfoByUserName(userName);
-
+        String userEmail = userDetails.getUsername();
+        Member member = memberService.getMemberInfoByUserName(userEmail);
         MemberInfoResponse memberInfoResponse = new MemberInfoResponse().fromEntity(member);
-
         return ResponseEntity.status(HttpStatus.OK).body(memberInfoResponse);
     }
 }

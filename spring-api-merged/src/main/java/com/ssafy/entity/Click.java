@@ -12,6 +12,6 @@ public class Click {
     private int positionY;
     private String location;
     private Timestamp updateTimestamp;
-    private long serviceId;
+    private long projectId;
 
 }

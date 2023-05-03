@@ -1,6 +1,7 @@
 package com.ssafy.entity;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -35,5 +36,9 @@ public class Tag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @ColumnDefault("true")
+    @Builder.Default()
+    private boolean isEnabled = true;
 }
 

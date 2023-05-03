@@ -1,6 +1,7 @@
 package com.ssafy.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.dto.WebLogDto;
+import com.ssafy.service.InjectionService;
 import com.ssafy.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,16 +17,17 @@ import java.util.*;
 public class TagManagerController {
 
     private final KafkaProducerService kafkaProducerService;
+    private final InjectionService injectionService;
 
-    @GetMapping("/{projectToken}")
-    public ResponseEntity<?> getScript(@PathVariable("projectToken") String projectToken) {
-//        kafkaProducerService.checkValidation(projectToken); // 토큰 검증 로직
-//        String serviceId = kafkaProducerService.getProjectId(wl.getServiceToken())); // 토큰으로 서비스 아이디 가져오기
-
-        // TODO: 서비스 ID로 서비스 설정을 가져와서 스크립트에 넣기
-        // TODO: 생성된 스크립트를 javascript 형태로 전달
-
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    // 로그 수집 코드 주입 , 추후 토큰으로 바뀔 듯
+    @GetMapping("/{projectId}")
+    public ResponseEntity<?> getEventInjection(
+            @PathVariable("projectId") Long projectId) {
+        String code = injectionService.callJsCode(projectId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type", "application/javascript")
+                .body(code);
     }
 
     @PostMapping("/dump")
@@ -34,13 +36,13 @@ public class TagManagerController {
         System.out.println("이벤트 개수............." + body.length);
         Arrays.stream(body).forEach(wl -> {
 //            kafkaProducerService.checkValidation(wl.getServiceToken()); // 토큰 검증 로직
-//            wl.setServiceId(kafkaProducerService.getProjectId(wl.getServiceToken())); // 토큰으로 서비 아이디 가져오기
+//            wl.setProjectId(kafkaProducerService.getProjectId(wl.getServiceToken())); // 토큰으로 서비 아이디 가져오기
             System.out.println(wl.toString());
-            try {
-                kafkaProducerService.sendToKafka(wl);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                kafkaProducerService.sendToKafka(wl);
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
         });
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
@@ -50,12 +52,12 @@ public class TagManagerController {
     public ResponseEntity<?> dummyDataSetting() throws InterruptedException {
 
 //        kafkaProducerService.checkValidation(serviceToken); // 토큰 검증 로직
-//        Long serviceId = kafkaProducerService.getProjectId(serviceToken);
+//        Long projectId = kafkaProducerService.getProjectId(serviceToken);
 
         for (long k = 1; k < 15; k++) {
             Thread.sleep(3000);
 
-            long serviceId = k;
+            long projectId = k;
 
             List referlist = new ArrayList<>();
             for (int i = 0; i < 100; i++) {
@@ -92,11 +94,11 @@ public class TagManagerController {
                 // 10개의 event
                 for (int j = 0; j < 10; j++) {
                     WebLogDto wl = new WebLogDto();
-                    wl.setServiceId(serviceId);
+                    wl.setProjectId(projectId);
                     int hashValue = (int) (Math.random() * 100000);
                     int hashValue2 = (int) (Math.random() * 5) + 1;
 
-                    wl.setServiceToken("serviceToken");
+                    wl.setProjectToken("projectToken");
                     wl.setSessionId(String.valueOf(String.valueOf(hashValue).hashCode()));
                     long nowTime = System.currentTimeMillis();
                     long time = nowTime - nowTime % 10000000;
