@@ -11,11 +11,12 @@ import Logout from "./views/Logout";
 import SignUp from './views/SignUp';
 import ServiceAdd from './views/ServiceAdd';
 import DashboardMain from './dashboards/DashboardMain';
+import Test from './views/Test';
 import axios from "axios";
 
 
 // SPA 제공 코드
-import TagManager from "http://localhost:8080/api/v1/js/2";
+import TagManager from "./tagmanager";
 const mata = new TagManager();
 
 function App() {
@@ -219,6 +220,7 @@ function App() {
             <ServiceCustom state={ {user: user,serviceList:serviceList} }/>
           </DashboardLayout>
         }/>
+        <Route path='test' element={<Test/>}/>
       </Routes>
   )
 }
