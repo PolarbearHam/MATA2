@@ -13,7 +13,7 @@ RUN \
 COPY nginx/sites-available/default /etc/nginx/sites-available/default
 
 # Build files
-COPY dist/ /home/dist/
+COPY build/ /home/build/
 COPY nginx/ /home/nginx/
 
 ENTRYPOINT ["/etc/init.d/nginx", "start"]
