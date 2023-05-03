@@ -77,7 +77,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://master01:3306/mata?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    jdbc-url: jdbc:mysql://172.26.3.140:3306/mata?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: mata
     password: ssafy8a309
     initialization-mode: true
@@ -96,19 +96,19 @@ spring:
       port: 6379
       password:  ssafy8a309
     cassandra:
-      contact-points: slave01:9042
+      contact-points: 172.31.62.247:9042
       keyspace-name: mykeyspace
     hive:
       driver-class-name: org.apache.hive.jdbc.HiveDriver
-      jdbc-url: jdbc:hive2://master01:10000/mata
+      jdbc-url: jdbc:hive2://172.26.3.140:10000/mata
       username: hive
       password: hive
   kafka:
-    bootstrap-servers: master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092
+    bootstrap-servers: 172.26.3.140:9092
     topic:
       tag-manager: tagmanager
     producer:
-      bootstrap-servers: master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092
+      bootstrap-servers: 172.26.3.140:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
     template:
