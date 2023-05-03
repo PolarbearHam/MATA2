@@ -30,25 +30,25 @@ const Header = (props) => {
       <div id="nav-content" className="w-full lg:flex lg:w-auto hidden">
         {!props.state.user.name ? ( <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
           <Link to="/"
-             className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 mr-4">
+             className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 hover:scale-105 mr-4">
             홈
           </Link>
           <Link to="/login"
-             className="block no-underline mt-2 lg:inline-block text-white hover:text-blue-200 mr-4 ">
+             className="block no-underline mt-2 lg:inline-block text-white hover:text-blue-200 hover:scale-105 mr-4 ">
             로그인
           </Link>
         </div>) : (
         <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
           <Link to="/start"
-             className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 mr-4">
+             className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 hover:scale-105 mr-4">
             {props.state.user.name}의 대시보드
           </Link>
           <Link to="/profile"
-             className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 mr-4">
+             className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:scale-105 hover:text-blue-200 mr-4">
             프로필
           </Link>
           <Link to="/logout"
-             className="block no-underline mt-2 lg:inline-block text-white hover:text-blue-200 mr-4 ">
+             className="block no-underline mt-2 lg:inline-block text-white hover:text-blue-200 hover:scale-105 mr-4 ">
             로그아웃
           </Link>
         </div>)}

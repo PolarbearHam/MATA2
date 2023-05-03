@@ -19,7 +19,9 @@
   order: 0;
   align-self: stretch;
   flex-grow: 1;
+  overflow: hidden;
 }
+
 
 .nav-item-button{
   display: flex;
@@ -37,7 +39,19 @@
   order: 0;
   align-self: stretch;
   flex-grow: 0;
+  transition: 0.3ms;
 }
+.nav-item-button:hover {
+  background-color: #b4cabf54;
+  cursor: pointer;
+  transform: scale(1.1);
+}
+.nav-item-button:active {
+  background-color: #292b2a54;
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
 
 .nav-item-icon{
   width: 30px;
