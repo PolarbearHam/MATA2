@@ -11,10 +11,10 @@ const ServiceCustom = (props) => {
     const event={events:[]}
     events.forEach((element,index1) => {
       event.events[index1]={
-        name:element.eventName,
-        base:element.base,
-        param:element.params,
-        path:element.paths
+        eventName:element.eventName,
+        eventBase:element.eventBase,
+        eventParam:element.eventParams,
+        eventPath:element.eventPaths
       }
     }
     )
@@ -52,17 +52,17 @@ const ServiceCustom = (props) => {
 
   const handleAddPath = (index1) => {
     const values = [...events]
-    values[index1].paths.push({name:'',index:''})
+    values[index1].eventPaths.push({pahtName:'',pathIndex:''})
     setEvents(values)
   };
   const handleRemovePath = (index1,index2) => {
     const values = [...events];
-    values[index1].paths.splice(index2, 1);
+    values[index1].eventPaths.splice(index2, 1);
     setEvents(values);
   };
   const handleAddEvent = () => {
     const values = [...events]
-    values.push({eventName:'',base:'',params:[],paths:[]});
+    values.push({eventName:'',eventBase:'',eventParams:[],eventPaths:[]});
     setEvents(values);
   };
 
@@ -79,7 +79,7 @@ const ServiceCustom = (props) => {
   };
   const handleChangeCondition = (index1, event) => {
     const values = [...events];
-    values[index1].base = event.target.value;
+    values[index1].eventBase = event.target.value;
     setEvents(values);
   };
   const handleCheckboxChange=(event)=>{
@@ -87,32 +87,32 @@ const ServiceCustom = (props) => {
   }
   const handleAddParam = (index1) => {
     const values = [...events]
-    values[index1].params.push({name:'',key:''})
+    values[index1].eventParams.push({paramName:'',paramKey:''})
     setEvents(values)
   };
   const handleRemoveParam = (index1,index2) => {
     const values = [...events];
-    values[index1].params.splice(index2, 1);
+    values[index1].eventParams.splice(index2, 1);
     setEvents(values);
   };
   const handleChangeParamName=(index1,index2,e)=>{
     const values=[...events]
-    values[index1].params[index2].name=e.target.value
+    values[index1].eventParams[index2].paramName=e.target.value
     setEvents(values)
   }
   const handleChangeParamKey=(index1,index2,e)=>{
     const values=[...events]
-    values[index1].params[index2].key=e.target.value
+    values[index1].eventParams[index2].paramKey=e.target.value
     setEvents(values)
   }
   const handleChangePathName=(index1,index2,e)=>{
     const values=[...events]
-    values[index1].paths[index2].name=e.target.value
+    values[index1].eventPaths[index2].pathName=e.target.value
     setEvents(values)
   }
   const handleChangePathIndex=(index1,index2,e)=>{
     const values=[...events]
-    values[index1].paths[index2].index=e.target.value
+    values[index1].eventPaths[index2].pathIndex=e.target.value
     setEvents(values)
   }
 
@@ -120,7 +120,7 @@ const ServiceCustom = (props) => {
 
   const handleAddTag = () => {
     const values = [...tags]
-    values.push({tagName:'',id:'',class:'',events:[]});
+    values.push({tagName:'',tagOd:'',tagClass:'',tagEvents:[]});
     setTags(values);
   };  
   const handleRemoveTag= (index)=>{
@@ -131,12 +131,12 @@ const ServiceCustom = (props) => {
   const handleAddTagEvent = (index) => {
     
     const values = [...tags]
-    values[index].events.push(null)
+    values[index].tagEvents.push(null)
     setTags(values)
   };
   const handleRemoveTagEvent = (index,index2) => {
     const values = [...tags];
-    values[index].events.splice(index2, 1);
+    values[index].tagEvents.splice(index2, 1);
     setTags(values);
   };
   const handleChangeTagName = (index, e) => {
@@ -146,17 +146,17 @@ const ServiceCustom = (props) => {
   };
   const handleChangeTagId = (index, e) => {
     const values = [...tags];
-    values[index].id = e.target.value;
+    values[index].tagId = e.target.value;
     setTags(values);
   };
   const handleChangeTagClass = (index, e) => {
     const values = [...tags];
-    values[index].class = e.target.value;
+    values[index].tagClass = e.target.value;
     setTags(values);
   };
   const handleChangeTagEvent = (index,index2, e) => {
     const values = [...tags];
-    values[index].events[index2] = e.target.value;
+    values[index].tagEvents[index2] = e.target.value;
     setTags(values);
   };
   const saveTag= (e)=>{
@@ -165,28 +165,94 @@ const ServiceCustom = (props) => {
     const tag={tags:[]}
     tags.forEach((element,index) => {
       tag.tags[index]={
-        name:element.tagName,
-        id:element.id,
-        class:element.class,
-        events:element.events
+        tagName:element.tagName,
+        tagId:element.tagId,
+        tagClass:element.tagClass,
+        tagEvents:element.tagEvents
       }
 
     }
     );
+    const url='//localhost:8080/api/v1/project/'+serviceId.id+'/tags';
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
+      'Content-type': 'application/json',
+    }
+    console.log("이벤트 설정 저장 시작 보내는 건:", url,tag,{headers} )
+    axios.post(url,tag,{headers})
+
+    .then(response => {
+      console.log(response);
+      // if (response.status==200) {
+      //   sessionStorage.setItem('accessToken',response.data.accessToken)  
+      //   navigate('/')
+      // }else alert('틀림')
+    })
+    .catch(error => {
+      console.error(error);
+      alert(error.data)
+    });
+    
     console.log(tag)
+    axios.post()
   }
 
   let currentService={}
   const [origin,setOrigin]=useState('')
   const  serviceId  = useParams();
+
   useEffect(()=>{
+
     props.state.serviceList.map( (service) => {
       if(serviceId.id==service.id){
         currentService=service
         setOrigin(currentService.url)
-      }else{}
+        console.log('주소 찾음')
+        
+      }else{console.log('주소 못 찾음')
+    }
     });
-  })
+    const url='//localhost:8080/api/v1/project/'+serviceId.id+'/settings'
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
+    }
+    axios.get(url,headers)
+    .then(res=>{
+      console.log('현재 세팅은',res.data)
+      setOrigin(res.data.projectDto.url)
+      const currentEvents=res.data.eventDtoList
+      const newEvents = currentEvents.map(obj => {
+        const { eventParamDtoList,eventPathDtoList, ...rest } = obj;
+
+        return  {eventParams:eventParamDtoList,eventPaths:eventPathDtoList,...rest };
+      });
+      console.log('events 저장전',newEvents);
+      setEvents(newEvents)
+
+      const currentTags=res.data.tagDtoList
+      const newTags=currentTags.map(obj=>{
+        const {htmlTagName,htmlTagId,htmlTagClass,tagEventDtoList, ...rest}=obj
+        return {tagName:htmlTagName,tagId:htmlTagId,tagClass:htmlTagClass,tagEventDtoList:tagEventDtoList}
+      })
+      newTags.forEach(element => {
+        element.tagEvents=[]
+        element.tagEventDtoList.forEach(tagEventDto=>{
+          element.tagEvents.push(tagEventDto.eventName)
+        })
+        delete element.tagEventDtoList
+      });
+      console.log(newTags)
+      setTags(newTags)
+    })
+    .catch(err=>{
+      console.log('잘못됨',err)
+    })
+
+  // console.log('받은 세팅은',currentSetting)
+  // const currentEvents=currentSetting.events
+  // setEvents(currentEvents)
+  },[])
+  
 
   
   return (
@@ -254,7 +320,7 @@ const location = useLocation();
             <p>서비스 설정</p>
             <FormGroup id='service' className='d-flex flex-column justify-content-center align-items-center gap-3 bg-white rounded Service'>
               <label>
-                <Input type='text' placeholder='서비스 주소' value={origin}/>
+                <Input type='text' placeholder='서비스 주소' defaultValue={origin}/>
               </label>
               <label>
                 <Input type='checkbox' name='spa'  onChange={handleCheckboxChange}/>
@@ -304,12 +370,12 @@ const location = useLocation();
                     // value={event[index].base || ''}
                     onChange={(e) => handleChangeCondition(index1, e)}
                     placeholder='이벤트 조건'
-                    value={events[index1].base}
+                    value={events[index1].eventBase}
                   />
                   <div>
                     event {index1} params 
                   </div>
-                  {events[index1].params.map((param,index2)=>(
+                  {events[index1].eventParams.map((param,index2)=>(
                     
                     <FormGroup>
                       <div className='d-flex flex-row gap-3 '>
@@ -321,7 +387,7 @@ const location = useLocation();
                             // value={param.name || ''}
                             placeholder='param name'
                             onChange={(e)=>handleChangeParamName(index1,index2,e)}
-                            value={events[index1].params[index2].name}
+                            value={events[index1].eventParams[index2].paramName}
                           />
                           <Input
                            className='mt-1'
@@ -330,7 +396,7 @@ const location = useLocation();
                             // value={param.key || ''}
                             placeholder='param key'
                             onChange={(e)=>{handleChangeParamKey(index1,index2,e)}}
-                            value={events[index1].params[index2].key}
+                            value={events[index1].eventParams[index2].paramKey}
                           />
                         </div>
                         <Button className='w-1/6' onClick={()=>handleRemoveParam(index1,index2)}>event{index1} param{index2}삭제</Button>
@@ -340,7 +406,7 @@ const location = useLocation();
               <div>
                 event {index1} paths
               </div>
-              {events[index1].paths.map((path,index2)=>(
+              {events[index1].eventPaths.map((path,index2)=>(
                     
                     <FormGroup>
                       <div className='d-flex flex-row gap-3'>
@@ -352,7 +418,7 @@ const location = useLocation();
                             // value={path.name || ''}
                             placeholder='path name'
                             onChange={(e)=>{handleChangePathName(index1,index2,e)}}
-                            value={events[index1].paths[index2].name}
+                            value={events[index1].eventPaths[index2].pathName}
                           />
                           <Input
                            className='mt-1'
@@ -361,7 +427,7 @@ const location = useLocation();
                             // value={path.index || ''}
                             placeholder='path index'
                             onChange={(e)=>{handleChangePathIndex(index1,index2,e)}}
-                            value={events[index1].paths[index2].index}
+                            value={events[index1].eventPaths[index2].pathIndex}
                           />
                         </div>
                         <Button className='w-1/6' onClick={()=>{handleRemovePath(index1,index2)}}>event{index1} path {index2}삭제</Button>
@@ -410,16 +476,16 @@ const location = useLocation();
                     name={`eventCondition-${index}`}
                     onChange={(e) => {handleChangeTagId(index,e)} }
                     placeholder='id'
-                    value={tags[index].id}
+                    value={tags[index].tagId}
                   />
                    <Input
                     type="text"
                     name={`eventCondition-${index}`}
                     onChange={(e) =>{handleChangeTagClass(index,e)} }
                     placeholder='클래스'
-                    value={tags[index].class}
+                    value={tags[index].tagClass}
                   />
-                  {tags[index].events.map((event,index2)=>(
+                  {tags[index].tagEvents.map((event,index2)=>(
                     <FormGroup className='d-flex flex-row gap-3'> 
                     
                     <Input
@@ -427,7 +493,7 @@ const location = useLocation();
                       name={`eventCondition-${index}`}
                       onChange={(e) => {handleChangeTagEvent(index,index2,e)}}
                       placeholder='이벤트'
-                      value={tags[index].events[index2]}
+                      value={tags[index].tagEvents[index2]}
                     />
                     <Button className='w-1/6 h-1/1' onClick={()=>{handleRemoveTagEvent(index,index2)}}> 삭제</Button>
                     </FormGroup>

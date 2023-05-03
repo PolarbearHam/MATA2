@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface TagEventRepository extends JpaRepository<TagEvent, Long> {
     List<TagEvent> findAllByTagId(long tagId);
+    Optional<TagEvent> findByTagIdAndEventId(long tagId, long eventId);
 }
