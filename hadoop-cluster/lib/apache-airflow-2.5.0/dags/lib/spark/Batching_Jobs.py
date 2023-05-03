@@ -1,19 +1,12 @@
 import findspark
 findspark.init("/usr/local/lib/spark-3.3.2-bin-hadoop3")
 
-from pyspark import SparkConf
 from pyspark.sql.functions import *
-from pyspark.sql.types import *
 from pyspark.sql import *
-
-# import pandas as pd
-# from cassandra.cluster import Cluster
-# from cassandra.query import dict_factory
 
 from datetime import datetime
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
-from time import mktime
 
 # 간편한 between 연산을 위해 만든 유틸리티 함수
 # base_time: 기준 시간
@@ -60,14 +53,11 @@ def timestamp_range(base_time, interval, unit):
 
 
 
-##### Cassandra -> Hive Batching (spark 사용)
-##### 5분 최소단위 집계
+##### Cassandra -> Hive Batching (분산 처리)
+##### 5분 최소단위 집계, 추후 더 짧아질 수도 있음
 def batching_cassandra_spark(base_time, amount, unit):
-    # if str(amount)+unit not in ["1m", "5m", "10m", "30m", "1h", "6h", "12h", "1d"]:
-    #     print("invalid interval: interval should be 1m, 5m, 10m, 30m, 1h, 6h or 12h.")
-    #     return 2
 
-    if str(amount)+unit != "5m":
+    if str(amount)+unit != "1m":
         print("invalid interval: interval should be 1m, 5m, 10m, 30m, 1h, 6h or 12h.")
         return 2
     
@@ -103,7 +93,7 @@ def batching_cassandra_spark(base_time, amount, unit):
     #########
     # components 테이블 집계
     component_df = batch_df.select("*") \
-        .where(col("creation_timestamp") \  
+        .where(col("creation_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
         .where(col("event").like("click")) \
         .groupBy("project_id", "target_id", "location").agg( \
@@ -179,16 +169,16 @@ def batching_cassandra_spark(base_time, amount, unit):
     session.stop()
 
 
-##### Hive -> Hive Batching
+##### Hive -> Hive Batching (단일 처리)
 # 집계를 집계
 def batching_hive(base_time, amount, unit):
-    if str(amount)+unit not in ["10m", "30m", "1h", "6h", "12h", "1d", "1w", "1mo", "6mo", "1y"]:
+    if str(amount)+unit not in ["5m", "10m", "30m", "1h", "6h", "12h", "1d", "1w", "1mo", "6mo", "1y"]:
         return 2
 
     session = SparkSession.builder \
         .appName("Batching_Hive_To_Hive") \
         .master("yarn") \
-        .config("spark.yarn.queue", "batch") \
+        .config("spark.yarn.queue", "store") \
         .config("spark.hadoop.hive.exec.dynamic.partition.mode", "nonstrict") \
         .enableHiveSupport() \
         .getOrCreate()
@@ -197,7 +187,7 @@ def batching_hive(base_time, amount, unit):
 
     component_df = session.read \
         .format("hive") \
-        .table("mata.components_1d") \
+        .table("mata.components_1m") \
         .select("*") \
         .where(col("update_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
@@ -214,7 +204,7 @@ def batching_hive(base_time, amount, unit):
     # clicks 테이블 집계
     click_df = session.read \
         .format("hive") \
-        .table("mata.clicks_1d") \
+        .table("mata.clicks_1m") \
         .select("*") \
         .where(col("update_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
@@ -231,7 +221,7 @@ def batching_hive(base_time, amount, unit):
     # page_durations 테이블 집계
     page_durations_df = session.read \
         .format("hive") \
-        .table("mata.page_durations_1d") \
+        .table("mata.page_durations_1m") \
         .select("*") \
         .where(col("update_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
@@ -249,7 +239,7 @@ def batching_hive(base_time, amount, unit):
     # page_journals 테이블 집계
     page_journals_df = session.read \
         .format("hive") \
-        .table("mata.page_journals_1d") \
+        .table("mata.page_journals_1m") \
         .select("*") \
         .where(col("update_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
@@ -266,7 +256,7 @@ def batching_hive(base_time, amount, unit):
     # page_refers 테이블 집계
     page_refers_df = session.read \
         .format("hive") \
-        .table("mata.page_refers_1d") \
+        .table("mata.page_refers_1m") \
         .select("*") \
         .where(col("update_timestamp") \
                .between(*timestamp_range(base_time, -amount, unit))) \
@@ -293,7 +283,7 @@ def batching_hive_all(base_time, unit):
     session = SparkSession.builder \
         .appName("Batching_Hive_To_Hive") \
         .master("yarn") \
-        .config("spark.yarn.queue", "batch") \
+        .config("spark.yarn.queue", "store") \
         .config("spark.hadoop.hive.exec.dynamic.partition.mode", "nonstrict") \
         .enableHiveSupport() \
         .getOrCreate()
