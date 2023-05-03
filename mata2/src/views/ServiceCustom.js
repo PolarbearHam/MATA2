@@ -173,7 +173,28 @@ const ServiceCustom = (props) => {
 
     }
     );
+    const url='//localhost:8080/api/v1/project/'+serviceId.id+'/tags';
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
+      'Content-type': 'application/json',
+    }
+    console.log("이벤트 설정 저장 시작 보내는 건:", url,tag,{headers} )
+    axios.post(url,tag,{headers})
+
+    .then(response => {
+      console.log(response);
+      // if (response.status==200) {
+      //   sessionStorage.setItem('accessToken',response.data.accessToken)  
+      //   navigate('/')
+      // }else alert('틀림')
+    })
+    .catch(error => {
+      console.error(error);
+      alert(error.data)
+    });
+    
     console.log(tag)
+    axios.post()
   }
 
   let currentService={}
@@ -200,17 +221,28 @@ const ServiceCustom = (props) => {
       console.log('현재 세팅은',res.data)
       setOrigin(res.data.projectDto.url)
       const currentEvents=res.data.eventDtoList
-      const newData = currentEvents.map(obj => {
+      const newEvents = currentEvents.map(obj => {
         const { eventParamDtoList,eventPathDtoList, ...rest } = obj;
 
         return  {eventParams:eventParamDtoList,eventPaths:eventPathDtoList,...rest };
       });
-      
-      console.log(newData);
-      
-      console.log('events 저장전',newData);
-      setEvents(newData)
-      
+      console.log('events 저장전',newEvents);
+      setEvents(newEvents)
+
+      const currentTags=res.data.tagDtoList
+      const newTags=currentTags.map(obj=>{
+        const {htmlTagName,htmlTagId,htmlTagClass,tagEventDtoList, ...rest}=obj
+        return {tagName:htmlTagName,tagId:htmlTagId,tagClass:htmlTagClass,tagEventDtoList:tagEventDtoList}
+      })
+      newTags.forEach(element => {
+        element.tagEvents=[]
+        element.tagEventDtoList.forEach(tagEventDto=>{
+          element.tagEvents.push(tagEventDto.eventName)
+        })
+        delete element.tagEventDtoList
+      });
+      console.log(newTags)
+      setTags(newTags)
     })
     .catch(err=>{
       console.log('잘못됨',err)

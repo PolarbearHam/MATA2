@@ -15,7 +15,7 @@ import axios from "axios";
 
 
 // SPA 제공 코드
-import TagManager from "http://localhost:8080/api/v1/2";
+import TagManager from "http://localhost:8080/api/v1/js/2";
 const mata = new TagManager();
 
 function App() {
