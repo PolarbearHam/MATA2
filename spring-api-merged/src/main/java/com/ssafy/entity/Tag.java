@@ -38,6 +38,7 @@ public class Tag {
     private Project project;
 
     @ColumnDefault("true")
-    private boolean isEnabled;
+    @Builder.Default()
+    private boolean isEnabled = true;
 }
 

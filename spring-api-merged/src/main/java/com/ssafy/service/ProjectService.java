@@ -7,11 +7,13 @@ import com.ssafy.util.NoSuchMemberException;
 import com.ssafy.util.Validation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -92,16 +94,23 @@ public class ProjectService {
 
         for(SaveEventDto saveEventDto : saveEventListDto.getEvents()){
             Event event = saveEventDto.toEntity(projectRepository.findById(projectId).get());
-            eventRepository.saveAndFlush(event);
+            Optional<Event> optionalEvent =
+                    eventRepository.findByEventNameAndEventBaseAndProjectIdAndIsEnabledIsTrue(event.getEventName(), event.getEventBase(), projectId);
+            if (!optionalEvent.isPresent()) eventRepository.saveAndFlush(event);
+            else event = optionalEvent.get(); // 중복 시
 
-            for(SaveEventParamDto saveEventParamDto : saveEventDto.getEventParam()){
+            for(SaveEventParamDto saveEventParamDto : ListUtils.emptyIfNull(saveEventDto.getEventParam())){
                 EventParam eventParam = saveEventParamDto.toEntity(event);
-                eventParamRepository.save(eventParam);
+                Optional<EventParam> optionalEventParam =
+                        eventParamRepository.findByParamNameAndParamKeyAndEvent_Id(eventParam.getParamName(),eventParam.getParamKey(),eventParam.getEvent().getId());
+                if(!optionalEventParam.isPresent()) eventParamRepository.save(eventParam);
             }
 
-            for(SaveEventPathDto saveEventPathDto : saveEventDto.getEventPath()){
+            for(SaveEventPathDto saveEventPathDto : ListUtils.emptyIfNull(saveEventDto.getEventPath())){
                 EventPath eventPath = saveEventPathDto.toEntity(event);
-                eventPathRepository.save(eventPath);
+                Optional<EventPath> optionalEventPath
+                        = eventPathRepository.findByPathIndexAndPathNameAndEvent_Id(eventPath.getPathIndex(), eventPath.getPathName(), eventPath.getEvent().getId());
+                if(!optionalEventPath.isPresent())  eventPathRepository.save(eventPath);
             }
         }
         return saveEventOK;
@@ -109,16 +118,21 @@ public class ProjectService {
 
     public boolean saveTag(SaveTagListDto saveTagListDto, Long projectId){
         boolean saveTagOK = true;
+
         for(SaveTagDto tagSaveDto : saveTagListDto.getTags()){
             Tag tag = tagSaveDto.toTagEntity(projectRepository.findById(projectId).get());
-            tagRepository.saveAndFlush(tag);
+            Optional<Tag> optionalTag = tagRepository.findByHtmlTagIdAndProjectIdAndIsEnabledIsTrue(tag.getHtmlTagId(), projectId);
+            if(!optionalTag.isPresent()) tagRepository.saveAndFlush(tag);
+            else tag = optionalTag.get(); // 태그 중복의 경우 업데이트를 위해 검색된 객체 사용
 
-            // 여기...............
             for(String tagEventName : tagSaveDto.getTagEvents()){
-                if(eventRepository.findByEventNameAndProjectIdAndIsEnabledTrue(tagEventName, projectId).isPresent()) {
+                Optional<Event> optionalEvent = eventRepository.findByEventNameAndProjectIdAndIsEnabledIsTrue(tagEventName, projectId);
+                if(optionalEvent.isPresent()) {
+                    Optional<TagEvent> optionalTagEvent = tagEventRepository.findByTagIdAndEventId(tag.getId(),optionalEvent.get().getId());
+                    if(optionalTagEvent.isPresent()) continue; // 중복 태그-이벤트 의 경우 건너뜀
                     tagEventRepository.save(TagEvent.builder()
                             .tag(tag)
-                            .event(eventRepository.findByEventNameAndProjectIdAndIsEnabledTrue(tagEventName, projectId).get())
+                            .event(optionalEvent.get())
                             .build());
                 } else {
                     System.out.println("등록된 이벤트가 아님...");

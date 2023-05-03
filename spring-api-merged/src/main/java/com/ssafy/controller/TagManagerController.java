@@ -38,11 +38,11 @@ public class TagManagerController {
 //            kafkaProducerService.checkValidation(wl.getServiceToken()); // 토큰 검증 로직
 //            wl.setProjectId(kafkaProducerService.getProjectId(wl.getServiceToken())); // 토큰으로 서비 아이디 가져오기
             System.out.println(wl.toString());
-            try {
-                kafkaProducerService.sendToKafka(wl);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                kafkaProducerService.sendToKafka(wl);
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
         });
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
