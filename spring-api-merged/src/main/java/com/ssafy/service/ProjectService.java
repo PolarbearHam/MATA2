@@ -92,9 +92,20 @@ public class ProjectService {
     public boolean saveEvent(SaveEventListDto saveEventListDto, Long projectId){
         List<Event> eventList = eventRepository.findAllByProjectId(projectId);
         for(Event event : eventList){
+            List<EventParam> eventParamList = eventParamRepository.findAllByEventId(event.getId());
+            for(EventParam eventParam : eventParamList) {
+                eventParam.setEnabled(false);
+                eventParamRepository.save(eventParam);
+            }
+            List<EventPath> eventPathList = eventPathRepository.findAllByEventId(event.getId());
+            for(EventPath eventPath : eventPathList){
+                eventPath.setEnabled(false);
+                eventPathRepository.save(eventPath);
+            }
             event.setEnabled(false);
             eventRepository.saveAndFlush(event);
         }
+
         try {
             for(SaveEventDto saveEventDto : saveEventListDto.getEvents()){
                 Event event = saveEventDto.toEntity(projectRepository.findById(projectId).get());
@@ -112,6 +123,11 @@ public class ProjectService {
                     Optional<EventParam> optionalEventParam =
                             eventParamRepository.findByParamNameAndParamKeyAndEvent_IdAndEvent_IsEnabledIsTrue(eventParam.getParamName(),eventParam.getParamKey(),eventParam.getEvent().getId());
                     if(!optionalEventParam.isPresent()) eventParamRepository.save(eventParam);
+                    else {
+                        eventParam = optionalEventParam.get();
+                        eventParam.setEnabled(true);
+                        eventParamRepository.save(eventParam);
+                    }
                 }
 
                 for(SaveEventPathDto saveEventPathDto : ListUtils.emptyIfNull(saveEventDto.getEventPath())){
@@ -119,6 +135,11 @@ public class ProjectService {
                     Optional<EventPath> optionalEventPath
                             = eventPathRepository.findByPathIndexAndPathNameAndEvent_IdAndEvent_IsEnabledIsTrue(eventPath.getPathIndex(), eventPath.getPathName(), eventPath.getEvent().getId());
                     if(!optionalEventPath.isPresent())  eventPathRepository.save(eventPath);
+                    else{
+                        eventPath = optionalEventPath.get();
+                        eventPath.setEnabled(true);
+                        eventPathRepository.save(eventPath);
+                    }
                 }
             }
 
@@ -134,6 +155,11 @@ public class ProjectService {
         boolean saveTagOK = true;
         List<Tag> tagList = tagRepository.findAllByProjectId(projectId);
         for(Tag tag : tagList){
+            List<TagEvent> tagEventList = tagEventRepository.findAllByTagId(tag.getId());
+            for(TagEvent tagEvent : tagEventList){
+                tagEvent.setEnabled(false);
+                tagEventRepository.save(tagEvent);
+            }
             tag.setEnabled(false);
             tagRepository.saveAndFlush(tag);
         }
@@ -153,11 +179,17 @@ public class ProjectService {
                     Optional<Event> optionalEvent = eventRepository.findByEventNameAndProjectIdAndIsEnabledIsTrue(tagEventName, projectId);
                     if(optionalEvent.isPresent()) {
                         Optional<TagEvent> optionalTagEvent = tagEventRepository.findByTagIdAndEventId(tag.getId(),optionalEvent.get().getId());
-                        if(optionalTagEvent.isPresent()) continue; // 중복 태그-이벤트 의 경우 건너뜀
-                        tagEventRepository.save(TagEvent.builder()
+                        if(optionalTagEvent.isPresent()) {
+                            TagEvent tagEvent = optionalTagEvent.get();
+                            tagEvent.setEnabled(true);
+                            tagEventRepository.save(tagEvent);
+                        }
+                        else{
+                            tagEventRepository.save(TagEvent.builder()
                                 .tag(tag)
                                 .event(optionalEvent.get())
                                 .build());
+                        }
                     } else {
                         System.out.println("등록된 이벤트가 아님...");
                         saveTagOK = false;

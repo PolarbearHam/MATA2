@@ -62,7 +62,9 @@ public class TagDto {
             List<TagEventDto> toTagEventDtoList = new ArrayList<>();
 
             for (int i = 0; i < fromTagEventList.size(); i++) {
-                toTagEventDtoList.add(TagEventDto.toDto(fromTagEventList.get(i)));
+                TagEvent tagEvent = fromTagEventList.get(i);
+                if(!tagEvent.isEnabled()) continue;
+                toTagEventDtoList.add(TagEventDto.toDto(tagEvent));
             }
 
             tagDtoList.add(TagDto.builder()
