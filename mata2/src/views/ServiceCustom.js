@@ -209,7 +209,7 @@ const ServiceCustom = (props) => {
       console.log(newData);
       
       console.log('events 저장전',newData);
-      // setEvents(newData)
+      setEvents(newData)
       
     })
     .catch(err=>{
