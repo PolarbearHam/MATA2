@@ -20,4 +20,7 @@ RUN \
     apt install redis-server -y
 COPY redis/redis.conf /etc/redis/redis.conf
 
+# JAR copy
+COPY spring-api.jar /home/spring-api.jar
+
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=stage", "/home/spring-api.jar"]
