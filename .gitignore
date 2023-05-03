@@ -5,3 +5,4 @@ hadoop-cluster/client/notebook
 target/
 node_modules/
 build/
+ssl/
