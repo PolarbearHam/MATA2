@@ -77,8 +77,8 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://172.26.3.140:3306/ubuntu?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: mata
+    jdbc-url: jdbc:mysql://172.26.3.140:3306/mata?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ubuntu
     password: ssafy8a309
     initialization-mode: true
 
