@@ -16,8 +16,9 @@ import axios from "axios";
 
 
 // SPA 제공 코드
-import TagManager from "./tagmanager";
-const mata = new TagManager();
+// import TagManager from "./tagmanager";
+
+const mata = window.TagManager();
 
 function App() {
   const location = useLocation();
