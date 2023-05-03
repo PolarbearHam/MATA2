@@ -16,4 +16,6 @@ COPY nginx/sites-available/default /etc/nginx/sites-available/default
 COPY build/ /home/build/
 COPY nginx/ /home/nginx/
 
-ENTRYPOINT ["/etc/init.d/nginx", "start", "&&", "bash"]
+ENTRYPOINT ["/etc/init.d/nginx", "start"]
+
+CMD ["nginx", "-g", "daemon off;"]
