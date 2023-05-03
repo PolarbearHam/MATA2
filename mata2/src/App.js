@@ -15,7 +15,7 @@ import axios from "axios";
 
 
 // SPA 제공 코드
-import TagManager from "http://localhost:8080/api/v1/2";
+import TagManager from "http://localhost:8080/api/v1/js/2";
 const mata = new TagManager();
 
 function App() {
@@ -31,9 +31,7 @@ function App() {
 
   // GLOBAL: ************** 사용자 정보 **************
   const [user, setUser] = useState({
-    id: 1,
-    email: "dummy@dummy.dum",
-    name: "dummy"
+
   });
   const userInfo = async (accessToken) => {
     if(!accessToken || accessToken=='') return;

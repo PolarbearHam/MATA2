@@ -28,7 +28,7 @@ const Header = (props) => {
         </button>
       </div>
       <div id="nav-content" className="w-full lg:flex lg:w-auto hidden">
-        {!props.state.user ? ( <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
+        {!props.state.user.name ? ( <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
           <Link to="/"
              className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 mr-4">
             홈
