@@ -66,3 +66,53 @@ spring:
     ansi:
       enabled: always
 
+---
+
+spring:
+  config:
+    activate:
+      on-profile: stage
+  main:
+    allow-bean-definition-overriding: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbc-url: jdbc:mysql://master01:3306/mata?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: mata
+    password: ssafy8a309
+    initialization-mode: true
+
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: create
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:  ssafy8a309
+    cassandra:
+      contact-points: slave01:9042
+      keyspace-name: mykeyspace
+    hive:
+      driver-class-name: org.apache.hive.jdbc.HiveDriver
+      jdbc-url: jdbc:hive2://master01:10000/mata
+      username: hive
+      password: hive
+  kafka:
+    bootstrap-servers: master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092
+    topic:
+      tag-manager: tagmanager
+    producer:
+      bootstrap-servers: master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    template:
+      default-topic: tagmanager
+  output:
+    ansi:
+      enabled: always
