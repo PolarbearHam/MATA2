@@ -40,45 +40,46 @@ public class EventController {
 //        kafkaProducerService.checkValidation(serviceToken); // 토큰 검증 로직
 //        Long projectId = kafkaProducerService.getProjectId(serviceToken);
 
-        for (long k = 1; k < 150; k++) {
+        List referlist = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            referlist.add("https://www.google.com/" + ("mata" + i).hashCode());
+        }
+        for (int i = 0; i < 100; i++) {
+            referlist.add("https://www.naver.com/" + ("mata" + i).hashCode());
+        }
+        for (int i = 0; i < 100; i++) {
+            referlist.add("https://www.daum.com/" + ("mata" + i).hashCode());
+        }
+
+        List<String> urlList = new ArrayList<>();
+        // 10개
+        urlList.add("/");
+        urlList.add("/first");
+        urlList.add("/second");
+        urlList.add("/first/abcabc");
+        urlList.add("/first/shop");
+        urlList.add("/first/list");
+        urlList.add("/second/qna");
+        urlList.add("/second/board");
+        urlList.add("/second/map");
+        urlList.add("/journals");
+
+        List<String> idList = new ArrayList<>();
+        idList.add("button-back");
+        idList.add("button-event");
+        idList.add("map1");
+        idList.add("map2");
+
+
+        for (long k = 1; k < 60; k++) {
             Thread.sleep(1500);
 
-            long projectId = k%25;
-
-            List referlist = new ArrayList<>();
-            for (int i = 0; i < 100; i++) {
-                referlist.add("https://www.google.com/" + ("mata" + i).hashCode());
-            }
-            for (int i = 0; i < 100; i++) {
-                referlist.add("https://www.naver.com/" + ("mata" + i).hashCode());
-            }
-            for (int i = 0; i < 100; i++) {
-                referlist.add("https://www.daum.com/" + ("mata" + i).hashCode());
-            }
-
-            List<String> urlList = new ArrayList<>();
-            // 10개
-            urlList.add("/");
-            urlList.add("/first");
-            urlList.add("/second");
-            urlList.add("/first/abcabc");
-            urlList.add("/first/shop");
-            urlList.add("/first/list");
-            urlList.add("/second/qna");
-            urlList.add("/second/board");
-            urlList.add("/second/map");
-            urlList.add("/journals");
-
-            List<String> idList = new ArrayList<>();
-            idList.add("button-back");
-            idList.add("button-event");
-            idList.add("map1");
-            idList.add("map2");
+            long projectId = k%3;
 
             // 500명의 유저 접속, url 랜덤
             for (int i = 0; i < 500; i++) {
                 // 10개의 event
-                for (int j = 0; j < 10; j++) {
+                for (int j = 0; j < 20; j++) {
                     WebLogDto wl = new WebLogDto();
                     wl.setProjectId(projectId);
                     int hashValue = (int) (Math.random() * 100000);
@@ -87,18 +88,22 @@ public class EventController {
                     wl.setProjectToken("projectToken");
                     wl.setSessionId(String.valueOf(String.valueOf(hashValue).hashCode()));
                     long nowTime = System.currentTimeMillis();
-                    long time = nowTime - nowTime % 10000000;
+                    long time = nowTime - nowTime % 30000000;
 
-                    // 외부 접속
-                    if (i % 5 == 0) {
-                        wl.setLocation("http://ec2-3-38-85-143.ap-northeast-2.compute.amazonaws.com:3000" + urlList.get(i % 3));
-                    } else {
-                        // 내부 이동
-                        wl.setLocation("http://ec2-3-38-85-143.ap-northeast-2.compute.amazonaws.com:3000" + urlList.get(((hashValue % 10) + hashValue2) % 10));
-                    }
+                    if(i % 5 == 0)       wl.setScreenDevice("Desktop");
+                    else if(i % 5 == 1)  wl.setScreenDevice("tablet");
+                    else                 wl.setScreenDevice("phone");
+
+                    if(i % 13 == 0)      wl.setUserLanguage("ko");
+                    else                 wl.setUserLanguage("en");
+
+                    wl.setLocation("http://mata2.co.kr" + urlList.get(hashValue%10));
+                    if(i % 5 == 0)  wl.setReferrer(referlist.get(i%300).toString());
+                    else            wl.setReferrer("http://mata2.co.kr" + urlList.get((hashValue%10 + hashValue2 % 4) % 10));
+
                     long duTime = 10 + hashValue % 1000;
                     int hashValue3 = (int) (Math.random() * 100000);
-                    wl.setTimestamp(time + hashValue * 100);
+                    wl.setTimestamp(time + hashValue * 300);
                     wl.setEvent("none");
                     if (j == 0) {
                         // pageenter
@@ -106,7 +111,7 @@ public class EventController {
                         wl.setPageDuration(0);
                         wl.setPositionX(0);
                         wl.setPositionY(0);
-                    } else if (j == 9) {
+                    } else if (j == 19) {
                         // pageleave
                         wl.setEvent("pageleave");
                         wl.setPageDuration(duTime * j);
@@ -114,11 +119,19 @@ public class EventController {
                         wl.setPositionY(0);
                     } else {
                         // click
-                        wl.setTargetId(idList.get(hashValue3 % 4));
-                        wl.setEvent("click");
                         wl.setPageDuration(duTime * j);
                         wl.setPositionX(hashValue % 1000 + hashValue3 % 10);
                         wl.setPositionY(hashValue % 520 + hashValue3 % 10);
+                        if(j > 15) {
+                            wl.setTargetName("클릭 태그" + i%3);
+                            wl.setEvent("click");
+                        } else if ( j > 17 ) {
+                            wl.setTargetName("로그인");
+                            wl.setEvent("login");
+                        } else {
+                            wl.setTargetName("구매 클릭");
+                            wl.setEvent("purchase");
+                        }
                     }
 
                     try {

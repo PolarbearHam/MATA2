@@ -22,16 +22,21 @@ public class TagManagerController {
     @PostMapping("/dump")
     public ResponseEntity<?> getLogDump(@RequestBody WebLogDto[] body) {
 
-        System.out.println("이벤트 개수............." + body.length);
         Arrays.stream(body).forEach(wl -> {
 //            kafkaProducerService.checkValidation(wl.getServiceToken()); // 토큰 검증 로직
 //            wl.setProjectId(kafkaProducerService.getProjectId(wl.getServiceToken())); // 토큰으로 서비 아이디 가져오기
-            System.out.println(wl.toString());
-//            try {
-//                kafkaProducerService.sendToKafka(wl);
-//            } catch (JsonProcessingException e) {
-//                e.printStackTrace();
-//            }
+//            System.out.println(wl.toString());
+
+            // Todo 1: 화면 사이즈 확인 후, 라벨링 해주기 -> js에서 하자
+
+            // Todo 2: location 도메인 자르기
+
+            // Todo 3: referrer 확인 후, 기본 도메인이면 자르기
+            try {
+                kafkaProducerService.sendToKafka(wl);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         });
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

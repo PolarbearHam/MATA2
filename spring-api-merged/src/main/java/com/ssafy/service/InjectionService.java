@@ -24,7 +24,6 @@ public class InjectionService {
 
     // Todo : js코드 난독화 필요
     public String callJsCode(long projectId) {
-        System.out.println(projectRepository.findById(projectId).get().isSpa());
         String code_head =
                 "export default class TagManager {\n" +
                         "  constructor() {\n" +
