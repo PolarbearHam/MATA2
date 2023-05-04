@@ -23,6 +23,6 @@ COPY redis/redis.conf /etc/redis/redis.conf
 # JAR copy
 COPY spring-api.jar /home/spring-api.jar
 
-ENTRYPOINT ["/etc/init.d/redis-server", "start"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=stage", "/home/spring-api.jar"]
 
-CMD ["java", "-jar", "-Dspring.profiles.active=stage", "/home/spring-api.jar"]
+CMD ["/etc/init.d/redis-server", "start"]
