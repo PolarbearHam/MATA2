@@ -21,12 +21,9 @@ def streaming_job():
 
     schema = StructType(
         [
-            StructField("projectToken", StringType()),
-            StructField("clientId", LongType()),
             StructField("projectId", LongType()),
             StructField("sessionId", StringType()),
             StructField("event", StringType()),
-            StructField("targetId", StringType()),
             StructField("positionX", IntegerType()),
             StructField("positionY", IntegerType()),
             StructField("location", StringType()),
@@ -34,14 +31,18 @@ def streaming_job():
             StructField("timestamp", LongType()),
             StructField("pageDuration", LongType()),
             StructField("data", StringType()),
-            StructField("screenSizeX", LongType()),
-            StructField("screenSizeY", LongType()),
+            StructField("screenDevice", StringType()),
             StructField("targetName", StringType()),
             StructField("title", StringType()),
             StructField("userAgent", StringType()),
             StructField("userLanguage", StringType())
         ]
     )
+
+    # StructField("clientId", LongType()),
+    # StructField("targetId", StringType()),
+    # StructField("screenSizeX", LongType()),
+    # StructField("screenSizeY", LongType()),
 
     streaming_df = session \
         .readStream \
@@ -56,12 +57,9 @@ def streaming_job():
         .withColumn("value", from_json(col("value").cast("string"), schema))
 
     streaming_query = streaming_df.select("key", "value.*") \
-        .withColumnRenamed("projectToken", "project_token") \
-        .withColumnRenamed("clientId", "client_id") \
         .withColumnRenamed("projectId", "project_id") \
         .withColumnRenamed("sessionId", "session_id") \
         .withColumnRenamed("event", "event") \
-        .withColumnRenamed("targetId", "target_id") \
         .withColumnRenamed("positionX", "position_x") \
         .withColumnRenamed("positionY", "position_y") \
         .withColumnRenamed("location", "location") \
@@ -70,12 +68,16 @@ def streaming_job():
         .withColumnRenamed("timestamp", "creation_timestamp") \
         .withColumnRenamed("pageDuration", "page_duration") \
         .withColumnRenamed("data", "data") \
-        .withColumnRenamed("screenSizeX", "screen_size_x") \
-        .withColumnRenamed("screenSizeY", "screen_size_y") \
+        .withColumnRenamed("screenDevice", "screen_device") \
         .withColumnRenamed("targetName", "target_name") \
         .withColumnRenamed("title", "title") \
         .withColumnRenamed("userAgent", "user_agent") \
         .withColumnRenamed("userLanguage", "user_language")
+
+    # .withColumnRenamed("clientId", "client_id") \
+    # .withColumnRenamed("targetId", "target_id") \
+    # .withColumnRenamed("screenSizeX", "screen_size_x") \
+    # .withColumnRenamed("screenSizeY", "screen_size_y") \
 
     cassandra_keyspace = "tagmanager"
     cassandra_table = "stream"
