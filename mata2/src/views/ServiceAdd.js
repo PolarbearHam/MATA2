@@ -26,7 +26,7 @@ const ServiceAdd = () => {
     }
     console.log("로그인 시도",formData)
     
-    axios.post('//localhost:8080/api/v1/project/',formData,{headers})
+    axios.post(process.env.REACT_APP_HOST+'/v1/project/',formData,{headers})
 
     .then(response => {
       console.log(response);

@@ -16,9 +16,9 @@ import axios from "axios";
 
 
 // SPA 제공 코드
-// import TagManager from "./tagmanager";
+import TagManager from "./tagmanager";
 
-const mata = window.TagManager();
+const mata = new TagManager();
 
 function App() {
   const location = useLocation();
@@ -101,7 +101,7 @@ function App() {
       "Authorization": `Bearer ${accessToken}`,
     }
     if (accessToken) {
-      axios({method:"get",url:"//localhost:8080/api/v1/project/",headers:headers})
+      axios({method:"get",url:process.env.REACT_APP_HOST+"/v1/project/",headers:headers})
       .then(res=>{
         setServiceList(res.data)
       })
@@ -145,7 +145,7 @@ function App() {
       "Authorization": `Bearer ${accessToken}`,
     }
     if (accessToken) {
-      axios({method:"get",url:"//localhost:8080/api/v1/project/",headers:headers})
+      axios({method:"get",url:process.env.REACT_APP_HOST+"/v1/project/",headers:headers})
       .then(res=>{
         setServiceList(res.data)
       })

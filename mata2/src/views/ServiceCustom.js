@@ -4,7 +4,9 @@ import './ServiceCustom.css'
 import { CodeBlock, dracula } from "react-code-blocks";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 const ServiceCustom = (props) => {
+
   const saveEvent= (e)=>{
     e.preventDefault();
     const payload=[]
@@ -19,7 +21,7 @@ const ServiceCustom = (props) => {
     }
     )
     
-    const url='//localhost:8080/api/v1/project/'+serviceId.id+'/events';
+    const url=process.env.REACT_APP_HOST+'/v1/project/'+serviceId.id+'/events';
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
@@ -33,6 +35,7 @@ const ServiceCustom = (props) => {
       //   sessionStorage.setItem('accessToken',response.data.accessToken)  
       //   navigate('/')
       // }else alert('틀림')
+      window.location.reload();
     })
     .catch(error => {
       console.error(error);
@@ -173,7 +176,7 @@ const ServiceCustom = (props) => {
 
     }
     );
-    const url='//localhost:8080/api/v1/project/'+serviceId.id+'/tags';
+    const url=process.env.REACT_APP_HOST+'/v1/project/'+serviceId.id+'/tags';
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
@@ -187,6 +190,7 @@ const ServiceCustom = (props) => {
       //   sessionStorage.setItem('accessToken',response.data.accessToken)  
       //   navigate('/')
       // }else alert('틀림')
+      window.location.reload();
     })
     .catch(error => {
       console.error(error);
@@ -200,7 +204,7 @@ const ServiceCustom = (props) => {
   let currentService={}
   const [origin,setOrigin]=useState('')
   const  serviceId  = useParams();
-
+  const location = useLocation();
   useEffect(()=>{
 
     props.state.serviceList.map( (service) => {
@@ -212,7 +216,7 @@ const ServiceCustom = (props) => {
       }else{console.log('주소 못 찾음')
     }
     });
-    const url='//localhost:8080/api/v1/project/'+serviceId.id+'/settings'
+    const url=process.env.REACT_APP_HOST+'/v1/project/'+serviceId.id+'/settings'
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
     }

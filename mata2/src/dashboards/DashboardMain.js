@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import './DashboardMain.css';
 import DemoLineChart from "./linechart/DemoLineChart";
 import DemoAreaChart from "./areachart/DemoAreaChart";
@@ -7,9 +7,61 @@ import DemoSankeyChart from "./sankeychart/DemoSankeyChart";
 import DemoPieChart from "./piechart/DemoPieChart";
 import Draggable, {DraggableCore} from 'react-draggable';
 import { Resizable,ResizableBox } from 'react-resizable';
-
+import GridLayout from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
 // function DashboardMain() {
 const DashboardMain = (props) => {
+  const [layout, setLayout] = useState([
+    {
+      "w": 5,
+      "h": 7,
+      "x": 0,
+      "y": 0,
+      "i": "a",
+      "moved": false,
+      "static": false
+    },
+    {
+      "w": 5,
+      "h": 7,
+      "x": 6,
+      "y": 0,
+      "i": "b",
+      "moved": false,
+      "static": false
+    },
+    {
+      "w": 5,
+      "h": 7,
+      "x": 0,
+      "y": 7,
+      "i": "c",
+      "moved": false,
+      "static": false
+    },
+    {
+      "w": 5,
+      "h": 7,
+      "x": 6,
+      "y": 7,
+      "i": "d",
+      "moved": false,
+      "static": false
+    }
+  ]);
+
+  useEffect(() => {
+    console.log('그리드 레이아웃은',layout)
+    const storedLayout = JSON.parse(localStorage.getItem("my-grid-layout")) || [];
+    setLayout(storedLayout);
+    console.log('그리드 레이아웃은',layout)
+  }, []);
+
+  const onLayoutChange = (newLayout) => {
+    localStorage.setItem("my-grid-layout", JSON.stringify(newLayout));
+    setLayout(newLayout);
+  };
   return (
     <div className="dashboard flex-grow-1">
       <header className="header" >
@@ -59,6 +111,37 @@ const DashboardMain = (props) => {
             </div>
           </Draggable>
         </div>
+        <GridLayout
+          className="layout"
+          cols={12}
+          rowHeight={30}
+          width={1200}
+          layout={layout}
+          onLayoutChange={onLayoutChange}
+        >
+          {/* {layout.map((item) => (
+            <div key={item.i} data-grid={item}>
+              <DemoPieChart />
+            </div>
+          ))} */}
+          <div key='a' data-grid={layout[0]}>
+            방문자수 라인차트
+            <DemoLineChart />
+          </div>
+          <div key='b' data-grid={layout[1]}>
+            방문자수 라인차트2
+            <DemoAreaChart />
+          </div>
+          <div key='c' data-grid={layout[2]}>
+            페이지별 이탈
+            <DemoBarChart />
+          </div>
+          <div key='d' data-grid={layout[3]}>
+            유입경로 별 점유율
+            <DemoPieChart />
+          </div>
+          
+        </GridLayout>
       </main>
     </div>
   );
