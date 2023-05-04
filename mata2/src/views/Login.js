@@ -41,8 +41,8 @@ const Login = () => {
       
       <form id='loginForm' onSubmit={login}>
         <div id='loginLogo'>로그인</div>
-        <input className='inputField' placeholder='email' name='email' onChange={(event) => setEmail(event.target.value)}/>
-        <input className='inputField' placeholder='암호' name='password' onChange={(event) => setPassword(event.target.value)}/>
+        <input className='inputField' type='email' placeholder='email' name='email' onChange={(event) => setEmail(event.target.value)}/>
+        <input className='inputField' type='password' placeholder='암호' name='password' onChange={(event) => setPassword(event.target.value)}/>
         
         <button id='loginButton' >로그인</button>
         
