@@ -104,8 +104,6 @@ spring:
       jdbc-url: jdbc:hive2://172.26.3.140:10000/mata
       username: hive
       password: hive
-  cassandra:
-
 #  kafka:
 #    bootstrap-servers: 172.26.3.140:9092
 #    topic:
