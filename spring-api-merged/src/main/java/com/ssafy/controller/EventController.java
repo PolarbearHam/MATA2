@@ -4,7 +4,6 @@ package com.ssafy.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.dto.WebLogDto;
 import com.ssafy.service.InjectionService;
-import com.ssafy.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ import java.util.Map;
 public class EventController {
 
     private final InjectionService injectionService;
-    private final KafkaProducerService kafkaProducerService;
+    //private final KafkaProducerService kafkaProducerService;
     private static final String SUCCESS = "success in EventController";
     private static final String FAIL = "fail in EventController";
 
@@ -147,11 +146,11 @@ public class EventController {
                         }
                     }
 
-                    try {
-                        kafkaProducerService.sendToKafka(wl);
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        //kafkaProducerService.sendToKafka(wl);
+//                    } catch (JsonProcessingException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         }
