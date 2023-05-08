@@ -1,10 +1,12 @@
 package com.ssafy.dto;
 
-import com.datastax.oss.driver.api.core.uuid.Uuids;
 import lombok.*;
+import org.apache.hadoop.hive.common.type.Timestamp;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 @Table
@@ -13,10 +15,10 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WebLogCassandraTableDto {
+public class Stream {
 
     @PrimaryKey
-    private UUID key;
+    private String key;
     private long project_id;
     private String session_id;
     private String event;
@@ -25,7 +27,7 @@ public class WebLogCassandraTableDto {
     private int position_y;
     private String location;
     private String referrer;
-    private long creation_timestamp;
+    private Instant creation_timestamp;
     private long page_duration;
     private String data;
     private String screen_device;
@@ -34,9 +36,9 @@ public class WebLogCassandraTableDto {
     private String user_agent;
     private String user_language;
 
-    public static WebLogCassandraTableDto webLogFormChange(WebLogDto webLogDto, UUID key) {
-        return WebLogCassandraTableDto.builder()
-                .key(key)
+    public static Stream webLogFormChange(WebLogDto webLogDto, UUID key) {
+        return Stream.builder()
+                .key(key.toString())
                 .project_id(webLogDto.getProjectId())
                 .session_id(webLogDto.getSessionId())
                 .event(webLogDto.getEvent())
@@ -45,7 +47,7 @@ public class WebLogCassandraTableDto {
                 .position_y(webLogDto.getPositionY())
                 .location(webLogDto.getLocation())
                 .referrer(webLogDto.getReferrer())
-                .creation_timestamp(webLogDto.getTimestamp())
+                .creation_timestamp(Instant.ofEpochSecond(webLogDto.getTimestamp()/1000))
                 .page_duration(webLogDto.getPageDuration())
                 .data(webLogDto.getData())
                 .screen_device(webLogDto.getScreenDevice())

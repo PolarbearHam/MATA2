@@ -1,12 +1,12 @@
 package com.ssafy.repository;
 
-import java.util.List;
 import java.util.UUID;
 
-import com.ssafy.dto.WebLogCassandraTableDto;
-import org.springframework.data.cassandra.repository.AllowFiltering;
+import com.ssafy.dto.Stream;
 import org.springframework.data.cassandra.repository.CassandraRepository;
+import org.springframework.stereotype.Repository;
 
-public interface WeblogRepository extends CassandraRepository<WebLogCassandraTableDto, UUID> {
+@Repository
+public interface WeblogRepository extends CassandraRepository<Stream, UUID> {
 
 }

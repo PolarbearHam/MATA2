@@ -2,7 +2,7 @@ package com.ssafy.service;
 
 import com.datastax.oss.driver.api.core.uuid.Uuids;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ssafy.dto.WebLogCassandraTableDto;
+import com.ssafy.dto.Stream;
 import com.ssafy.dto.WebLogDto;
 import com.ssafy.entity.Project;
 import com.ssafy.repository.ProjectRepository;
@@ -30,7 +30,7 @@ public class CassandraService {
     private final WeblogRepository weblogRepository;
 
     public void sendToCassandra(final WebLogDto data) throws JsonProcessingException {
-        weblogRepository.save(WebLogCassandraTableDto.webLogFormChange(data, Uuids.timeBased()));
+        weblogRepository.save(Stream.webLogFormChange(data, Uuids.timeBased()));
     }
 
 
