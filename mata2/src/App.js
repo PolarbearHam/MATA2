@@ -1,4 +1,4 @@
-import React, {useEffect, useState,useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import './App.css';
 import {BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -14,30 +14,23 @@ import DashboardMain from './dashboards/DashboardMain';
 import Test from './views/Test';
 import axios from "axios";
 
-
 // SPA 제공 코드
-import TagManager from "./tagmanager";
+import TagManager from "npm-mata";
 
 const mata = new TagManager();
+mata.init("null");
 
 function App() {
-  const myModuleRef = useRef();
-  
   const location = useLocation();
-  const [serviceList,setServiceList]=useState([])
-
-  // useEffect(() => {
-  //   const mata = window.TagManager ? new window.TagManager() : null;
-  // }, []);
   useEffect(() => {
-    // const mata = window.TagManager ? new window.TagManager() : null;
-
     mata.attach();
     return () => {
       mata.detach();
     }
   }, [location])
 
+
+  const [serviceList,setServiceList]=useState([])
   // GLOBAL: ************** 사용자 정보 **************
   const [user, setUser] = useState({
 
