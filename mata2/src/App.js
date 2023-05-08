@@ -14,18 +14,15 @@ import DashboardMain from './dashboards/DashboardMain';
 import Test from './views/Test';
 import axios from "axios";
 
-// SPA 제공 코드
-import TagManager from "npm-mata";
-
-const mata = new TagManager();
-mata.init("null");
+import TagManager from 'npm-mata';
+const mata = new TagManager("token");
 
 function App() {
   const location = useLocation();
   useEffect(() => {
-    mata.attach();
+    window.dispatchEvent(new Event("load"));
     return () => {
-      mata.detach();
+      window.dispatchEvent(new Event("unload"));
     }
   }, [location])
 
