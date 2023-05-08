@@ -1,15 +1,19 @@
 package com.ssafy.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Data
-public class PageDuration {
+@Builder
+public class HivePageDuration {
 
     private long totalDuration;
-    private int totalSession;
+    private long totalSession;
     private String location;
+    private String screenDevice;
+    private String userLanguage;
     private Timestamp updateTimestamp;
     private long projectId;
 
