@@ -3,98 +3,109 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-# from lib.spark.cassandra_to_hive_job import batching_cassandra
 from lib.spark.Batching_Jobs import batching_hive, batching_cassandra_spark, batching_hive_all
 
 default_args = {
     'owner': 'airflow',
-    'start_date': datetime(2023, 4, 28, 7, 10),
-    'retries': 1,
-    'retry_delay': timedelta(minutes=1),
+    'start_date': datetime(2023, 5, 4, 8, 10),
+    'retries': 0,
+    'retry_delay': timedelta(minutes=1)
 }
 
 dag1m = DAG(
     'cassandra_to_hive_1m',
     default_args=default_args,
     description='Cassandra to Hive',
-    schedule_interval=timedelta(minutes=1)
+    schedule_interval=timedelta(minutes=1),
+    catchup=False
 )
 
 dag5m = DAG(
     'cassandra_to_hive_5m',
     default_args=default_args,
-    description='Cassandra to Hive',
-    schedule_interval=timedelta(minutes=5)
+    description='Hive to Hive',
+    schedule_interval=timedelta(minutes=5),
+    catchup=False
 )
 
 dag10m = DAG(
     'cassandra_to_hive_10m',
     default_args=default_args,
-    description='Cassandra to Hive',
-    schedule_interval=timedelta(minutes=10)
+    description='Hive to Hive',
+    schedule_interval=timedelta(minutes=10),
+    catchup=False
 )
 
 dag30m = DAG(
     'cassandra_to_hive_30m',
     default_args=default_args,
-    description='Cassandra to Hive',
-    schedule_interval=timedelta(minutes=30)
+    description='Hive to Hive',
+    schedule_interval=timedelta(minutes=30),
+    catchup=False
 )
 
 dag1h = DAG(
     'cassandra_to_hive_1h',
     default_args=default_args,
-    description='Cassandra to Hive',
-    schedule_interval=timedelta(hours=1)
+    description='Hive to Hive',
+    schedule_interval=timedelta(hours=1),
+    catchup=False
 )
 
 dag6h = DAG(
     'cassandra_to_hive_6h',
     default_args=default_args,
-    description='Cassandra to Hive',
-    schedule_interval=timedelta(hours=6)
+    description='Hive to Hive',
+    schedule_interval=timedelta(hours=6),
+    catchup=False
 )
 
 dag12h = DAG(
     'cassandra_to_hive_12h',
     default_args=default_args,
-    description='Cassandra to Hive',
-    schedule_interval=timedelta(hours=12)
+    description='Hive to Hive',
+    schedule_interval=timedelta(hours=12),
+    catchup=False
 )
 
 dag1d = DAG(
     'cassandra_to_hive_1d',
     default_args=default_args,
-    description='Cassandra to Hive',
-    schedule_interval= "@daily"
+    description='Hive to Hive',
+    schedule_interval= "@daily",
+    catchup=False
 )
 
 dag1w = DAG(
     'hive_to_hive_1w',
     default_args=default_args,
     description='Hive to Hive',
-    schedule_interval= "@weekly"
+    schedule_interval= "@weekly",
+    catchup=False
 )
 
 dag1mo = DAG(
     'hive_to_hive_1mo',
     default_args=default_args,
     description='Hive to Hive',
-    schedule_interval= "@monthly"
+    schedule_interval= "@monthly",
+    catchup=False
 )
 
 dag6mo = DAG(
     'hive_to_hive_6mo',
     default_args=default_args,
     description='Hive to Hive',
-    schedule_interval=relativedelta(months=6)
+    schedule_interval=relativedelta(months=6),
+    catchup=False
 )
 
 dag1y = DAG(
     'hive_to_hive_1y',
     default_args=default_args,
     description='Hive to Hive',
-    schedule_interval= "@yearly"
+    schedule_interval= "@yearly",
+    catchup=False
 )
 
 
@@ -104,7 +115,7 @@ now = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
 cassandra_to_spark_1m = PythonOperator(
     task_id='cassandra_to_spark_1m',
     python_callable=batching_cassandra_spark,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 1,
                  "unit" : "m"},
     dag=dag1m
@@ -112,8 +123,8 @@ cassandra_to_spark_1m = PythonOperator(
 
 cassandra_to_spark_5m = PythonOperator(
     task_id='cassandra_to_spark_5m',
-    python_callable=batching_cassandra_spark,
-    op_kwargs = {"base_time" : now,
+    python_callable=batching_hive,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 5,
                  "unit" : "m"},
     dag=dag5m
@@ -121,8 +132,8 @@ cassandra_to_spark_5m = PythonOperator(
 
 cassandra_to_spark_10m = PythonOperator(
     task_id='cassandra_to_spark_10m',
-    python_callable=batching_cassandra_spark,
-    op_kwargs = {"base_time" : now,
+    python_callable=batching_hive,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 10,
                  "unit" : "m"},
     dag=dag10m
@@ -130,7 +141,7 @@ cassandra_to_spark_10m = PythonOperator(
 
 cassandra_to_spark_30m = PythonOperator(
     task_id='cassandra_to_spark_30m',
-    python_callable=batching_cassandra_spark,
+    python_callable=batching_hive,
     op_kwargs = {"base_time" : now,
                  "amount" : 30,
                  "unit" : "m"},
@@ -139,7 +150,7 @@ cassandra_to_spark_30m = PythonOperator(
 
 cassandra_to_spark_1h = PythonOperator(
     task_id='cassandra_to_spark_1h',
-    python_callable=batching_cassandra_spark,
+    python_callable=batching_hive,
     op_kwargs = {"base_time" : now,
                  "amount" : 1,
                  "unit" : "h"},
@@ -148,7 +159,7 @@ cassandra_to_spark_1h = PythonOperator(
 
 cassandra_to_spark_6h = PythonOperator(
     task_id='cassandra_to_spark_6h',
-    python_callable=batching_cassandra_spark,
+    python_callable=batching_hive,
     op_kwargs = {"base_time" : now,
                  "amount" : 6,
                  "unit" : "h"},
@@ -157,7 +168,7 @@ cassandra_to_spark_6h = PythonOperator(
 
 cassandra_to_spark_12h = PythonOperator(
     task_id='cassandra_to_spark_12h',
-    python_callable=batching_cassandra_spark,
+    python_callable=batching_hive,
     op_kwargs = {"base_time" : now,
                  "amount" : 12,
                  "unit" : "h"},
@@ -166,7 +177,7 @@ cassandra_to_spark_12h = PythonOperator(
 
 hive_to_spark_1d = PythonOperator(
     task_id='cassandra_to_spark_1d',
-    python_callable=batching_cassandra_spark,
+    python_callable=batching_hive,
     op_kwargs = {"base_time" : now,
                  "amount" : 1,
                  "unit" : "d"},

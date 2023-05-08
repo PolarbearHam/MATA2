@@ -16,7 +16,7 @@
 
     <property>
         <name>yarn.scheduler.capacity.root.queues</name>
-        <value>stream,batch</value>
+        <value>stream,batch,store</value>
     </property>
 
     <!-- capacity -->
@@ -26,7 +26,11 @@
     </property>
     <property>
         <name>yarn.scheduler.capacity.root.batch.capacity</name>
-        <value>70</value>
+        <value>60</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.store.capacity</name>
+        <value>10</value>
     </property>
 
     <!-- user-limit-factor -->
@@ -38,6 +42,10 @@
         <name>yarn.scheduler.capacity.root.batch.user-limit-factor</name>
         <value>6</value>
     </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.batch.store-limit-factor</name>
+        <value>6</value>
+    </property>
 
         <!-- maximum-capacity -->
     <property>
@@ -46,6 +54,10 @@
     </property>
     <property>
         <name>yarn.scheduler.capacity.root.batch.maximum-capacity</name>
+        <value>-1</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.store.maximum-capacity</name>
         <value>-1</value>
     </property>
 

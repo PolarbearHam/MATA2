@@ -34,18 +34,8 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("/{projectId}")
-    public ResponseEntity<ProjectResponse> getProjectDetail(
-            @PathVariable("projectId") Long projectId,
-            @AuthenticationPrincipal UserDetails userDetails) {
-        ProjectResponse response = projectService.getProjectDetail(projectId);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
-    }
-
     // 프로젝트 추가
-    @PostMapping("/add")
+    @PostMapping("/")
     public ResponseEntity<Void> addProject(@RequestBody ProjectAddDto request){
         String email = SecurityUtils.getCurrentMemberEmail();
         log.info("email is : "+ email);
@@ -55,12 +45,22 @@ public class ProjectController {
                 .build();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/")
     public ResponseEntity<String> deleteProject(@RequestBody ProjectDto request){
         projectService.delete(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body("Delete Success");
+    }
+
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectResponse> getProjectDetail(
+            @PathVariable("projectId") Long projectId,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        ProjectResponse response = projectService.getProjectDetail(projectId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 
     // Project token 발급 API
@@ -82,7 +82,7 @@ public class ProjectController {
     }
 
     //서비스 아이디와 url 받는 부분
-    @PostMapping("/{projectId}/service")
+    @PostMapping("/{projectId}/project")
     public ResponseEntity<?> customService(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long projectId, @RequestBody ProjectDto projectDto){

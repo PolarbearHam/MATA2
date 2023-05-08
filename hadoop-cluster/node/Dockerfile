@@ -177,10 +177,10 @@ COPY ../lib/apache-flume-1.11.0-bin/conf/flume-kafka-conf.properties $FLUME_CONF
 
 # Cassandra Installation
 RUN \
-    wget https://dlcdn.apache.org/cassandra/4.0.8/apache-cassandra-4.0.8-bin.tar.gz && \
-    tar xzvf apache-cassandra-4.0.8-bin.tar.gz && \
-    mv apache-cassandra-4.0.8 /usr/local/lib/apache-cassandra-4.0.8
-ENV CASSANDRA_HOME=/usr/local/lib/apache-cassandra-4.0.8
+    wget https://dlcdn.apache.org/cassandra/4.0.9/apache-cassandra-4.0.9-bin.tar.gz && \
+    tar xzvf apache-cassandra-4.0.9-bin.tar.gz && \
+    mv apache-cassandra-4.0.9 /usr/local/lib/apache-cassandra-4.0.9
+ENV CASSANDRA_HOME=/usr/local/lib/apache-cassandra-4.0.9
 ENV PATH=$PATH:$CASSANDRA_HOME/bin
 
 # Cassandra env settings
