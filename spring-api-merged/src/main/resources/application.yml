@@ -99,7 +99,6 @@ spring:
     cassandra:
       contact-points: 172.31.62.247:9042
       keyspace-name: tagmanager
-      local-datacenter: DC1
     hive:
       driver-class-name: org.apache.hive.jdbc.HiveDriver
       jdbc-url: jdbc:hive2://172.26.3.140:10000/mata
