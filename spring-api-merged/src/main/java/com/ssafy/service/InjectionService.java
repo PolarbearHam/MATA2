@@ -216,7 +216,7 @@ public class InjectionService {
         // events
         Map<String, Object> events = new HashMap<>();
         List<String> baseEvents = Arrays.asList("clicks", "mouseenter", "mouseleave", "scroll");
-        for(String be : baseEvents) {
+        for (String be : baseEvents) {
             Map<String, Object> event = new HashMap<>();
             event.put("base", null);
             event.put("paran", new ArrayList<>());
@@ -224,7 +224,7 @@ public class InjectionService {
             events.put(be, event);
         }
         List<Event> customEvents = eventRepository.findAllByProjectId(projectId);
-        for(Event e : customEvents) {
+        for (Event e : customEvents) {
             Map<String, Object> event = new HashMap<>();
             List<EventParam> eventParamList = eventParamRepository.findAllByEventId(e.getId());
             List<EventPath> eventPathList = eventPathRepository.findAllByEventId(e.getId());
@@ -238,7 +238,7 @@ public class InjectionService {
         injection.put("tags", null);
         Map<String, Object> tags = new HashMap<>();
         List<Tag> customTags = tagRepository.findAllByProjectId(projectId);
-        for(Tag t : customTags) {
+        for (Tag t : customTags) {
             Map<String, Object> tag = new HashMap<>();
             tag.put("id", t.getHtmlTagId());
             tag.put("class", t.getHtmlTagClass());
@@ -248,5 +248,4 @@ public class InjectionService {
 
         return injection;
     }
-
 }

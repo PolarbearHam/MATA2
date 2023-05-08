@@ -43,7 +43,7 @@ public class KafkaProducerService {
             @Override
             public void onSuccess(SendResult<String, String> result) {
 //                System.out.println("Data sent successfully: "+data);
-                log.warn("Data sent successfully:");
+//                log.warn("Data sent successfully:");
             }
         });
     }

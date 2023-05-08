@@ -189,9 +189,11 @@ export default class TagManager {
         timestamp: Date.now(),
         pageDuration: Date.now() - this.enterTimer,
         data: e.detail ? e.detail : null,
-        screenSizeX: window.innerWidth,
-        screenSizeY: window.innerHeight,
-        userLanguage: navigator.language
+        screenDevice : (window.innerWidth >= 1024) ? "desktop" :
+                       (window.innerWidth >= 768) ? "tablet" : "phone" ,
+        // screenSizeX: window.innerWidth,
+        // screenSizeY: window.innerHeight,
+        userLanguage: navigator.language.substring(0, 2)
       }
       this.logStash.push(body)
 
