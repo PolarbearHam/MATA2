@@ -5,7 +5,7 @@ import {Navigate} from "react-router-dom";
 const Logout = (props) => {
   useEffect(() => {
     sessionStorage.removeItem("accessToken");
-    props.state.setUser(null);
+    props.state.setUser({});
   }, []);
   return (
     <>

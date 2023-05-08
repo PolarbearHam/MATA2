@@ -30,7 +30,7 @@ const ServiceAdd = () => {
 
     .then(response => {
       console.log(response);
-      if (response.status==200) {
+      if (response.status === 200) {
         navigate('/start') 
         
       }else alert('틀림')
