@@ -1,5 +1,33 @@
 #!/usr/bin/env bash
+sudo docker exec master01 cqlsh master01 9042 -e "
+CREATE KEYSPACE IF NOT EXISTS tagmanager WITH REPLICATION = {
+        'class' : 'SimpleStrategy',
+        'replication_factor' : 1
+};
+USE tagmanager;
+DROP TABLE IF EXISTS tagmanager.stream;
 
+CREATE TABLE stream (
+  key TEXT,
+  client_id BIGINT,
+  project_id BIGINT,
+  session_id TEXT,
+  event TEXT,
+  target_id TEXT,
+  position_x INT,
+  position_y INT,
+  location TEXT,
+  referrer TEXT,
+  creation_timestamp TIMESTAMP,
+  page_duration BIGINT,
+  data TEXT,
+  screen_device TEXT,
+  target_name TEXT,
+  title TEXT,
+  user_agent TEXT,
+  user_language TEXT,
+  PRIMARY KEY ((project_id), creation_timestamp, session_id)
+) WITH CLUSTERING ORDER BY (creation_timestamp DESC);"
 
 sudo docker exec master01 hive -e "
 CREATE DATABASE IF NOT EXISTS mata;
