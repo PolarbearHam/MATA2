@@ -2,12 +2,13 @@ package com.ssafy.service;
 
 import com.ssafy.entity.*;
 import com.ssafy.repository.*;
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -23,69 +24,16 @@ public class InjectionService {
 
 
     // Todo : js코드 난독화 필요
-    public String callJsCode(long projectId) {
-        System.out.println(projectRepository.findById(projectId).get().isSpa());
+    public String callJsCode(String serviceToken) {
+        long projectId = projectRepository.findByToken(serviceToken).get().getId();
         String code_head =
                 "export default class TagManager {\n" +
-                        "  constructor() {\n" +
-                        "    this.injection = {\n" +
-                        "      bootstrap: 'http://localhost:8080/api/v1/dump',\n" +
-                        "      serviceToken: 'dummy-serviceToken',\n" +
-                        "      spa: " + projectRepository.findById(projectId).get().isSpa() +",\n" +
-                        "      events: {\n" +
-                        "        click: {base: null, param: [], path: []}," +
-                        "        mouseenter: {base: null, param: [], path: []},\n" +
-                        "        mouseleave: {base: null, param: [], path: []},\n" +
-                        "        scroll: {base: null, param: [], path: []},\n";
-
-        StringBuilder code = new StringBuilder();
-        List<Event> eventList = eventRepository.findAllByProjectId(projectId);
-
-        for (int i = 0; i < eventList.size(); i++) {
-            Event event = eventList.get(i);
-            List<EventParam> eventParamList = eventParamRepository.findAllByEventId(event.getId());
-            List<EventPath> eventPathList = eventPathRepository.findAllByEventId(event.getId());
-            code.append(event.getEventName()+":{");
-            code.append(String.format("base:'%s',",event.getEventBase()));
-            code.append("param: [");
-            for (int j = 0; j < eventParamList.size(); j++) {
-                EventParam eventParam = eventParamList.get(j);
-                code.append(String.format("{name: '%s', key: '%s'}", eventParam.getParamName(), eventParam.getParamKey()));
-                if(j != eventParamList.size()-1) code.append(",");
-            }
-            code.append("],");
-            code.append("path: [");
-            for (int j = 0; j < eventPathList.size(); j++) {
-                EventPath eventPath = eventPathList.get(j);
-                code.append(String.format("{name: '%s', index: '%s'}", eventPath.getPathName(), eventPath.getPathIndex()));
-                if(j != eventPathList.size()-1) code.append(",");
-            }
-            code.append("]}");
-            if(i != eventList.size()-1) code.append(",");
-        }
-        code.append("},");
-        code.append("tags : {");
-        List<Tag> tagList = tagRepository.findAllByProjectId(projectId);
-        for (int i = 0; i < tagList.size(); i++) {
-            Tag tag = tagList.get(i);
-            List<TagEvent> tagEventList = tagEventRepository.findAllByTagId(tag.getId());
-
-            code.append(tag.getHtmlTagName() + ":{");
-            code.append(String.format("id:'%s', class:'%s',",tag.getHtmlTagId(), tag.getHtmlTagClass()));
-            code.append("events:[");
-            for (int j = 0; j < tagEventList.size(); j++) {
-                code.append(String.format("'%s'",tagEventList.get(j).getEvent().getEventName()));
-                if(j != tagEventList.size()-1) code.append(",");
-            }
-            code.append("]}");
-            if(i != tagList.size()-1) code.append(",");
-        }
-
-        code.append("}}");
-        String code_main = code.toString();
+                        "  async constructor(serviceToken) {\n" +
+                        "    response = await fetch('http://localhost:8080/api/v1/js/"+serviceToken+"/config')\n" +
+                        "    this.injection = await response.json()\n";
 
         String code_tail = "\n" +
-                "    if (!sessionStorage.getItem('TAGMANAGER_SESSION')) {\n" +
+                        "    if (!sessionStorage.getItem('TAGMANAGER_SESSION')) {\n" +
                         "      let randomValue = Math.floor(Math.random() * (Math.pow(2, 52) - 1));\n" +
                         "      sessionStorage.setItem('TAGMANAGER_SESSION', randomValue)\n" +
                         "    }\n" +
@@ -253,8 +201,52 @@ public class InjectionService {
                         "}" +
                         "let mata = new TagManager();"
                         );
-        return code_head + code_main + code_tail;
+        return code_head + code_tail;
     }
 
+
+    public Map<String, Object> getInjection(String serviceToken) {
+        long projectId = projectRepository.findByToken(serviceToken).get().getId();
+
+        Map<String, Object> injection = new HashMap<>();
+
+        injection.put("bootstrap", null);
+        injection.put("serviceToken", null);
+        injection.put("spa", null);
+        // events
+        Map<String, Object> events = new HashMap<>();
+        List<String> baseEvents = Arrays.asList("clicks", "mouseenter", "mouseleave", "scroll");
+        for(String be : baseEvents) {
+            Map<String, Object> event = new HashMap<>();
+            event.put("base", null);
+            event.put("paran", new ArrayList<>());
+            event.put("path", new ArrayList<>());
+            events.put(be, event);
+        }
+        List<Event> customEvents = eventRepository.findAllByProjectId(projectId);
+        for(Event e : customEvents) {
+            Map<String, Object> event = new HashMap<>();
+            List<EventParam> eventParamList = eventParamRepository.findAllByEventId(e.getId());
+            List<EventPath> eventPathList = eventPathRepository.findAllByEventId(e.getId());
+            event.put("base", e.getEventBase());
+            event.put("paran", eventParamList);
+            event.put("path", eventPathList);
+            events.put(e.getEventName(), event);
+        }
+        injection.put("events", events);
+        // tags
+        injection.put("tags", null);
+        Map<String, Object> tags = new HashMap<>();
+        List<Tag> customTags = tagRepository.findAllByProjectId(projectId);
+        for(Tag t : customTags) {
+            Map<String, Object> tag = new HashMap<>();
+            tag.put("id", t.getHtmlTagId());
+            tag.put("class", t.getHtmlTagClass());
+            tag.put("events", tagEventRepository.findAllByTagId(t.getId()).stream().map(e -> e.getEvent().getEventName()));
+        }
+        injection.put("tags", tags);
+
+        return injection;
+    }
 
 }

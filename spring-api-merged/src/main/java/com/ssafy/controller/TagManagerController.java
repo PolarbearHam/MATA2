@@ -19,17 +19,6 @@ public class TagManagerController {
     private final KafkaProducerService kafkaProducerService;
     private final InjectionService injectionService;
 
-    // 로그 수집 코드 주입 , 추후 토큰으로 바뀔 듯
-    @GetMapping("/{projectId}")
-    public ResponseEntity<?> getEventInjection(
-            @PathVariable("projectId") Long projectId) {
-        String code = injectionService.callJsCode(projectId);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .header("Content-Type", "application/javascript")
-                .body(code);
-    }
-
     @PostMapping("/dump")
     public ResponseEntity<?> getLogDump(@RequestBody WebLogDto[] body) {
 
