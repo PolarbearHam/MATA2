@@ -50,7 +50,7 @@ const ServiceCustom = (props) => {
   const [events,setEvents] = useState([])
   const [fields, setFields] = useState({service:{},events:events,tags:[]});
   const [tags,setTags]=useState([])
-  const [spaChkecked,setSpaChecked]=useState(true)
+  const [spaChecked,setSpaChecked]=useState(true)
 
 
   const handleAddPath = (index1) => {
@@ -86,7 +86,7 @@ const ServiceCustom = (props) => {
     setEvents(values);
   };
   const handleCheckboxChange=(event)=>{
-    setSpaChecked(!spaChkecked)
+    setSpaChecked(!spaChecked)
   }
   const handleAddParam = (index1) => {
     const values = [...events]
@@ -265,7 +265,7 @@ const ServiceCustom = (props) => {
         <div className='bg-white mt-3 p-3 rounded-3xl'>
           <p>스크립트</p>
           <div>
-            { !fields.spa ? (
+            { !spaChecked ? (
               <>
                 <span>BrowserRouter를 최상단(보통 index.js)에 정의합니다.</span>
                 <CodeBlock
