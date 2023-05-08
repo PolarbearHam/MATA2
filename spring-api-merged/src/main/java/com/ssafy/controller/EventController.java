@@ -22,6 +22,7 @@ import java.util.Map;
 public class EventController {
 
     private final InjectionService injectionService;
+    private final KafkaProducerService kafkaProducerService;
     private static final String SUCCESS = "success in EventController";
     private static final String FAIL = "fail in EventController";
 
