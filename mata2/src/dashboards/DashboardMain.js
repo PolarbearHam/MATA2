@@ -60,7 +60,8 @@ class ToolboxLayout extends React.Component {
         "y": 0,
         "i": "a",
         "moved": false,
-        "static": false
+        "static": false,
+        "name": '데모라인차트'
       },
       {
         "w": 5,
@@ -69,7 +70,8 @@ class ToolboxLayout extends React.Component {
         "y": 0,
         "i": "b",
         "moved": false,
-        "static": false
+        "static": false,
+        "name": '데모라인차트'
       },
       {
         "w": 5,
@@ -78,7 +80,8 @@ class ToolboxLayout extends React.Component {
         "y": 7,
         "i": "c",
         "moved": false,
-        "static": false
+        "static": false,
+        "name": '데모라인차트'
       },
       {
         "w": 5,
@@ -87,7 +90,8 @@ class ToolboxLayout extends React.Component {
         "y": 7,
         "i": "d",
         "moved": false,
-        "static": false
+        "static": false,
+        "name": '데모라인차트'
       },
       {
         "w": 11,
@@ -96,14 +100,15 @@ class ToolboxLayout extends React.Component {
         "y": 14,
         "i": "e",
         "moved": false,
-        "static": false
+        "static": false,
+        "name": '데모라인차트'
       }
     ])
   };
 
   state = {
     currentBreakpoint: "lg",
-    compactType: "vertical",
+    compactType: null,
     mounted: false,
     layouts: { lg: this.props.initialLayout },
     toolbox: { lg: [] }
@@ -302,7 +307,8 @@ const DashboardMain = (props) => {
       "y": 0,
       "i": "a",
       "moved": false,
-      "static": false
+      "static": false,
+      "name": '데모라인차트'
     },
     {
       "w": 5,
@@ -311,7 +317,8 @@ const DashboardMain = (props) => {
       "y": 0,
       "i": "b",
       "moved": false,
-      "static": false
+      "static": false,
+      "name": '데모라인차트'
     },
     {
       "w": 5,
@@ -320,7 +327,8 @@ const DashboardMain = (props) => {
       "y": 7,
       "i": "c",
       "moved": false,
-      "static": false
+      "static": false,
+      "name": '데모라인차트'
     },
     {
       "w": 5,
@@ -329,7 +337,8 @@ const DashboardMain = (props) => {
       "y": 7,
       "i": "d",
       "moved": false,
-      "static": false
+      "static": false,
+      "name": '데모라인차트'
     },
     {
       "w": 11,
@@ -338,7 +347,8 @@ const DashboardMain = (props) => {
       "y": 14,
       "i": "e",
       "moved": false,
-      "static": false
+      "static": false,
+      "name": '데모라인차트'
     }
   ]));
 
