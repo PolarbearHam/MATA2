@@ -108,12 +108,14 @@ public class DummyData implements CommandLineRunner {
         List<Member> memberList = memberRepository.findAll();
         for (int i = 0; i < memberList.size(); i++) {
             for (int j = 0; j < 5; j++) {
-                projectRepository.save(Project.builder()
+                Project project = Project.builder()
                         .category(ProjectCategory.BLOG)
                         .url("ssafy.com/" + memberList.get(i).getName())
                         .name(memberList.get(i).getName() + "s "+ j +" project")
                         .member(memberList.get(i))
-                        .build());
+                        .build();
+                project.updateToken();
+                projectRepository.save(project);
             }
         }
     }
