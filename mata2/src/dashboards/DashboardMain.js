@@ -48,6 +48,15 @@ const DashboardMain = (props) => {
       "i": "d",
       "moved": false,
       "static": false
+    },
+    {
+      "w": 11,
+      "h": 14,
+      "x": 0,
+      "y": 14,
+      "i": "e",
+      "moved": false,
+      "static": false
     }
   ]);
 
@@ -140,6 +149,11 @@ const DashboardMain = (props) => {
             유입경로 별 점유율
             <DemoPieChart />
           </div>
+          <div key='e' data-grid={layout[4]}>
+            유입경로 별 점유율
+            <DemoSankeyChart />
+          </div>
+          
           
         </GridLayout>
       </main>

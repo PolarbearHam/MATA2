@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useRef} from 'react';
 import './App.css';
 import {BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -21,10 +21,17 @@ import TagManager from "./tagmanager";
 const mata = new TagManager();
 
 function App() {
+  const myModuleRef = useRef();
+  
   const location = useLocation();
   const [serviceList,setServiceList]=useState([])
 
+  // useEffect(() => {
+  //   const mata = window.TagManager ? new window.TagManager() : null;
+  // }, []);
   useEffect(() => {
+    // const mata = window.TagManager ? new window.TagManager() : null;
+
     mata.attach();
     return () => {
       mata.detach();
@@ -75,7 +82,7 @@ function App() {
     axios({
       //request
       method: "get",
-      url: "//localhost:8080/api/v1/member/info",
+      url: process.env.REACT_APP_HOST+"/v1/member/info",
       responseType: "type",
       headers: headers
   }).then(function (response) {
@@ -160,7 +167,7 @@ function App() {
     axios({
       //request
       method: "get",
-      url: "//localhost:8080/api/v1/member/info",
+      url: process.env.REACT_APP_HOST+"/v1/member/info",
       responseType: "type",
       headers: headers
   }).then(function (response) {
