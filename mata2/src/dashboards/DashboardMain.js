@@ -10,8 +10,16 @@ import { Resizable,ResizableBox } from 'react-resizable';
 import GridLayout from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+import axios from 'axios';
 // function DashboardMain() {
+const WEBLOG_URL = "https://mata2.co.kr/api/v1/weblog";
+
 const DashboardMain = (props) => {
+  console.log(props.state.user);
+  const projectId = props.state.user.id;
+  const userEmail = props.state.user.email;
+  const userName = props.state.user.name;
+
   const [layout, setLayout] = useState([
     {
       "w": 5,
@@ -59,6 +67,36 @@ const DashboardMain = (props) => {
       "static": false
     }
   ]);
+
+  const componentsData = axios.get(
+    WEBLOG_URL + "/components",
+    {params:{
+      basetime: 1,
+      interval: "1d",
+      projectId: projectId
+    }}
+  )
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error)=> {
+    console.log(error);
+  });
+
+  const usersData = axios.get(
+    WEBLOG_URL + "/users",
+    {params:{
+      basetime: 1,
+      interval: "1d",
+      projectId: projectId
+    }}
+  )
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error)=> {
+    console.log(error);
+  });
 
   useEffect(() => {
     console.log('그리드 레이아웃은',layout)
