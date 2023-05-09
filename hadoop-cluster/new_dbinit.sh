@@ -9,7 +9,6 @@ DROP TABLE IF EXISTS tagmanager.stream;
 
 CREATE TABLE stream (
   key TEXT,
-  client_id BIGINT,
   project_id BIGINT,
   session_id TEXT,
   event TEXT,
