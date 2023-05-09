@@ -1,12 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import './ServiceCustom.css'
 import { CodeBlock, dracula } from "react-code-blocks";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import Select from 'react-select';
 const ServiceCustom = (props) => {
-
+  const [options,setOptions] = useState([  { value: 'apple', label: 'Apple' },
+  { value: 'banana', label: 'Banana' },
+  { value: 'orange', label: 'Orange' }]);
+  const handleChangeSelected = (selectedOptions) => {
+    console.log(selectedOptions);
+  }
   const saveEvent= (e)=>{
     e.preventDefault();
     const payload=[]
@@ -50,7 +56,7 @@ const ServiceCustom = (props) => {
   const [events,setEvents] = useState([])
   const [fields, setFields] = useState({service:{},events:events,tags:[]});
   const [tags,setTags]=useState([])
-  const [spaChkecked,setSpaChecked]=useState(true)
+  const [spaChecked,setSpaChecked]=useState(true)
 
 
   const handleAddPath = (index1) => {
@@ -86,7 +92,7 @@ const ServiceCustom = (props) => {
     setEvents(values);
   };
   const handleCheckboxChange=(event)=>{
-    setSpaChecked(!spaChkecked)
+    setSpaChecked(!spaChecked)
   }
   const handleAddParam = (index1) => {
     const values = [...events]
@@ -205,7 +211,8 @@ const ServiceCustom = (props) => {
   const [origin,setOrigin]=useState('')
   const  serviceId  = useParams();
   const location = useLocation();
-  useEffect(()=>{
+  useLayoutEffect(()=>{
+    console.log('시작은 함')
 
     props.state.serviceList.map( (service) => {
       if(serviceId.id==service.id){
@@ -230,7 +237,6 @@ const ServiceCustom = (props) => {
 
         return  {eventParams:eventParamDtoList,eventPaths:eventPathDtoList,...rest };
       });
-      console.log('events 저장전',newEvents);
       setEvents(newEvents)
 
       const currentTags=res.data.tagDtoList
@@ -247,15 +253,26 @@ const ServiceCustom = (props) => {
       });
       console.log(newTags)
       setTags(newTags)
+      const currentOptions=[...options]
+      events.forEach(event => {
+        currentOptions.push({ value: event.eventName, label: event.eventName })
+      });
+      console.log('current tagEvent 옵션', currentOptions)  
+      setOptions(currentOptions)
+      console.log("111111",options)
     })
     .catch(err=>{
       console.log('잘못됨',err)
-    })
+    },)
+    console.log("222222",options)
+
+    
 
   // console.log('받은 세팅은',currentSetting)
   // const currentEvents=currentSetting.events
   // setEvents(currentEvents)
   },[])
+
   
 
   
@@ -265,7 +282,7 @@ const ServiceCustom = (props) => {
         <div className='bg-white mt-3 p-3 rounded-3xl'>
           <p>스크립트</p>
           <div>
-            { !fields.spa ? (
+            { !spaChecked ? (
               <>
                 <span>BrowserRouter를 최상단(보통 index.js)에 정의합니다.</span>
                 <CodeBlock
@@ -351,10 +368,10 @@ function App() {
                       삭제
                     </Button>
                     <Button key={index1} color="dark" onClick={() => handleAddParam(index1)}>
-                      event{index1}params 추가
+                      params 추가
                     </Button>
                     <Button color="dark" onClick={() => handleAddPath(index1)}>
-                      event{index1}paths 추가
+                      paths 추가
                     </Button>
                   </div>
                   <Input
@@ -403,7 +420,7 @@ function App() {
                             value={events[index1].eventParams[index2].paramKey}
                           />
                         </div>
-                        <Button className='w-1/6' onClick={()=>handleRemoveParam(index1,index2)}>event{index1} param{index2}삭제</Button>
+                        <Button className='w-auto h-auto ' onClick={()=>handleRemoveParam(index1,index2)}>삭제</Button>
                       </div>
                     </FormGroup>
                   ))}
@@ -434,7 +451,7 @@ function App() {
                             value={events[index1].eventPaths[index2].pathIndex}
                           />
                         </div>
-                        <Button className='w-1/6' onClick={()=>{handleRemovePath(index1,index2)}}>event{index1} path {index2}삭제</Button>
+                        <Button className='w-auto h-auto' onClick={()=>{handleRemovePath(index1,index2)}}>삭제</Button>
                       </div>
 
                     </FormGroup>
@@ -499,7 +516,12 @@ function App() {
                       placeholder='이벤트'
                       value={tags[index].tagEvents[index2]}
                     />
-                    <Button className='w-1/6 h-1/1' onClick={()=>{handleRemoveTagEvent(index,index2)}}> 삭제</Button>
+                    <Select
+                      isMulti
+                      options={options}
+                      onChange={handleChangeSelected}
+                    />
+                    <Button className='w-auto h-auto' onClick={()=>{handleRemoveTagEvent(index,index2)}}> 삭제</Button>
                     </FormGroup>
                   ))}
 

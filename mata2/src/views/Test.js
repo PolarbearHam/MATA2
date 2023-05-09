@@ -1,39 +1,23 @@
-import React, { useState, useEffect } from "react";
-import GridLayout from "react-grid-layout";
-import "react-grid-layout/css/styles.css";
-import "react-resizable/css/styles.css";
+import Select from 'react-select';
 
-const Test =()=>{ 
-  const [layout, setLayout] = useState([]);
+const options = [
+  { value: 'apple', label: 'Apple' },
+  { value: 'banana', label: 'Banana' },
+  { value: 'orange', label: 'Orange' }
+];
 
-  useEffect(() => {
-    console.log('그리드 레이아웃은',layout)
-    const storedLayout = JSON.parse(localStorage.getItem("my-grid-layout")) || [];
-    setLayout(storedLayout);
-    console.log('그리드 레이아웃은',layout)
-  }, []);
-
-  const onLayoutChange = (newLayout) => {
-    localStorage.setItem("my-grid-layout", JSON.stringify(newLayout));
-    setLayout(newLayout);
-  };
+const Test = () => {
+  const handleChange = (selectedOptions) => {
+    console.log(selectedOptions);
+  }
 
   return (
-    <GridLayout
-      className="layout"
-      cols={12}
-      rowHeight={30}
-      width={1200}
-      layout={layout}
-      onLayoutChange={onLayoutChange}
-    >
-      {layout.map((item) => (
-        <div key={item.i} data-grid={item}>
-          <span className="text">{item.i}</span>
-        </div>
-      ))}
-    </GridLayout>
+    <Select
+      isMulti
+      options={options}
+      onChange={handleChange}
+    />
   );
-};
+}
 
 export default Test;
