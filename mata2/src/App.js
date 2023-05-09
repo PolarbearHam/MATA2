@@ -15,14 +15,14 @@ import Test from './views/Test';
 import axios from "axios";
 
 import TagManager from 'npm-mata';
-const mata = new TagManager("token");
+const mata = new TagManager("token0asdf1");
 
 function App() {
   const location = useLocation();
   useEffect(() => {
-    window.dispatchEvent(new Event("load"));
+    mata.then(_ => _.attach());
     return () => {
-      window.dispatchEvent(new Event("unload"));
+      mata.then(_ => _.detach());
     }
   }, [location])
 

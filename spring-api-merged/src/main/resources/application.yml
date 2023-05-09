@@ -48,22 +48,21 @@ spring:
       contact-points: 70.12.246.60
       keyspace-name: tagmanager
       local-datacenter: datacenter1
-
     hive:
       driver-class-name: org.apache.hive.jdbc.HiveDriver
       jdbc-url: jdbc:hive2://70.12.246.60:10000/mata
       username: hive
       password: hive
-  kafka:
-    bootstrap-servers: master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092
-    topic:
-      tag-manager: tagmanager
-    producer:
-      bootstrap-servers: master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-    template:
-      default-topic: tagmanager
+#  kafka:
+#    bootstrap-servers: master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092
+#    topic:
+#      tag-manager: tagmanager
+#    producer:
+#      bootstrap-servers: master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#    template:
+#      default-topic: tagmanager
   output:
     ansi:
       enabled: always
