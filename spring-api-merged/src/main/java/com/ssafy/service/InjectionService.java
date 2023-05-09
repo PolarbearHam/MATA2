@@ -31,7 +31,7 @@ public class InjectionService {
                         "  constructor(serviceToken) {\n" +
                         "    this.token = serviceToken;\n" +
                         "    return (async () => {\n" +
-                        "      response = await fetch('https://mata2.co.kr/api/v1/js/"+projectToken+"/config')\n" +
+                        "      let response = await fetch('https://mata2.co.kr/api/v1/js/"+projectToken+"/config')\n" +
                         "      this.injection = await response.json()\n";
 
         String code_tail = "\n" +
