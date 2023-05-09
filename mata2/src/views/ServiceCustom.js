@@ -301,20 +301,20 @@ root.render(
                 <span>최상단 컴포넌트(일반적으로 App.js)에 다음과 같이 추가합니다.</span>
                 <CodeBlock
                   text={
-`import TagManager from "./assets/tagmanager";
+`import TagManager from "npm-mata";
 
-const mata = new TagManager();
+const mata = new TagManager('${fields.token}');
 
 function App() {
-const location = useLocation();
-  useEffect(() => {
-    mata.attach();
-    return () => {
-      mata.detach();
-    }
-  }, [location])
+  const location = useLocation();
+    useEffect(() => {
+      window.dispatchEvent(new Event('load'));
+      return () => {
+        window.dispatchEvent(new Event('unload'));
+      }
+    }, [location])
 
-//...코드`}
+    //...코드`}
                   language={"jsx"}
                 />
               </> ) : (
@@ -327,7 +327,7 @@ const location = useLocation();
 </head>
 
 <!-- MATA Tag Manager -->
-<script src="tagmanager.js" type="module"></script>`
+<script src="https://mata2.co.kr/api/v1/js/${fields.token}" type="module"></script>`
               }
                   language={"html"}
                 />

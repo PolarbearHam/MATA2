@@ -23,4 +23,6 @@ COPY redis/redis.conf /etc/redis/redis.conf
 # JAR copy
 COPY spring-api.jar /home/spring-api.jar
 
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=stage", "/home/spring-api.jar"]
+COPY docker-entrypoint.sh /usr/local/bin
+
+ENTRYPOINT ["docker-entrypoint.sh"]

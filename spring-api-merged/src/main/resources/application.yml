@@ -45,7 +45,8 @@ spring:
       port: 6379
       password:  ssafy8a309
     cassandra:
-      contact-points: 172.16.238.2:9042
+      contact-points: 172.16.238.2
+      port: 9042
       keyspace-name: mykeyspace
     hive:
       driver-class-name: org.apache.hive.jdbc.HiveDriver
@@ -97,22 +98,23 @@ spring:
       password:  ssafy8a309
     cassandra:
       contact-points: 172.31.62.247:9042
-      keyspace-name: mykeyspace
+      keyspace-name: tagmanager
+      local-datacenter: datacenter1
     hive:
       driver-class-name: org.apache.hive.jdbc.HiveDriver
       jdbc-url: jdbc:hive2://172.26.3.140:10000/mata
       username: hive
       password: hive
-  kafka:
-    bootstrap-servers: 172.26.3.140:9092
-    topic:
-      tag-manager: tagmanager
-    producer:
-      bootstrap-servers: 172.26.3.140:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-    template:
-      default-topic: tagmanager
+#  kafka:
+#    bootstrap-servers: 172.26.3.140:9092
+#    topic:
+#      tag-manager: tagmanager
+#    producer:
+#      bootstrap-servers: 172.26.3.140:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#    template:
+#      default-topic: tagmanager
   output:
     ansi:
       enabled: always

@@ -10,7 +10,6 @@ DROP TABLE IF EXISTS tagmanager.stream;
 
 CREATE TABLE stream (
   key TEXT,
-  project_token TEXT,
   client_id BIGINT,
   project_id BIGINT,
   session_id TEXT,
@@ -19,13 +18,11 @@ CREATE TABLE stream (
   position_x INT,
   position_y INT,
   location TEXT,
-  prev_location TEXT,
   referrer TEXT,
   creation_timestamp TIMESTAMP,
   page_duration BIGINT,
   data TEXT,
-  screen_size_x INT,
-  screen_size_y INT,
+  screen_device TEXT,
   target_name TEXT,
   title TEXT,
   user_agent TEXT,
@@ -799,6 +796,33 @@ CREATE TABLE IF NOT EXISTS mata.page_refers_all(
   referrer STRING,
   project_id BIGINT,
   CONSTRAINT fk_page_refers_all_project_id FOREIGN KEY(project_id) REFERENCES mata.projects(project_id) DISABLE NOVALIDATE
+) CLUSTERED BY (project_id) SORTED BY (update_timestamp DESC) INTO 10 BUCKETS
+STORED AS ORC;
+CREATE TABLE IF NOT EXISTS mata.events_1m(
+  total_event_count BIGINT,
+  total_session_count BIGINT,
+  event STRING,
+  tag STRING,
+  update_timestamp TIMESTAMP,
+  project_id BIGINT
+) CLUSTERED BY (project_id) SORTED BY (update_timestamp DESC) INTO 10 BUCKETS
+STORED AS ORC;
+CREATE TABLE IF NOT EXISTS mata.events_5m(
+  total_event_count BIGINT,
+  total_session_count BIGINT,
+  event STRING,
+  tag STRING,
+  update_timestamp TIMESTAMP,
+  project_id BIGINT
+) CLUSTERED BY (project_id) SORTED BY (update_timestamp DESC) INTO 10 BUCKETS
+STORED AS ORC;
+CREATE TABLE IF NOT EXISTS mata.events_10m(
+  total_event_count BIGINT,
+  total_session_count BIGINT,
+  event STRING,
+  tag STRING,
+  update_timestamp TIMESTAMP,
+  project_id BIGINT
 ) CLUSTERED BY (project_id) SORTED BY (update_timestamp DESC) INTO 10 BUCKETS
 STORED AS ORC;
 "
