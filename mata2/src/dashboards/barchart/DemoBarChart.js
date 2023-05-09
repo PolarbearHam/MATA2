@@ -6,19 +6,19 @@ const data = [
     name: 'Page A',
     uv: 4000,
     pv: 2400,
-    amt: 2400,
+    
   },
   {
     name: 'Page B',
     uv: 3000,
     pv: 1398,
-    amt: 2210,
+    
   },
   {
     name: 'Page C',
     uv: 2000,
     pv: 9800,
-    amt: 2290,
+    
   },
   {
     name: 'Page D',
@@ -121,6 +121,12 @@ const data = [
 
 // export default DemoBarChart;
 export default class DemoBarChart extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [] // 초기 상태값으로 빈 배열을 설정
+    };
+  }
   componentDidMount() {
     const url=`http://70.12.246.60:8080/api/v1/analytics/components?basetime=${Date.now()}&interval=1m&projectId=1`
     const headers = {
@@ -129,14 +135,31 @@ export default class DemoBarChart extends PureComponent {
     }
     axios.get(url,{headers})
     .then((res)=>{
-      console.log(res)
-
+      const tagClicks = {};
+      for (let i = 0; i < res.data.length; i++) {
+        const el = res.data[i];
+        if (!tagClicks[el.tagName]) {
+          tagClicks[el.tagName] = 0;
+        }
+        tagClicks[el.tagName] += el.totalClick;
+      }
+      const tagClicksArray = Object.entries(tagClicks).map(([tagName, value]) => ({
+        tagName,
+        value,
+      }));
+      const chartData = tagClicksArray.map(tag => {
+        return {
+          x: tag.tagName,
+          y: tag.totalClicks
+        }
+      })
+      
+      this.setState({tagClicksArray})
     })
     .catch((err)=>{
       console.log(err)
     })
 
-    console.log("Component mounted");
 
   }
   render() {
@@ -145,7 +168,7 @@ export default class DemoBarChart extends PureComponent {
         <BarChart
           width={500}
           height={300}
-          data={data}
+          data={this.state.tagClicksArray? this.state.tagClicksArray : data}
           margin={{
             top: 20,
             right: 30,
@@ -154,11 +177,11 @@ export default class DemoBarChart extends PureComponent {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="tagName" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="pv" stackId="a" fill="#8884d8" />
+          <Bar dataKey="value" stackId="a" fill="#8884d8" />
           <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
         </BarChart>
       </ResponsiveContainer>

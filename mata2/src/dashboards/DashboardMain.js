@@ -146,6 +146,9 @@ class ToolboxLayout extends React.Component {
         case "a":
           chartName = "데모라인차트"
           break;
+        case "c":
+          chartName = "컴포넌트 별 클릭수"
+          break;
         default:
           chartName='다른차트'
       }

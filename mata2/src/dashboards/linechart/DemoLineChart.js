@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
+import axios from 'axios';
 const data = [
   {
     name: 'Page A',
@@ -47,8 +47,43 @@ const data = [
 ];
 
 export default class DemoLineChart extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
   static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
-
+  componentDidMount(){
+    const url=`http://70.12.246.60:8080/api/v1/analytics/components?basetime=${Date.now()}&interval=1m&projectId=1`
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
+      'Content-type': 'application/json',
+    }
+    axios.get(url,{headers})
+    .then((res)=>{
+      
+      
+      console.log('꺾은선 스테이트',this.state)
+      const timestampByscreenDevice = {};
+      for (let i = 0; i < res.data.length; i++) {
+        const el = res.data[i];
+        if (!timestampByscreenDevice[el.updateTimestamp]) {
+          timestampByscreenDevice[el.updateTimestamp] = {};
+        }
+        if (!timestampByscreenDevice[el.updateTimestamp][el.screenDevice]) {
+          timestampByscreenDevice[el.updateTimestamp][el.screenDevice] = 0;
+        } timestampByscreenDevice[el.updateTimestamp][el.screenDevice] += el.totalClick;
+      }
+      const timestampByscreenDeviceArray = Object.values(Object.entries(timestampByscreenDevice).map(([timestamp, values]) => {
+        return {timestamp,...values};
+      }));
+      this.setState(timestampByscreenDeviceArray)
+      console.log('꺾은선 넣을 데이터',this.state)
+  })
+    .catch((err)=>{
+      console.log('꺾은선 데이터 실패',err)
+    })
+  }
   render() {
     return (
       <ResponsiveContainer width="100%" height="100%">
@@ -73,5 +108,5 @@ export default class DemoLineChart extends PureComponent {
         </LineChart>
       </ResponsiveContainer>
     );
-  }
+  };
 }
