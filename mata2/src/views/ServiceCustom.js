@@ -204,9 +204,35 @@ const ServiceCustom = (props) => {
     });
     
     console.log(tag)
-    axios.post()
+  
   }
 
+  const[token,setToken]=useState(null)
+  const getToken=(e)=>{
+    e.preventDefault()
+    console.log('토큰발급시작')
+    const url=process.env.REACT_APP_HOST+'/v1/project/token';
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
+      'Content-type': 'application/json',
+    }
+    const payload={
+      id:serviceId
+    }
+    console.log("이벤트 설정 저장 시작 보내는 건:", url,serviceId,{headers} )
+    axios.post(url,serviceId,{headers})
+
+    .then(response => {
+      console.log('토큰은',response);
+      setToken(response.data.token)
+      
+    })
+    .catch(error => {
+      console.error(error);
+      alert(error.data)
+    });
+
+  }
   let currentService={}
   const [origin,setOrigin]=useState('')
   const  serviceId  = useParams();
@@ -231,6 +257,7 @@ const ServiceCustom = (props) => {
     .then(res=>{
       console.log('현재 세팅은',res.data)
       setOrigin(res.data.projectDto.url)
+      setToken(res.data.projectDto.token)
       const currentEvents=res.data.eventDtoList
       const newEvents = currentEvents.map(obj => {
         const { eventParamDtoList,eventPathDtoList, ...rest } = obj;
@@ -303,7 +330,7 @@ root.render(
                   text={
 `import TagManager from "npm-mata";
 
-const mata = new TagManager('${fields.token}');
+const mata = new TagManager('${token}');
 
 function App() {
   const location = useLocation();
@@ -327,7 +354,7 @@ function App() {
 </head>
 
 <!-- MATA Tag Manager -->
-<script src="https://mata2.co.kr/api/v1/js/${fields.token}" type="module"></script>`
+<script src="https://mata2.co.kr/api/v1/js/${token}" type="module"></script>`
               }
                   language={"html"}
                 />
@@ -339,6 +366,10 @@ function App() {
         <Form>
           <div className='bg-white mt-3 p-3 rounded-3xl'>
             <p>서비스 설정</p>
+            <div>
+              토큰: {token}
+            </div>
+            <button onClick={getToken}>토큰발급</button>
             <FormGroup id='service' className='d-flex flex-column justify-content-center align-items-center gap-3 bg-white rounded Service'>
               <label>
                 <Input type='text' placeholder='서비스 주소' defaultValue={origin}/>

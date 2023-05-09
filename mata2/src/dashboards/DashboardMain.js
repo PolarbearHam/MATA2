@@ -142,7 +142,13 @@ class ToolboxLayout extends React.Component {
         default :
         component= '기타입니다.'
       }
-      chartName=l.name
+      switch(l.i) {
+        case "a":
+          chartName = "데모라인차트"
+          break;
+        default:
+          chartName='다른차트'
+      }
       return (
         <div key={l.i} className={l.static ? "static" : ""}>
           <div className="hide-button" onClick={this.onPutItem.bind(this, l)}>
@@ -158,8 +164,8 @@ class ToolboxLayout extends React.Component {
           ) : (
             <span className="text">{l.i} {chartName}</span>
           )}
-          <div class="h-100 ">
-            {chartName}
+          <div className="h-100 ">
+            
             {component}
           </div>
 

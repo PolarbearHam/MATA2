@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
+import axios from 'axios';
 const data = [
   {
     name: 'Page A',
@@ -122,7 +122,22 @@ const data = [
 // export default DemoBarChart;
 export default class DemoBarChart extends PureComponent {
   componentDidMount() {
+    const url=`http://70.12.246.60:8080/api/v1/analytics/components?basetime=${Date.now()}&interval=1m&projectId=1`
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
+      'Content-type': 'application/json',
+    }
+    axios.get(url,{headers})
+    .then((res)=>{
+      console.log(res)
+
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+
     console.log("Component mounted");
+
   }
   render() {
     return (
