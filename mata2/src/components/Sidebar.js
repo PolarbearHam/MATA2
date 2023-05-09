@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 
 const Sidebar = (props) => {
   const services=[...props.state.serviceList]
-  console.log('사이드바 목록:',services)
+
   return (
     <div id='sidebar-container'>
       <Nav vertical id='sidebar'>
