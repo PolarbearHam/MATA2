@@ -1,6 +1,6 @@
 export default class TagManager {
-  constructor(serviceToken) {
-    this.token = serviceToken
+  constructor(projectToken) {
+    this.token = projectToken
     return (async () => {
       // *************** JS에 주입돼서 들어가는 영역 ***************
       let response = await fetch("https://mata2.co.kr/api/v1/js/" + this.token + "/config");
@@ -16,7 +16,7 @@ export default class TagManager {
       }
       this.sessionId = sessionStorage.getItem('TAGMANAGER_SESSION');
       this.bootstrap = this.injection.bootstrap;
-      this.serviceToken = this.injection.serviceToken;
+      this.projectToken = this.injection.projectToken;
       this.spa = this.injection.spa;
       this.userAgent = (() => {
         let userAgent = navigator.userAgent.toLowerCase()
@@ -38,7 +38,7 @@ export default class TagManager {
       this.location = null;
       this.prevLocation = null;
       this.referrer = null;
-      this.data = {};
+      this.data = '{}';
 
 
       // 추가적으로 필요한 데이터
@@ -99,7 +99,7 @@ export default class TagManager {
       }
       this.stackLog = function (e, eventType = '') {
         let body = {
-          serviceToken: this.serviceToken,
+          projectToken: this.projectToken,
           sessionId: this.sessionId,
           userAgent: this.userAgent,
           event: eventType,
@@ -112,7 +112,7 @@ export default class TagManager {
           referrer: this.referrer,
           timestamp: Date.now(),
           pageDuration: Date.now() - this.enterTimer,
-          data: e.detail ? e.detail : {},
+          data: e.detail ? JSON.stringify(e.detail) : '{}',
           screenDevice : (window.innerWidth >= 1024) ? "desktop" :
                          (window.innerWidth >= 768) ? "tablet" : "phone" ,
           userLanguage: navigator.language.substring(0, 2)
