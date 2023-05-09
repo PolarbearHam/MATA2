@@ -15,7 +15,7 @@ import Test from './views/Test';
 import axios from "axios";
 
 import TagManager from 'npm-mata';
-const mata = new TagManager("token");
+const mata = new TagManager("token0asdf1");
 
 function App() {
   const location = useLocation();

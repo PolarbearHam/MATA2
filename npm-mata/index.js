@@ -113,7 +113,7 @@ export default class TagManager {
           referrer: this.referrer,
           timestamp: Date.now(),
           pageDuration: Date.now() - this.enterTimer,
-          data: e.detail ? e.detail : null,
+          data: e.detail ? e.detail : {},
           screenDevice : (window.innerWidth >= 1024) ? "desktop" :
                          (window.innerWidth >= 768) ? "tablet" : "phone" ,
           userLanguage: navigator.language.substring(0, 2)

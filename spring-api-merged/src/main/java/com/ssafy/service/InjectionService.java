@@ -179,7 +179,7 @@ public class InjectionService {
                 "        referrer: this.referrer,\n" +
                 "        timestamp: Date.now(),\n" +
                 "        pageDuration: Date.now() - this.enterTimer,\n" +
-                "        data: e.detail ? e.detail : null,\n" +
+                "        data: e.detail ? e.detail : {},\n" +
                 "        screenDevice : (window.innerWidth >= 1024) ? \"desktop\" :\n" +
                 "                       (window.innerWidth >= 768) ? \"tablet\" : \"phone\" ,\n" +
                 "        userLanguage: navigator.language.substring(0, 2) \n" +
