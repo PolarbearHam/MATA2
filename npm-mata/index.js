@@ -4,7 +4,7 @@ export default class TagManager {
     this.token = serviceToken
     return (async () => {
       // *************** JS에 주입돼서 들어가는 영역 ***************
-      let response = await fetch("https://mata2.co.kr/api/v1/js/" + this.token+ "/config");
+      let response = await fetch("https://mata2.co.kr/api/v1/js/" + this.token + "/config");
       this.injection = await response.json();
       // *************** JS에 주입돼서 들어가는 영역 ***************
 

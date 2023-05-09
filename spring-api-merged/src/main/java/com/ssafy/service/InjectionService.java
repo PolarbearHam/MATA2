@@ -268,7 +268,7 @@ public class InjectionService {
         for (String be : baseEvents) {
             Map<String, Object> event = new HashMap<>();
             event.put("base", null);
-            event.put("paran", new ArrayList<>());
+            event.put("param", new ArrayList<>());
             event.put("path", new ArrayList<>());
             events.put(be, event);
         }
@@ -278,8 +278,16 @@ public class InjectionService {
             List<EventParam> eventParamList = eventParamRepository.findAllByEventId(e.getId());
             List<EventPath> eventPathList = eventPathRepository.findAllByEventId(e.getId());
             event.put("base", e.getEventBase());
-            event.put("paran", eventParamList);
-            event.put("path", eventPathList);
+            event.put("param", eventParamList.stream().map((item) -> {
+                Map<String, String> param = new HashMap<>();
+                param.put(item.getParamName(), item.getParamKey());
+                return param;
+            }));
+            event.put("path", eventPathList.stream().map((item) -> {
+                Map<String, String> path = new HashMap<>();
+                path.put(item.getPathName(), item.getPathIndex());
+                return path;
+            }));
             events.put(e.getEventName(), event);
         }
         injection.put("events", events);
