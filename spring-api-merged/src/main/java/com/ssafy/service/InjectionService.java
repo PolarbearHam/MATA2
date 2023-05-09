@@ -188,18 +188,18 @@ public class InjectionService {
                         "        }\n" +
                         "        this.handlerDict['pageleave']({target: window});\n" +
                         "      }\n" +
-                        "      window.addEventListener(\"load\", function (e) {\n" +
-                        "        this.attach();\n" +
-                        "        console.log(\"loaded\")\n" +
-                        "      }.bind(this));\n" +
-                        "      window.addEventListener(\"unload\", function (e) {\n" +
-                        "        this.detach();\n" +
-                        "        console.log(\"unloaded\")\n" +
-                        "      }.bind(this));\n" +
                         "      return this;\n" +
                         "    }).bind(this)();\n" +
                         "  };\n" +
                         "}\n" +
+                        "window.addEventListener(\"load\", function (e) {\n" +
+                        "  this.attach();\n" +
+                        "  console.log(\"loaded\")\n" +
+                        "}.bind(this));\n" +
+                        "window.addEventListener(\"unload\", function (e) {\n" +
+                        "  this.detach();\n" +
+                        "  console.log(\"unloaded\")\n" +
+                        "}.bind(this));\n" +
                         "let mata = new TagManager('"+projectToken+"');";
         return code_head + code_tail;
     }
