@@ -200,19 +200,19 @@ public class InjectionService {
                         "    }).bind(this)();\n" +
                         "  };\n" +
                         "}\n" +
-                        "let mata = new TagManager();";
+                        "let mata = new TagManager('"+projectToken+"');";
         return code_head + code_tail;
     }
 
 
-    public Map<String, Object> getInjection(String serviceToken) {
-        long projectId = projectRepository.findByToken(serviceToken).get().getId();
-
+    public Map<String, Object> getInjection(String projectToken) {
+        long projectId = projectRepository.findByToken(projectToken).get().getId();
+        Project projectEntity = projectRepository.findById(projectId).get();
         Map<String, Object> injection = new HashMap<>();
 
-        injection.put("bootstrap", null);
-        injection.put("serviceToken", null);
-        injection.put("spa", null);
+        injection.put("bootstrap", "https://mata2.co.kr/api/v1/dump");
+        injection.put("serviceToken", projectToken);
+        injection.put("spa", projectEntity.isSpa());
         // events
         Map<String, Object> events = new HashMap<>();
         List<String> baseEvents = Arrays.asList("clicks", "mouseenter", "mouseleave", "scroll");
