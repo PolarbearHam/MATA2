@@ -129,13 +129,13 @@ public class HiveRepository {
                 "LIMIT 100", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, pageReferRowMapper);
     }
-    public List<HivePageRefer> selectEvent(long baseTime, String interval, long projectId) {
+    public List<HiveEvent> selectEvent(long baseTime, String interval, long projectId) {
         String sql = String.format(//language=sql
                 "SELECT * FROM mata.events_%s "+
                         "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
                         "LIMIT 100", interval, projectId, baseTime);
-        return jdbcTemplate.query(sql, pageReferRowMapper);
+        return jdbcTemplate.query(sql, eventRowMapper);
     }
 
 
