@@ -31,7 +31,7 @@ public class InjectionService {
                         "  constructor() {\n" +
                         "    this.injection = {\n" +
                         "      bootstrap: 'https://mata2.co.kr/api/v1/dump',\n" +
-                        "      serviceToken: '"+projectToken+"',\n" +
+                        "      projectToken: '"+projectToken+"',\n" +
                         "      spa: " + projectRepository.findById(projectId).get().isSpa() +",\n" +
                         "      events: {\n" +
                         "        click: {base: null, param: [], path: []}," +
@@ -92,7 +92,7 @@ public class InjectionService {
                 "    }\n" +
                 "    this.sessionId = sessionStorage.getItem('TAGMANAGER_SESSION');\n" +
                 "    this.bootstrap = this.injection.bootstrap;\n" +
-                "    this.serviceToken = this.injection.serviceToken;\n" +
+                "    this.projectToken = this.injection.projectToken;\n" +
                 "    this.spa = this.injection.spa;\n" +
                 "    this.userAgent = (() => {\n" +
                 "      let userAgent = navigator.userAgent.toLowerCase()\n" +
@@ -166,23 +166,23 @@ public class InjectionService {
                 "    }\n" +
                 "    this.stackLog = function (e, eventType = '') {\n" +
                 "      let body = {\n" +
-                "        serviceToken: this.serviceToken,\n" +
+                "        projectToken: this.projectToken,\n" +
                 "        sessionId: this.sessionId,\n" +
+                "        userAgent: this.userAgent,\n" +
                 "        event: eventType,\n" +
                 "        targetId: (e && e.target && e.target.id) ? e.target.id : null,\n" +
                 "        targetName: (e && e.detail && e.detail['targetName']) ? e.detail['targetName'] : null,\n" +
+                "        positionX: e && e.pageX ? e.pageX : null,\n" +
+                "        positionY: e && e.pageY ? e.pageY : null,\n" +
                 "        title: this.title,\n" +
                 "        location: this.location,\n" +
                 "        referrer: this.referrer,\n" +
                 "        timestamp: Date.now(),\n" +
                 "        pageDuration: Date.now() - this.enterTimer,\n" +
-                "        userAgent: this.userAgent,\n" +
-                "        data: e.detail ? JSON.stringify(e.detail) : '{}',\n" +
-                "        userLanguage: navigator.language,\n" +
-                "        screenSizeX: window.innerWidth,\n" +
-                "        screenSizeY: window.innerHeight,\n" +
-                "        positionX: e && e.pageX ? e.pageX : null,\n" +
-                "        positionY: e && e.pageY ? e.pageY : null,\n" +
+                "        data: e.detail ? e.detail : null,\n" +
+                "        screenDevice : (window.innerWidth >= 1024) ? \"desktop\" :\n" +
+                "                       (window.innerWidth >= 768) ? \"tablet\" : \"phone\" ,\n" +
+                "        userLanguage: navigator.language.substring(0, 2) \n" +
                 "      }\n" +
                 "      this.logStash.push(body)\n" +
                 "      console.log(this.logStash);\n" +
@@ -260,7 +260,7 @@ public class InjectionService {
         Map<String, Object> injection = new HashMap<>();
 
         injection.put("bootstrap", "https://mata2.co.kr/api/v1/dump");
-        injection.put("serviceToken", projectToken);
+        injection.put("projectToken", projectToken);
         injection.put("spa", projectEntity.isSpa());
         // events
         Map<String, Object> events = new HashMap<>();

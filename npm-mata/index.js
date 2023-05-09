@@ -40,9 +40,6 @@ export default class TagManager {
       this.prevLocation = null;
       this.referrer = null;
       this.data = {};
-      this.screenSizeX = window.innerWidth;
-      this.screenSizeY = window.innerHeight;
-      this.userLanguage = navigator.language;
 
 
       // 추가적으로 필요한 데이터
@@ -117,9 +114,9 @@ export default class TagManager {
           timestamp: Date.now(),
           pageDuration: Date.now() - this.enterTimer,
           data: e.detail ? e.detail : null,
-          screenSizeX: this.screenSizeX,
-          screenSizeY: this.screenSizeY,
-          userLanguage: this.userLanguage
+          screenDevice : (window.innerWidth >= 1024) ? "desktop" :
+                         (window.innerWidth >= 768) ? "tablet" : "phone" ,
+          userLanguage: navigator.language.substring(0, 2)
         }
         this.logStash.push(body)
 

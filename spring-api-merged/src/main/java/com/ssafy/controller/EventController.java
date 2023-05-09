@@ -51,9 +51,6 @@ public class EventController {
     @GetMapping("/exampledata_webtojava")
     public ResponseEntity<?> dummyDataSetting() throws InterruptedException {
 
-//        kafkaProducerService.checkValidation(serviceToken); // 토큰 검증 로직
-//        Long projectId = kafkaProducerService.getProjectId(serviceToken);
-
         List referlist = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             referlist.add("https://www.google.com/" + ("mata" + i).hashCode());
@@ -85,10 +82,8 @@ public class EventController {
         idList.add("map2");
 
 
-        for (long k = 1; k < 60; k++) {
-            Thread.sleep(1500);
-
-            long projectId = k%3;
+        for (long k = 1; k < 100; k++) {
+            long projectId = k%9;
 
             // 500명의 유저 접속, url 랜덤
             for (int i = 0; i < 500; i++) {
