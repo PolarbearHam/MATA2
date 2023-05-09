@@ -18,7 +18,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "api/v1/js")
+@RequestMapping(value = "/api/v1/js")
 public class EventController {
 
     private final InjectionService injectionService;
