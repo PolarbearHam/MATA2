@@ -28,7 +28,7 @@ public class InjectionService {
         long projectId = projectRepository.findByToken(projectToken).get().getId();
         String code_head =
                 "export default class TagManager {\n" +
-                        "  async constructor(serviceToken) {\n" +
+                        "  constructor(serviceToken) {\n" +
                         "    this.token = serviceToken;\n" +
                         "    return (async () => {\n" +
                         "      response = await fetch('https://mata2.co.kr/api/v1/js/"+projectToken+"/config')\n" +
