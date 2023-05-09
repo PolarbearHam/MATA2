@@ -1,6 +1,6 @@
 export default class TagManager {
-  constructor(serviceToken) {
-    this.token = serviceToken
+  constructor(projectToken) {
+    this.token = projectToken
     return (async () => {
       // *************** JS에 주입돼서 들어가는 영역 ***************
       let response = await fetch("https://mata2.co.kr/api/v1/js/" + this.token + "/config");
@@ -16,7 +16,7 @@ export default class TagManager {
       }
       this.sessionId = sessionStorage.getItem('TAGMANAGER_SESSION');
       this.bootstrap = this.injection.bootstrap;
-      this.serviceToken = this.injection.serviceToken;
+      this.projectToken = this.injection.projectToken;
       this.spa = this.injection.spa;
       this.userAgent = (() => {
         let userAgent = navigator.userAgent.toLowerCase()
@@ -99,7 +99,7 @@ export default class TagManager {
       }
       this.stackLog = function (e, eventType = '') {
         let body = {
-          serviceToken: this.serviceToken,
+          projectToken: this.projectToken,
           sessionId: this.sessionId,
           userAgent: this.userAgent,
           event: eventType,
