@@ -17,6 +17,7 @@ def timestamp_range(base_time, interval, unit):
 
     # dt_obj = datetime.strptime(base_time, '%Y-%m-%dT%H:%M:%S.%f%z')
     dt_obj = datetime.strptime((str(base_time))[:19], '%Y-%m-%dT%H:%M:%S')
+    # dt_obj = datetime.fromtimestamp(int(base_time[:13])/1000.0)
 
     if unit=='s':
         if interval>=0:

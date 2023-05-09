@@ -3,6 +3,7 @@ package com.ssafy.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.dto.WebLogDto;
+import com.ssafy.service.CassandraService;
 import com.ssafy.service.InjectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class EventController {
 
     private final InjectionService injectionService;
     //private final KafkaProducerService kafkaProducerService;
+    private final CassandraService cassandraService;
     private static final String SUCCESS = "success in EventController";
     private static final String FAIL = "fail in EventController";
 
@@ -146,11 +148,11 @@ public class EventController {
                         }
                     }
 
-//                    try {
-//                        //kafkaProducerService.sendToKafka(wl);
-//                    } catch (JsonProcessingException e) {
-//                        e.printStackTrace();
-//                    }
+                    try {
+                        cassandraService.sendToCassandra(wl);
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

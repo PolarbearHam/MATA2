@@ -112,6 +112,7 @@ public class DummyData implements CommandLineRunner {
                         .category(ProjectCategory.BLOG)
                         .url("ssafy.com/" + memberList.get(i).getName())
                         .name(memberList.get(i).getName() + "s "+ j +" project")
+                        .token("token"+i+"asdf"+j)
                         .member(memberList.get(i))
                         .build());
             }
