@@ -1,5 +1,4 @@
 export default class TagManager {
-
   constructor(serviceToken) {
     this.token = serviceToken
     return (async () => {
@@ -127,7 +126,7 @@ export default class TagManager {
       this.attach = function () {
         this.title = document.title;
         this.location = document.location.href;
-        this.referrer = this.spa ? (this.prevLocation ? this.prevLocation : document.referrer) : document.referrer;
+        this.referrer = this.prevLocation ? this.prevLocation : document.referrer;
 
         let keys = Object.keys(this.tags);
         for (let i=0; i<keys.length; i++) { // 모든 태그 중
@@ -180,16 +179,6 @@ export default class TagManager {
         // 태그에 종속되지 않는 이벤트 발생시키기
         this.handlerDict['pageleave']({target: window});
       }
-
-      window.addEventListener("load", function (e) {
-        this.attach();
-        console.log("loaded")
-      }.bind(this));
-      window.addEventListener("unload", function (e) {
-        this.detach();
-        console.log("unloaded")
-      }.bind(this));
-
       return this;
     }).bind(this)();
   }
