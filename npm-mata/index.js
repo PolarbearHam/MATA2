@@ -38,7 +38,7 @@ export default class TagManager {
       this.location = null;
       this.prevLocation = null;
       this.referrer = null;
-      this.data = {};
+      this.data = '{}';
 
 
       // 추가적으로 필요한 데이터
@@ -112,7 +112,7 @@ export default class TagManager {
           referrer: this.referrer,
           timestamp: Date.now(),
           pageDuration: Date.now() - this.enterTimer,
-          data: e.detail ? e.detail : {},
+          data: e.detail ? JSON.stringify(e.detail) : '{}',
           screenDevice : (window.innerWidth >= 1024) ? "desktop" :
                          (window.innerWidth >= 768) ? "tablet" : "phone" ,
           userLanguage: navigator.language.substring(0, 2)
