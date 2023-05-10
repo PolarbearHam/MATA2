@@ -7,12 +7,18 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Select from 'react-select';
 const ServiceCustom = (props) => {
-  const [options,setOptions] = useState([  { value: 'apple', label: 'Apple' },
-  { value: 'banana', label: 'Banana' },
-  { value: 'orange', label: 'Orange' }]);
-  const handleChangeSelected = (selectedOptions) => {
-    console.log(selectedOptions);
+  const [options,setOptions] = useState([  { value: 'click', label: 'click' },]);
+  const handleChangeSelected = (index,e) => {
+    console.log("셀렉트 바뀜", index,e);
+    const newTagEvents=[]
+    e.forEach(element => {newTagEvents.push(element.value)
+      
+    });
+    const values = [...tags];
+    values[index].tagEvents = newTagEvents;
+    setTags(values);
   }
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const saveEvent= (e)=>{
     e.preventDefault();
     const payload=[]
@@ -265,6 +271,9 @@ const ServiceCustom = (props) => {
         return  {eventParams:eventParamDtoList,eventPaths:eventPathDtoList,...rest };
       });
       setEvents(newEvents)
+      
+
+
 
       const currentTags=res.data.tagDtoList
       const newTags=currentTags.map(obj=>{
@@ -281,12 +290,12 @@ const ServiceCustom = (props) => {
       console.log(newTags)
       setTags(newTags)
       const currentOptions=[...options]
-      events.forEach(event => {
-        currentOptions.push({ value: event.eventName, label: event.eventName })
-      });
-      console.log('current tagEvent 옵션', currentOptions)  
-      setOptions(currentOptions)
-      console.log("111111",options)
+      // events.forEach(event => {
+      //   currentOptions.push({ value: event.eventName, label: event.eventName })
+      // });
+      // console.log('current tagEvent 옵션', currentOptions)  
+      // setOptions(currentOptions)
+      // console.log("111111",options)
     })
     .catch(err=>{
       console.log('잘못됨',err)
@@ -300,9 +309,31 @@ const ServiceCustom = (props) => {
   // setEvents(currentEvents)
   },[])
 
-  
+  useEffect(()=>{
+    const eventsOptions=[...options]
+    events.forEach(element => {
+      if (eventsOptions.includes({value:element.eventName.toString(),label:element.eventName.toString()}) ){return}
+      eventsOptions.push({value:element.eventName.toString(),label:element.eventName.toString()})
 
-  
+    });
+    setOptions(()=>{return eventsOptions})   
+    console.log("셀렉트 옵션은",options)
+
+  },[events])
+
+  useEffect(()=>{
+    const newSelectedOptions=[]
+    tags.forEach(element => {
+      const newSelectedOption=[]
+      element.tagEvents.forEach(element2 => {
+        newSelectedOption.push({value:element2,label:element2})
+      });
+      newSelectedOptions.push(newSelectedOption)
+
+    });
+    setSelectedOptions(newSelectedOptions)
+    console.log('선택된 태그 이벤트들',selectedOptions)
+  },[tags])
   return (
     <div id='form-background' className='flex w-100 justify-content-center'>
       <div className='lg:w-3/5 w-full m-8'>
@@ -537,6 +568,13 @@ function App() {
                     placeholder='클래스'
                     value={tags[index].tagClass}
                   />
+                    <Select
+                      key={index}
+                      isMulti
+                      options={options}
+                      value={selectedOptions[index]}
+                      onChange={(e)=>{handleChangeSelected(index,e)}}
+                    />
                   {tags[index].tagEvents.map((event,index2)=>(
                     <FormGroup className='d-flex flex-row gap-3'> 
                     
@@ -547,12 +585,9 @@ function App() {
                       placeholder='이벤트'
                       value={tags[index].tagEvents[index2]}
                     />
-                    <Select
-                      isMulti
-                      options={options}
-                      onChange={handleChangeSelected}
-                    />
+                   
                     <Button className='w-auto h-auto' onClick={()=>{handleRemoveTagEvent(index,index2)}}> 삭제</Button>
+                  
                     </FormGroup>
                   ))}
 
