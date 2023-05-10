@@ -1,6 +1,7 @@
+import pendulum
+
 from airflow import DAG
 from airflow.decorators import task
-from airflow.providers.apache.hive.operators.hive import HiveOperator
 from spark import Batching_Jobs
 
 with DAG(
