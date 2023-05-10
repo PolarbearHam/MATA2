@@ -144,7 +144,7 @@ class ToolboxLayout extends React.Component {
       }
       switch(l.i) {
         case "a":
-          chartName = "데모라인차트"
+          chartName = "x:타임스탬프,y:클릭 수 라인; 디바이스 종류,"
           break;
         case "c":
           chartName = "컴포넌트 별 클릭수"
