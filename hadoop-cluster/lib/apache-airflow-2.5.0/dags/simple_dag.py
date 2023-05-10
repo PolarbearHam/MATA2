@@ -17,7 +17,7 @@ with DAG(
     @task(task_id="first_job")
     def first(date: str) -> str:
         print("this is the first step :" + date)
-        return date
+        return second(date)
 
     @task(task_id="second_job")
     def second(src: str):
@@ -27,3 +27,5 @@ with DAG(
     @task(task_id="third_job")
     def third():
         print("this is the third step :")
+
+first()
