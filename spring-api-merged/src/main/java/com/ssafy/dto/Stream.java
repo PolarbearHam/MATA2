@@ -36,10 +36,10 @@ public class Stream {
     private String user_agent;
     private String user_language;
 
-    public static Stream webLogFormChange(WebLogDto webLogDto, UUID key) {
+    public static Stream webLogFormChange(WebLogDto webLogDto, UUID key, long project_id) {
         return Stream.builder()
                 .key(key.toString())
-                .project_id(webLogDto.getProjectId())
+                .project_id(project_id)
                 .session_id(webLogDto.getSessionId())
                 .event(webLogDto.getEvent())
                 .target_id(webLogDto.getTargetId())

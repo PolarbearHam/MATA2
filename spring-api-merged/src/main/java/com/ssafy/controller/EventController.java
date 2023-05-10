@@ -82,15 +82,16 @@ public class EventController {
         idList.add("map2");
 
 
-        for (long k = 1; k < 100; k++) {
-            long projectId = k%9;
+        for (long k = 0; k < 100; k++) {
+            long projectId = 10 + k % 20;
 
             // 500명의 유저 접속, url 랜덤
             for (int i = 0; i < 500; i++) {
+                List<WebLogDto> webLogDtoList = new ArrayList<>();
                 // 10개의 event
                 for (int j = 0; j < 20; j++) {
                     WebLogDto wl = new WebLogDto();
-                    wl.setProjectId(projectId);
+//                    wl.setProjectId(projectId);
                     int hashValue = (int) (Math.random() * 100000);
                     int hashValue2 = (int) (Math.random() * 5) + 1;
 
@@ -132,26 +133,31 @@ public class EventController {
                         wl.setPageDuration(duTime * j);
                         wl.setPositionX(hashValue % 1000 + hashValue3 % 10);
                         wl.setPositionY(hashValue % 520 + hashValue3 % 10);
-                        if(j > 15) {
-                            wl.setTargetName("클릭 태그" + i%3);
+                        if (j > 15) {
+                            wl.setTargetName("클릭 태그" + i % 3);
                             wl.setEvent("click");
-                        } else if ( j > 15 ) {
+                        } else if (j > 15) {
                             wl.setTargetName("로그인");
                             wl.setEvent("login");
                         } else {
                             wl.setTargetName("구매 클릭");
                             wl.setEvent("purchase");
-                            if(j % 7 == 0)            wl.setData("{}");
-                            else if(i % 7 < 3)        wl.setData("{id:"+i%8 + "}");
-                            else                      wl.setData("{item_id:" + i%3 + "}");
+                            if (j % 7 == 0) wl.setData("{}");
+                            else if (i % 7 < 3) wl.setData("{id:" + i % 8 + "}");
+                            else wl.setData("{item_id:" + i % 3 + "}");
                         }
                     }
-
-                    try {
-                        cassandraService.sendToCassandra(wl);
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
+                    webLogDtoList.add(wl);
+//                    try {
+//                        cassandraService.sendToCassandra(wl);
+//                    } catch (JsonProcessingException e) {
+//                        e.printStackTrace();
+//                    }
+                }
+                try {
+                    cassandraService.sendToCassandra(webLogDtoList, projectId);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
                 }
             }
         }
