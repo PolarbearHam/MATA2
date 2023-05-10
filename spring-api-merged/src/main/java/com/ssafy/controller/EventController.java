@@ -114,6 +114,7 @@ public class EventController {
                     int hashValue3 = (int) (Math.random() * 100000);
                     wl.setTimestamp(time + hashValue * 300);
                     wl.setEvent("none");
+                    wl.setData("{}");
                     if (j == 0) {
                         // pageenter
                         wl.setEvent("pageenter");
@@ -134,12 +135,15 @@ public class EventController {
                         if(j > 15) {
                             wl.setTargetName("클릭 태그" + i%3);
                             wl.setEvent("click");
-                        } else if ( j > 17 ) {
+                        } else if ( j > 15 ) {
                             wl.setTargetName("로그인");
                             wl.setEvent("login");
                         } else {
                             wl.setTargetName("구매 클릭");
                             wl.setEvent("purchase");
+                            if(j % 7 == 0)            wl.setData("{}");
+                            else if(i % 7 < 3)        wl.setData("{id:"+i%8 + "}");
+                            else                      wl.setData("{item_id:" + i%3 + "}");
                         }
                     }
 

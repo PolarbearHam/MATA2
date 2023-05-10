@@ -172,12 +172,12 @@ def batching_cassandra_spark(base_time, amount, unit):
     event_df = batch_df \
         .where(col("creation_timestamp") \
                .between(*timestamp_range(base_time, -amount, unit))) \
-        .groupBy("project_id", "event", "target_name", "screen_device", "user_language") \
+        .groupBy("project_id", "event", "target_name", "screen_device", "user_language", "data") \
         .agg(count("key").alias("total_event_count"),
              countDistinct("session_id").alias("total_session_count")
              ) \
         .withColumn("update_timestamp", current_timestamp()) \
-        .select("total_event_count", "total_session_count", "event", col("target_name").alias("tag_name"), "screen_device", "user_language", "update_timestamp", "project_id")
+        .select("total_event_count", "total_session_count", "event", col("target_name").alias("tag_name"), "data", "screen_device", "user_language", "update_timestamp", "project_id")
 
     event_df.write.mode("append") \
         .format("hive") \
@@ -294,12 +294,12 @@ def batching_hive(base_time, amount, unit):
         .select("*") \
         .where(col("update_timestamp") \
                .between(*timestamp_range(base_time, -amount, unit))) \
-        .groupBy("project_id", "event", "tag_name", "screen_device", "user_language") \
+        .groupBy("project_id", "event", "tag_name", "data", "screen_device", "user_language") \
         .agg(
             sum("total_event_count").alias("total_event_count"), \
             sum("total_session_count").alias("total_session_count")) \
         .withColumn("update_timestamp", lit(base_time).cast("timestamp")) \
-        .select("total_event_count", "total_session_count", "event", "tag_name", "screen_device", "user_language", "update_timestamp", "project_id")
+        .select("total_event_count", "total_session_count", "event", "tag_name", "data", "screen_device", "user_language", "update_timestamp", "project_id")
 
     event_df.write.mode("append") \
         .format("hive") \
