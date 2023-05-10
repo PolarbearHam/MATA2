@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/usr/local/lib/apache-airflow-2.5.0/dags/lib')
 
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
