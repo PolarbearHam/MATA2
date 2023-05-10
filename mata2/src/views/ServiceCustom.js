@@ -17,6 +17,7 @@ const ServiceCustom = (props) => {
     const values = [...tags];
     values[index].tagEvents = newTagEvents;
     setTags(values);
+    console.log('태그이벤트 변경후', options)
   }
   const [selectedOptions, setSelectedOptions] = useState([]);
   const saveEvent= (e)=>{
@@ -289,7 +290,7 @@ const ServiceCustom = (props) => {
       });
       console.log(newTags)
       setTags(newTags)
-      const currentOptions=[...options]
+
       // events.forEach(event => {
       //   currentOptions.push({ value: event.eventName, label: event.eventName })
       // });
@@ -309,16 +310,21 @@ const ServiceCustom = (props) => {
   // setEvents(currentEvents)
   },[])
 
-  useEffect(()=>{
-    const eventsOptions=[...options]
+  useEffect(()=>{  
+    
+    const eventsOptions=[]
     events.forEach(element => {
-      if (eventsOptions.includes({value:element.eventName.toString(),label:element.eventName.toString()}) ){return}
-      eventsOptions.push({value:element.eventName.toString(),label:element.eventName.toString()})
+      if (eventsOptions.includes({value:element.eventName,label:element.eventName}) ){return}
+      eventsOptions.push({value:element.eventName,label:element.eventName})
 
     });
-    setOptions(()=>{return eventsOptions})   
-    console.log("셀렉트 옵션은",options)
+    
 
+    const optionsSet=new Set(eventsOptions)
+    const uniqueOptions=[...optionsSet]
+    uniqueOptions.push({ value: 'click', label: 'click' })
+    setOptions(uniqueOptions)   
+    console.log("셀렉트 옵션은",options)
   },[events])
 
   useEffect(()=>{
@@ -331,7 +337,9 @@ const ServiceCustom = (props) => {
       newSelectedOptions.push(newSelectedOption)
 
     });
-    setSelectedOptions(newSelectedOptions)
+    const selectedOptionsSet=new Set(newSelectedOptions)
+    const uniqueSelectedOptions=[...selectedOptionsSet]
+    setSelectedOptions(uniqueSelectedOptions)
     console.log('선택된 태그 이벤트들',selectedOptions)
   },[tags])
   return (

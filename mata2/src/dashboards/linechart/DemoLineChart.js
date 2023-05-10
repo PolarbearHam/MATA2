@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import { Dropdown } from 'reactstrap';
 const data = [
   {
     name: 'Page A',
@@ -87,6 +88,7 @@ export default class DemoLineChart extends PureComponent {
   render() {
     return (
       <ResponsiveContainer width="100%" height="100%">
+   
         <LineChart
           width={500}
           height={300}
@@ -107,6 +109,7 @@ export default class DemoLineChart extends PureComponent {
           <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
         </LineChart>
       </ResponsiveContainer>
+      
     );
   };
 }

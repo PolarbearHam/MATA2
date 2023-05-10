@@ -247,11 +247,11 @@ class ToolboxLayout extends React.Component {
     localStorage.setItem("my-grid-layout", JSON.stringify(layout));
   };
 
-  onNewLayout = () => {
-    this.setState({
-      layouts: { lg: generateLayout() }
-    });
-  };
+  // onNewLayout = () => {
+  //   this.setState({
+  //     layouts: { lg: generateLayout() }
+  //   });
+  // };
 
   render() {
     return (
@@ -264,7 +264,7 @@ class ToolboxLayout extends React.Component {
           Compaction type:{" "}
           {_.capitalize(this.state.compactType) || "No Compaction"}
         </div>
-        <button onClick={this.onNewLayout}>Generate New Layout</button>
+        {/* <button onClick={this.onNewLayout}>Generate New Layout</button> */}
         <button onClick={this.onCompactTypeChange}>
           Change Compaction Type
         </button>
@@ -294,19 +294,19 @@ class ToolboxLayout extends React.Component {
   }
 }
 
-function generateLayout() {
-  return _.map(_.range(0, 25), function(item, i) {
-    var y = Math.ceil(Math.random() * 4) + 1;
-    return {
-      x: (_.random(0, 5) * 2) % 12,
-      y: Math.floor(i / 6) * y,
-      w: 2,
-      h: y,
-      i: i.toString(),
-      static: Math.random() < 0.05
-    };
-  });
-}
+// function generateLayout() {
+//   return _.map(_.range(0, 4), function(item, i) {
+//     var y = Math.ceil(Math.random() * 4) + 1;
+//     return {
+//       x: (_.random(0, 5) * 2) % 12,
+//       y: Math.floor(i / 6) * y,
+//       w: 2,
+//       h: y,
+//       i: i.toString(),
+//       static: Math.random() < 0.05
+//     };
+//   });
+// }
 const DashboardMain = (props) => {
   const [layout, setLayout] = useState ((localStorage.getItem("my-grid-layout")? JSON.parse(localStorage.getItem("my-grid-layout")) :[
     {
