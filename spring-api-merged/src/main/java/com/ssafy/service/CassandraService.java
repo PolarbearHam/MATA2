@@ -29,6 +29,7 @@ public class CassandraService {
     private final StringRedisTemplate redisTemplate;
     private final WeblogRepository weblogRepository;
 
+    @Transactional
     public void sendToCassandra(final WebLogDto data) throws JsonProcessingException {
         weblogRepository.save(Stream.webLogFormChange(data, Uuids.timeBased()));
     }
@@ -41,6 +42,7 @@ public class CassandraService {
         };
     }
 
+    @Transactional(readOnly = true)
     public Long getProjectId(String token){
         String id = redisTemplate.opsForValue().get(token);
         if(id == null){

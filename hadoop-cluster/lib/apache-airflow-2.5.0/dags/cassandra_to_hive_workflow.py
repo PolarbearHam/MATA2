@@ -7,7 +7,7 @@ from lib.spark.Batching_Jobs import batching_hive, batching_cassandra_spark, bat
 
 default_args = {
     'owner': 'airflow',
-    'start_date': datetime(2023, 5, 9, 8, 10),
+    'start_date': datetime(2023, 5, 10, 4, 47),
     'retries': 0,
     'retry_delay': timedelta(minutes=1)
 }
@@ -109,9 +109,6 @@ dag1y = DAG(
 )
 
 
-
-now = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
-
 cassandra_to_spark_1m = PythonOperator(
     task_id='cassandra_to_spark_1m',
     python_callable=batching_cassandra_spark,
@@ -142,7 +139,7 @@ hiveSpark_10m = PythonOperator(
 hiveSpark_30m = PythonOperator(
     task_id='hiveSpark_30m',
     python_callable=batching_hive,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 30,
                  "unit" : "m"},
     dag=dag30m
@@ -151,7 +148,7 @@ hiveSpark_30m = PythonOperator(
 hiveSpark_1h = PythonOperator(
     task_id='hiveSpark_1h',
     python_callable=batching_hive,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 1,
                  "unit" : "h"},
     dag=dag1h
@@ -160,7 +157,7 @@ hiveSpark_1h = PythonOperator(
 hiveSpark_6h = PythonOperator(
     task_id='hiveSpark_6h',
     python_callable=batching_hive,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 6,
                  "unit" : "h"},
     dag=dag6h
@@ -169,7 +166,7 @@ hiveSpark_6h = PythonOperator(
 hiveSpark_12h = PythonOperator(
     task_id='hiveSpark_12h',
     python_callable=batching_hive,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 12,
                  "unit" : "h"},
     dag=dag12h
@@ -178,7 +175,7 @@ hiveSpark_12h = PythonOperator(
 hiveSpark_1d = PythonOperator(
     task_id='hiveSpark_1d',
     python_callable=batching_hive,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 1,
                  "unit" : "d"},
     dag=dag1d
@@ -187,7 +184,7 @@ hiveSpark_1d = PythonOperator(
 hiveSpark_1w = PythonOperator(
     task_id='hiveSpark_1w',
     python_callable=batching_hive,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 1,
                  "unit" : "w"},
     dag=dag1w
@@ -196,7 +193,7 @@ hiveSpark_1w = PythonOperator(
 hiveSpark_1mo = PythonOperator(
     task_id='hiveSpark_1mo',
     python_callable=batching_hive,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 1,
                  "unit" : "mo"},
     dag=dag1mo
@@ -205,7 +202,7 @@ hiveSpark_1mo = PythonOperator(
 hiveSpark_6mo = PythonOperator(
     task_id='hiveSpark_6mo',
     python_callable=batching_hive,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 6,
                  "unit" : "mo"},
     dag=dag6mo
@@ -214,7 +211,7 @@ hiveSpark_6mo = PythonOperator(
 hiveSpark_1y = PythonOperator(
     task_id='hiveSpark_1y',
     python_callable=batching_hive,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "amount" : 1,
                  "unit" : "y"},
     dag=dag1y
@@ -223,10 +220,9 @@ hiveSpark_1y = PythonOperator(
 hiveSpark_all = PythonOperator(
     task_id='hiveSpark_all',
     python_callable=batching_hive_all,
-    op_kwargs = {"base_time" : now,
+    op_kwargs = {"base_time" : '{{ ts }}',
                  "unit" : "all"},
-    dag=dag1d
+    dag=dag5m
 )
 
-hiveSpark_5m
-# >> hiveSpark_all
+hiveSpark_5m >> hiveSpark_all

@@ -12,7 +12,7 @@ import java.util.*;
 
 @Slf4j
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class InjectionService {
     private final TagRepository tagRepository;
@@ -115,7 +115,7 @@ public class InjectionService {
                 "    this.prevLocation = null;\n" +
                 "    this.referrer = null;\n" +
                 "    this.pageDuration = 0;\n" +
-                "    this.data = {};\n" +
+                "    this.data = '{}';\n" +
                 "    this.attachedListeners = [];\n" +
                 "    this.logStash = [];\n" +
                 "    this.enterTimer = Date.now();\n" +
@@ -179,7 +179,7 @@ public class InjectionService {
                 "        referrer: this.referrer,\n" +
                 "        timestamp: Date.now(),\n" +
                 "        pageDuration: Date.now() - this.enterTimer,\n" +
-                "        data: e.detail ? e.detail : {},\n" +
+                "        data: e.detail ? JSON.stringify(e.detail) : '{}',\n" +
                 "        screenDevice : (window.innerWidth >= 1024) ? \"desktop\" :\n" +
                 "                       (window.innerWidth >= 768) ? \"tablet\" : \"phone\" ,\n" +
                 "        userLanguage: navigator.language.substring(0, 2) \n" +
