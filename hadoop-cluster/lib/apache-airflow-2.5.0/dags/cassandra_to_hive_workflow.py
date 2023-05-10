@@ -3,7 +3,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from lib.spark.Batching_Jobs import batching_hive, batching_cassandra_spark, batching_hive_all
+from spark.Batching_Jobs import batching_hive, batching_cassandra_spark, batching_hive_all
 
 default_args = {
     'owner': 'airflow',
