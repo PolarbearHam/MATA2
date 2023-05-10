@@ -370,6 +370,11 @@ const DashboardMain = (props) => {
 
 
   useEffect(() => {
+    let accessToken = sessionStorage.getItem("accessToken");
+    
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem("accessToken")}`,
+    }
     console.log('그리드 레이아웃은',layout)
     const storedLayout = JSON.parse(localStorage.getItem("my-grid-layout")) || [];
     setLayout(storedLayout);
@@ -380,8 +385,8 @@ const DashboardMain = (props) => {
       {params:{
         basetime: REQUEST_STANDARD_TIME,
         interval: "1m",
-        projectId: projectId
-      }}
+        projectId: projectId},
+      headers: headers}
     )
     .then((response) => {
       console.log("components data ok");
@@ -397,7 +402,8 @@ const DashboardMain = (props) => {
         basetime: REQUEST_STANDARD_TIME,
         interval: "1m",
         projectId: projectId
-      }}
+      },
+      headers: headers}
     )
     .then((response) => {
       console.log("users data ok");
@@ -413,7 +419,8 @@ const DashboardMain = (props) => {
         basetime: REQUEST_STANDARD_TIME,
         interval: "1m",
         projectId: projectId
-      }}
+      },
+      headers: headers}
     )
     .then((response) => {
       console.log("clicks data ok");
@@ -429,7 +436,8 @@ const DashboardMain = (props) => {
         basetime: REQUEST_STANDARD_TIME,
         interval: "1m",
         projectId: projectId
-      }}
+      },
+      headers: headers}
     )
     .then((response) => {
       console.log("durations data ok");
@@ -445,7 +453,8 @@ const DashboardMain = (props) => {
         basetime: REQUEST_STANDARD_TIME,
         interval: "1m",
         projectId: projectId
-      }}
+      },
+      headers: headers}
     )
     .then((response) => {
       console.log("journals data ok");
@@ -461,7 +470,8 @@ const DashboardMain = (props) => {
         basetime: REQUEST_STANDARD_TIME,
         interval: "1m",
         projectId: projectId
-      }}
+      },
+      headers: headers}
     )
     .then((response) => {
       console.log("refers data ok");
