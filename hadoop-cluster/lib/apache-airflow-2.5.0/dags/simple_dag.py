@@ -2,7 +2,7 @@ import pendulum
 
 from airflow import DAG
 from airflow.decorators import task
-from lib import Batching_Jobs
+import batching_jobs
 
 with DAG(
         dag_id="simple_workflow_dag",
