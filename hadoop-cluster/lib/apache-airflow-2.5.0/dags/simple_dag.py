@@ -1,3 +1,7 @@
+import os
+import sys
+sys.path.append('/usr/local/lib/apache-airflow-2.5.0/dags/lib')
+
 import pendulum
 
 from airflow import DAG
@@ -12,20 +16,20 @@ with DAG(
         tags=["test"],
 ) as dag:
     base_date = pendulum.date(2013, 1, 1)
-    iteration = 5
 
     @task(task_id="first_job")
     def first(date: str) -> str:
         print("this is the first step :" + date)
-        return second(date)
+        return date
 
     @task(task_id="second_job")
     def second(src: str):
         print("this is the second step :" + src)
-        third()
 
     @task(task_id="third_job")
     def third():
         print("this is the third step :")
 
-    first(base_date)
+    res = first(base_date)
+    second(res)
+    third()
