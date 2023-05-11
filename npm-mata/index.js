@@ -1,7 +1,7 @@
 export default class TagManager {
   constructor(projectToken) {
     this.token = projectToken
-    return (async () => {
+    return (async function() {
       // *************** JS에 주입돼서 들어가는 영역 ***************
       let response = await fetch("https://mata2.co.kr/api/v1/js/" + this.token + "/config");
       this.injection = await response.json();

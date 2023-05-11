@@ -16,6 +16,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -29,8 +32,12 @@ public class CassandraService {
     private final StringRedisTemplate redisTemplate;
     private final WeblogRepository weblogRepository;
 
-    public void sendToCassandra(final WebLogDto data) throws JsonProcessingException {
-        weblogRepository.save(Stream.webLogFormChange(data, Uuids.timeBased()));
+    @Transactional
+    public void sendToCassandra(List<WebLogDto> webLogDtoList, long project_id) throws JsonProcessingException {
+        List<Stream> streamList = webLogDtoList.stream()
+                .map(webLogDto -> Stream.webLogFormChange(webLogDto, Uuids.timeBased(), project_id))
+                .collect(Collectors.toList());
+        weblogRepository.saveAll(streamList);
     }
 
 
@@ -41,6 +48,7 @@ public class CassandraService {
         };
     }
 
+    @Transactional(readOnly = true)
     public Long getProjectId(String token){
         String id = redisTemplate.opsForValue().get(token);
         if(id == null){
