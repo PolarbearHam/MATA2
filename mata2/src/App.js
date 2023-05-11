@@ -113,7 +113,7 @@ function App() {
     axios({
       //request
       method: "get",
-      url: "//localhost:8080/api/v1/member/info",
+      url: process.env.REACT_APP_HOST+"/api/v1/member/info",
       responseType: "type",
       headers: headers
   }).then(function (response) {
