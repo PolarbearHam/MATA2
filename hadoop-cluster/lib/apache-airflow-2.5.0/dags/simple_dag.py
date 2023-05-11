@@ -28,4 +28,4 @@ with DAG(
     def third():
         print("this is the third step :")
 
-first()
+    first(base_date)
