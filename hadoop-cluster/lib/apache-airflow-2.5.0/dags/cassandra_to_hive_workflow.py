@@ -1,12 +1,8 @@
-import sys
-sys.path.append('/usr/local/lib/apache-airflow-2.5.0/dags/lib')
-sys.path.append('/usr/local/lib/apache-airflow-2.5.0/dags/lib/spark')
-
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from spark.Batching_Jobs import batching_hive, batching_cassandra_spark, batching_hive_all
+from lib.Batching_Jobs import batching_hive, batching_cassandra_spark, batching_hive_all
 
 default_args = {
     'owner': 'airflow',

@@ -1,12 +1,8 @@
-import os
-import sys
-sys.path.append('/usr/local/lib/apache-airflow-2.5.0/dags/lib')
-print(sys.path)
 import pendulum
 
 from airflow import DAG
 from airflow.decorators import task
-from lib.spark import Batching_Jobs
+from lib import Batching_Jobs
 
 with DAG(
         dag_id="simple_workflow_dag",
