@@ -1,5 +1,6 @@
 import sys
 sys.path.append('/usr/local/lib/apache-airflow-2.5.0/dags/lib')
+sys.path.append('/usr/local/lib/apache-airflow-2.5.0/dags/lib/spark')
 
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
@@ -9,7 +10,7 @@ from spark.Batching_Jobs import batching_hive, batching_cassandra_spark, batchin
 
 default_args = {
     'owner': 'airflow',
-    'start_date': datetime(2023, 5, 10, 4, 47),
+    'start_date': datetime(2023, 5, 11, 1, 18),
     'retries': 0,
     'retry_delay': timedelta(minutes=1)
 }
