@@ -550,9 +550,9 @@ function App() {
                     >
                       태그 삭제
                     </Button>
-                    <Button color="dark" onClick={() => handleAddTagEvent(index)}>
+                    {/* <Button color="dark" onClick={() => handleAddTagEvent(index)}>
                       tags {index} 이벤트 추가
-                    </Button>
+                    </Button> */}
                   </div>
                   <div className='inputSet'>
                   <Input
@@ -583,7 +583,7 @@ function App() {
                       value={selectedOptions[index]}
                       onChange={(e)=>{handleChangeSelected(index,e)}}
                     />
-                  {tags[index].tagEvents.map((event,index2)=>(
+                  {/* {tags[index].tagEvents.map((event,index2)=>(
                     <FormGroup className='d-flex flex-row gap-3'> 
                     
                     <Input
@@ -597,7 +597,7 @@ function App() {
                     <Button className='w-auto h-auto' onClick={()=>{handleRemoveTagEvent(index,index2)}}> 삭제</Button>
                   
                     </FormGroup>
-                  ))}
+                  ))} */}
 
                   </div>
 
