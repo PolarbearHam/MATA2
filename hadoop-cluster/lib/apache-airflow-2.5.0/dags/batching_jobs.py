@@ -56,7 +56,7 @@ def timestamp_range(base_time, interval, unit):
 
 def inner_timestamp(base_time):
     dt_obj = datetime.strptime((str(base_time))[:19], '%Y-%m-%dT%H:%M:%S')
-    return (dt_obj-timedelta(minutes=-10), dt_obj-timedelta(minutes=10))
+    return (dt_obj-timedelta(minutes=10), dt_obj+timedelta(minutes=10))
 
 
 
@@ -201,7 +201,7 @@ def batching_hive(base_time, amount, unit):
     table_select = "5m"
 
     session = SparkSession.builder \
-        .appName("Batching_Hive_To_Hive") \
+        .appName(f"Batching_Hive_{amount}{unit}") \
         .master("yarn") \
         .config("spark.yarn.queue", "stream") \
         .config("spark.hadoop.hive.exec.dynamic.partition.mode", "nonstrict") \
@@ -325,12 +325,28 @@ def batching_hive_all(base_time, unit):
     table_select = "1h"
 
     session = SparkSession.builder \
-        .appName("Batching_Hive_To_Hive") \
+        .appName(f"Batching_Hive_{unit}") \
         .master("yarn") \
         .config("spark.yarn.queue", "stream") \
         .config("spark.hadoop.hive.exec.dynamic.partition.mode", "nonstrict") \
         .enableHiveSupport() \
         .getOrCreate()
+
+    # component_df = session.read \
+    #     .format("hive") \
+    #     .table(f"mata.components_{table_select}") \
+    #     .select("*") \
+    #     .where(col("update_timestamp") \
+    #            .between(*timestamp_range(base_time, -amount, unit))) \
+    #     .groupBy("project_id", "tag_name", "location", "screen_device", "user_language").agg(
+    #     sum("total_click").alias("total_click") \
+    #     ).withColumn("update_timestamp", lit(base_time).cast("timestamp")) \
+    #     .select("total_click", "tag_name", "location", "screen_device", "user_language", "update_timestamp",
+    #             "project_id")
+    # component_df.show()
+    # component_df.write.mode("append") \
+    #     .format("hive") \
+    #     .insertInto("mata.components_{}{}".format(amount, unit))
 
     #########
     # components 테이블 집계
