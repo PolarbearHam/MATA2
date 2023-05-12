@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @DynamicInsert
 @AllArgsConstructor
 @Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -30,5 +31,7 @@ public class TagEvent {
     @JoinColumn(name = "event_id")
     private Event event;
 
+    @Builder.Default
+    private boolean isEnabled = true;
 }
 
