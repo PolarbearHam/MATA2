@@ -30,8 +30,9 @@ public class WebLogDto {
     private String userAgent;
     private String data;
     private String userLanguage;
-    private int screenSizeX; //window.innerWidth
-    private int screenSizeY; //window.innerHeight
+//    private int screenSizeX; //window.innerWidth
+//    private int screenSizeY; //window.innerHeight
+    private String screenDevice;
     private int positionX;
     private int positionY;
 
@@ -52,8 +53,9 @@ public class WebLogDto {
         sb.append(", userAgent='").append(userAgent).append('\'');
         sb.append(", data='").append(data).append('\'');
         sb.append(", userLanguage='").append(userLanguage).append('\'');
-        sb.append(", screenSizeX=").append(screenSizeX);
-        sb.append(", screenSizeY=").append(screenSizeY);
+//        sb.append(", screenSizeX=").append(screenSizeX);
+//        sb.append(", screenSizeY=").append(screenSizeY);
+        sb.append(", screenDevice=").append(screenDevice);
         sb.append(", positionX=").append(positionX);
         sb.append(", positionY=").append(positionY);
         sb.append('}');

@@ -7,12 +7,19 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Select from 'react-select';
 const ServiceCustom = (props) => {
-  const [options,setOptions] = useState([  { value: 'apple', label: 'Apple' },
-  { value: 'banana', label: 'Banana' },
-  { value: 'orange', label: 'Orange' }]);
-  const handleChangeSelected = (selectedOptions) => {
-    console.log(selectedOptions);
+  const [options,setOptions] = useState([  { value: 'click', label: 'click' },]);
+  const handleChangeSelected = (index,e) => {
+    console.log("셀렉트 바뀜", index,e);
+    const newTagEvents=[]
+    e.forEach(element => {newTagEvents.push(element.value)
+      
+    });
+    const values = [...tags];
+    values[index].tagEvents = newTagEvents;
+    setTags(values);
+    console.log('태그이벤트 변경후', options)
   }
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const saveEvent= (e)=>{
     e.preventDefault();
     const payload=[]
@@ -204,9 +211,35 @@ const ServiceCustom = (props) => {
     });
     
     console.log(tag)
-    axios.post()
+  
   }
 
+  const[token,setToken]=useState(null)
+  const getToken=(e)=>{
+    e.preventDefault()
+    console.log('토큰발급시작')
+    const url=process.env.REACT_APP_HOST+'/v1/project/token';
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
+      'Content-type': 'application/json',
+    }
+    const payload={
+      id:serviceId
+    }
+    console.log("이벤트 설정 저장 시작 보내는 건:", url,serviceId,{headers} )
+    axios.post(url,serviceId,{headers})
+
+    .then(response => {
+      console.log('토큰은',response);
+      setToken(response.data.token)
+      
+    })
+    .catch(error => {
+      console.error(error);
+      alert(error.data)
+    });
+
+  }
   let currentService={}
   const [origin,setOrigin]=useState('')
   const  serviceId  = useParams();
@@ -231,6 +264,7 @@ const ServiceCustom = (props) => {
     .then(res=>{
       console.log('현재 세팅은',res.data)
       setOrigin(res.data.projectDto.url)
+      setToken(res.data.projectDto.token)
       const currentEvents=res.data.eventDtoList
       const newEvents = currentEvents.map(obj => {
         const { eventParamDtoList,eventPathDtoList, ...rest } = obj;
@@ -238,6 +272,9 @@ const ServiceCustom = (props) => {
         return  {eventParams:eventParamDtoList,eventPaths:eventPathDtoList,...rest };
       });
       setEvents(newEvents)
+      
+
+
 
       const currentTags=res.data.tagDtoList
       const newTags=currentTags.map(obj=>{
@@ -253,13 +290,13 @@ const ServiceCustom = (props) => {
       });
       console.log(newTags)
       setTags(newTags)
-      const currentOptions=[...options]
-      events.forEach(event => {
-        currentOptions.push({ value: event.eventName, label: event.eventName })
-      });
-      console.log('current tagEvent 옵션', currentOptions)  
-      setOptions(currentOptions)
-      console.log("111111",options)
+
+      // events.forEach(event => {
+      //   currentOptions.push({ value: event.eventName, label: event.eventName })
+      // });
+      // console.log('current tagEvent 옵션', currentOptions)  
+      // setOptions(currentOptions)
+      // console.log("111111",options)
     })
     .catch(err=>{
       console.log('잘못됨',err)
@@ -273,9 +310,38 @@ const ServiceCustom = (props) => {
   // setEvents(currentEvents)
   },[])
 
-  
+  useEffect(()=>{  
+    
+    const eventsOptions=[]
+    events.forEach(element => {
+      if (eventsOptions.includes({value:element.eventName,label:element.eventName}) ){return}
+      eventsOptions.push({value:element.eventName,label:element.eventName})
 
-  
+    });
+    
+
+    const optionsSet=new Set(eventsOptions)
+    const uniqueOptions=[...optionsSet]
+    uniqueOptions.push({ value: 'click', label: 'click' })
+    setOptions(uniqueOptions)   
+    console.log("셀렉트 옵션은",options)
+  },[events])
+
+  useEffect(()=>{
+    const newSelectedOptions=[]
+    tags.forEach(element => {
+      const newSelectedOption=[]
+      element.tagEvents.forEach(element2 => {
+        newSelectedOption.push({value:element2,label:element2})
+      });
+      newSelectedOptions.push(newSelectedOption)
+
+    });
+    const selectedOptionsSet=new Set(newSelectedOptions)
+    const uniqueSelectedOptions=[...selectedOptionsSet]
+    setSelectedOptions(uniqueSelectedOptions)
+    console.log('선택된 태그 이벤트들',selectedOptions)
+  },[tags])
   return (
     <div id='form-background' className='flex w-100 justify-content-center'>
       <div className='lg:w-3/5 w-full m-8'>
@@ -301,20 +367,20 @@ root.render(
                 <span>최상단 컴포넌트(일반적으로 App.js)에 다음과 같이 추가합니다.</span>
                 <CodeBlock
                   text={
-`import TagManager from "./assets/tagmanager";
+`import TagManager from "npm-mata";
 
-const mata = new TagManager();
+const mata = new TagManager('${token}');
 
 function App() {
-const location = useLocation();
-  useEffect(() => {
-    mata.attach();
-    return () => {
-      mata.detach();
-    }
-  }, [location])
+  const location = useLocation();
+    useEffect(() => {
+      window.dispatchEvent(new Event('load'));
+      return () => {
+        window.dispatchEvent(new Event('unload'));
+      }
+    }, [location])
 
-//...코드`}
+    //...코드`}
                   language={"jsx"}
                 />
               </> ) : (
@@ -327,7 +393,7 @@ const location = useLocation();
 </head>
 
 <!-- MATA Tag Manager -->
-<script src="tagmanager.js" type="module"></script>`
+<script src="https://mata2.co.kr/api/v1/js/${token}" type="module"></script>`
               }
                   language={"html"}
                 />
@@ -339,6 +405,10 @@ const location = useLocation();
         <Form>
           <div className='bg-white mt-3 p-3 rounded-3xl'>
             <p>서비스 설정</p>
+            <div>
+              토큰: {token}
+            </div>
+            <button onClick={getToken}>토큰발급</button>
             <FormGroup id='service' className='d-flex flex-column justify-content-center align-items-center gap-3 bg-white rounded Service'>
               <label>
                 <Input type='text' placeholder='서비스 주소' defaultValue={origin}/>
@@ -480,9 +550,9 @@ const location = useLocation();
                     >
                       태그 삭제
                     </Button>
-                    <Button color="dark" onClick={() => handleAddTagEvent(index)}>
+                    {/* <Button color="dark" onClick={() => handleAddTagEvent(index)}>
                       tags {index} 이벤트 추가
-                    </Button>
+                    </Button> */}
                   </div>
                   <div className='inputSet'>
                   <Input
@@ -506,7 +576,14 @@ const location = useLocation();
                     placeholder='클래스'
                     value={tags[index].tagClass}
                   />
-                  {tags[index].tagEvents.map((event,index2)=>(
+                    <Select
+                      key={index}
+                      isMulti
+                      options={options}
+                      value={selectedOptions[index]}
+                      onChange={(e)=>{handleChangeSelected(index,e)}}
+                    />
+                  {/* {tags[index].tagEvents.map((event,index2)=>(
                     <FormGroup className='d-flex flex-row gap-3'> 
                     
                     <Input
@@ -516,14 +593,11 @@ const location = useLocation();
                       placeholder='이벤트'
                       value={tags[index].tagEvents[index2]}
                     />
-                    <Select
-                      isMulti
-                      options={options}
-                      onChange={handleChangeSelected}
-                    />
+                   
                     <Button className='w-auto h-auto' onClick={()=>{handleRemoveTagEvent(index,index2)}}> 삭제</Button>
+                  
                     </FormGroup>
-                  ))}
+                  ))} */}
 
                   </div>
 
