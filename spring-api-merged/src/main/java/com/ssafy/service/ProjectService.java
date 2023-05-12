@@ -35,7 +35,28 @@ public class ProjectService {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         log.info(member.toString());
         Project project = request.toEntity(member);
-        projectRepository.save(project);
+        long project_id = projectRepository.save(project).getId();
+
+        eventRepository.save(Event.builder()
+                .project(projectRepository.findById(project_id).get())
+                .eventBase("null")
+                .eventName("click")
+                .build());
+        eventRepository.save(Event.builder()
+                .project(projectRepository.findById(project_id).get())
+                .eventBase("null")
+                .eventName("mouseenter")
+                .build());
+        eventRepository.save(Event.builder()
+                .project(projectRepository.findById(project_id).get())
+                .eventBase("null")
+                .eventName("mouseleave")
+                .build());
+        eventRepository.save(Event.builder()
+                .project(projectRepository.findById(project_id).get())
+                .eventBase("null")
+                .eventName("scroll")
+                .build());
     }
 
     public List<ProjectResponse> getList(String email) {
@@ -82,27 +103,7 @@ public class ProjectService {
         Project project = projectDto.toEntity();
         // 없으면 추가
         if(!projectRepository.findById(project.getId()).isPresent()){
-            long project_id = projectRepository.save(project).getId();
-            eventRepository.save(Event.builder()
-                    .project(projectRepository.findById(project_id).get())
-                    .eventBase("null")
-                    .eventName("click")
-                    .build());
-            eventRepository.save(Event.builder()
-                    .project(projectRepository.findById(project_id).get())
-                    .eventBase("null")
-                    .eventName("mouseenter")
-                    .build());
-            eventRepository.save(Event.builder()
-                    .project(projectRepository.findById(project_id).get())
-                    .eventBase("null")
-                    .eventName("mouseleave")
-                    .build());
-            eventRepository.save(Event.builder()
-                    .project(projectRepository.findById(project_id).get())
-                    .eventBase("null")
-                    .eventName("scroll")
-                    .build());
+            projectRepository.save(project);
             return true;
         }else{
             return false;
