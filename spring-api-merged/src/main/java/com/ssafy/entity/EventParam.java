@@ -11,6 +11,7 @@ import java.util.List;
 @DynamicInsert
 @AllArgsConstructor
 @Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -29,6 +30,8 @@ public class EventParam {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private Event event;
+    @Builder.Default
+    private boolean isEnabled = true;
 
 }
 
