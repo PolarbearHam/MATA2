@@ -15,9 +15,7 @@ from dateutil.relativedelta import relativedelta
 # ex. timestamp_range("2023-03-21 13:49:00", 10, 'm') => 2023-03-21 13:49:00 부터 10분 이후의 시간까지
 def timestamp_range(base_time, interval, unit):
 
-    # dt_obj = datetime.strptime(base_time, '%Y-%m-%dT%H:%M:%S.%f%z')
     dt_obj = datetime.strptime((str(base_time))[:19], '%Y-%m-%dT%H:%M:%S')
-    # dt_obj = datetime.fromtimestamp(int(base_time[:13])/1000.0)
 
     if unit=='s':
         if interval>=0:
@@ -54,6 +52,12 @@ def timestamp_range(base_time, interval, unit):
             return (dt_obj, dt_obj+relativedelta(years=interval))
         else:
             return (dt_obj-relativedelta(years=-interval), dt_obj)
+
+
+def inner_timestamp(base_time):
+    dt_obj = datetime.strptime((str(base_time))[:19], '%Y-%m-%dT%H:%M:%S')
+    return (dt_obj-timedelta(minutes=-10), dt_obj-timedelta(minutes=10))
+
 
 
 
@@ -194,6 +198,8 @@ def batching_hive(base_time, amount, unit):
         print("invalid interval: interval should be 10m, 30m, 1h, 6h, 12h, 1d, 1w, 1mo, 6mo, 1y.")
         return 2
 
+    table_select = "5m"
+
     session = SparkSession.builder \
         .appName("Batching_Hive_To_Hive") \
         .master("yarn") \
@@ -204,7 +210,7 @@ def batching_hive(base_time, amount, unit):
 
     component_df = session.read \
         .format("hive") \
-        .table("mata.components_1m") \
+        .table(f"mata.components_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
@@ -221,7 +227,7 @@ def batching_hive(base_time, amount, unit):
     # clicks 테이블 집계
     click_df = session.read \
         .format("hive") \
-        .table("mata.clicks_1m") \
+        .table(f"mata.clicks_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
@@ -238,7 +244,7 @@ def batching_hive(base_time, amount, unit):
     # page_durations 테이블 집계
     page_durations_df = session.read \
         .format("hive") \
-        .table("mata.page_durations_1m") \
+        .table(f"mata.page_durations_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
@@ -256,7 +262,7 @@ def batching_hive(base_time, amount, unit):
     # page_journals 테이블 집계
     page_journals_df = session.read \
         .format("hive") \
-        .table("mata.page_journals_1m") \
+        .table(f"mata.page_journals_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
@@ -273,7 +279,7 @@ def batching_hive(base_time, amount, unit):
     # page_refers 테이블 집계
     page_refers_df = session.read \
         .format("hive") \
-        .table("mata.page_refers_1m") \
+        .table(f"mata.page_refers_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
                .between(*timestamp_range(base_time, -amount, unit))) \
@@ -290,7 +296,7 @@ def batching_hive(base_time, amount, unit):
     # events 테이블 집계, group_by(프로젝트ID, 이벤트명, 태그명) ... + 더 추가?
     event_df = session.read \
         .format("hive") \
-        .table("mata.events_1m") \
+        .table(f"mata.events_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
                .between(*timestamp_range(base_time, -amount, unit))) \
@@ -308,13 +314,13 @@ def batching_hive(base_time, amount, unit):
     session.stop()
 
 
-# 누적 집계 ... 5m 기준으로 쌓기
+# 누적 집계 ... 1h 기준으로 쌓기
 def batching_hive_all(base_time, unit):
     if unit != "all":
         print("invalid interval: interval should be all")
         return 2
 
-    fixTime = 50
+    fixTime = 70
     unit = "m"
     table_select = "1h"
 
@@ -333,7 +339,7 @@ def batching_hive_all(base_time, unit):
         .table(f"mata.components_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
-               .between(*timestamp_range(base_time, -fixTime, unit))) \
+               .between(*inner_timestamp(base_time))) \
         .select("total_click", "tag_name", "location", "screen_device", "user_language", "update_timestamp", "project_id")
 
     components_df_all = session.read \
@@ -366,7 +372,7 @@ def batching_hive_all(base_time, unit):
         .table(f"mata.clicks_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
-               .between(*timestamp_range(base_time, -fixTime, unit))) \
+               .between(*inner_timestamp(base_time))) \
         .select("total_click", "position_x", "position_y","location", "screen_device", "user_language", "update_timestamp", "project_id")
 
     click_df_all = session.read \
@@ -399,7 +405,7 @@ def batching_hive_all(base_time, unit):
         .table(f"mata.page_durations_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
-               .between(*timestamp_range(base_time, -fixTime, unit))) \
+               .between(*inner_timestamp(base_time))) \
         .select("total_duration","total_session","location", "screen_device", "user_language", "update_timestamp","project_id")
 
     page_durations_df_all = session.read \
@@ -433,7 +439,7 @@ def batching_hive_all(base_time, unit):
         .table(f"mata.page_journals_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
-               .between(*timestamp_range(base_time, -fixTime, unit))) \
+               .between(*inner_timestamp(base_time))) \
         .select("total_journal", "location_from", "location_to", "screen_device", "user_language", "update_timestamp", "project_id")
 
     page_journals_df_all = session.read \
@@ -466,7 +472,7 @@ def batching_hive_all(base_time, unit):
         .table(f"mata.page_refers_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
-               .between(*timestamp_range(base_time, -fixTime, unit))) \
+               .between(*inner_timestamp(base_time))) \
         .select("total_session", "total_pageenter", "referrer", "screen_device", "user_language", "update_timestamp", "project_id")
 
     page_refers_df_all = session.read \
@@ -500,7 +506,7 @@ def batching_hive_all(base_time, unit):
         .table(f"mata.events_{table_select}") \
         .select("*") \
         .where(col("update_timestamp") \
-               .between(*timestamp_range(base_time, -fixTime, unit))) \
+               .between(*inner_timestamp(base_time))) \
         .select("total_event_count", "total_session_count", "event", "tag_name", "data", "screen_device", "user_language", "update_timestamp", "project_id")
 
     events_df_all = session.read \
