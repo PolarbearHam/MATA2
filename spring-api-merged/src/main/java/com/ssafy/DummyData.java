@@ -93,7 +93,7 @@ public class DummyData implements CommandLineRunner {
 
             while (eventNameList.hasNext()) {
                 JsonNode eventName = eventNameList.next();
-                Event event = eventRepository.findByEventName(eventName.getTextValue()).get();
+                Event event = eventRepository.findByEventNameAndIsEnabledTrue(eventName.getTextValue()).get();
 
                 tagEventRepository.save(TagEvent.builder()
                         .tag(temp)

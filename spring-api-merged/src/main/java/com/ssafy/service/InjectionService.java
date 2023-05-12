@@ -71,7 +71,8 @@ public class InjectionService {
         List<Tag> tagList = tagRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId);
         for (int i = 0; i < tagList.size(); i++) {
             Tag tag = tagList.get(i);
-            List<TagEvent> tagEventList = tagEventRepository.findAllByTagId(tag.getId());
+//            List<TagEvent> tagEventList = tagEventRepository.findAllByTagId(tag.getId());
+            List<TagEvent> tagEventList = tagEventRepository.findAllByTagIdAndIsEnabledIsTrue(tag.getId());
 
             code.append(tag.getHtmlTagName() + ":{");
             code.append(String.format("id:'%s', class:'%s',",tag.getHtmlTagId(), tag.getHtmlTagClass()));
@@ -303,7 +304,8 @@ public class InjectionService {
             Map<String, Object> tag = new HashMap<>();
             tag.put("id", t.getHtmlTagId());
             tag.put("class", t.getHtmlTagClass());
-            tag.put("events", tagEventRepository.findAllByTagId(t.getId()).stream().map(e -> e.getEvent().getEventName()));
+//            tag.put("events", tagEventRepository.findAllByTagId(t.getId()).stream().map(e -> e.getEvent().getEventName()));
+            tag.put("events", tagEventRepository.findAllByTagIdAndIsEnabledIsTrue(t.getId()).stream().map(e -> e.getEvent().getEventName()));
             tags.put(t.getHtmlTagName(), tag);
         }
         injection.put("tags", tags);

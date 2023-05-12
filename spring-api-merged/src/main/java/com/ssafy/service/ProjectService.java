@@ -90,7 +90,8 @@ public class ProjectService {
     }
 
     public boolean saveEvent(SaveEventListDto saveEventListDto, Long projectId){
-        List<Event> eventList = eventRepository.findAllByProjectId(projectId);
+//        List<Event> eventList = eventRepository.findAllByProjectId(projectId);
+        List<Event> eventList = eventRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId);
         for(Event event : eventList){
             List<EventParam> eventParamList = eventParamRepository.findAllByEventId(event.getId());
             for(EventParam eventParam : eventParamList) {
@@ -153,9 +154,11 @@ public class ProjectService {
 
     public boolean saveTag(SaveTagListDto saveTagListDto, Long projectId){
         boolean saveTagOK = true;
-        List<Tag> tagList = tagRepository.findAllByProjectId(projectId);
+//        List<Tag> tagList = tagRepository.findAllByProjectId(projectId);
+        List<Tag> tagList = tagRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId);
         for(Tag tag : tagList){
-            List<TagEvent> tagEventList = tagEventRepository.findAllByTagId(tag.getId());
+//            List<TagEvent> tagEventList = tagEventRepository.findAllByTagId(tag.getId());
+            List<TagEvent> tagEventList = tagEventRepository.findAllByTagIdAndIsEnabledIsTrue(tag.getId());
             for(TagEvent tagEvent : tagEventList){
                 tagEvent.setEnabled(false);
                 tagEventRepository.save(tagEvent);
@@ -167,7 +170,8 @@ public class ProjectService {
         try{
             for(SaveTagDto tagSaveDto : saveTagListDto.getTags()){
                 Tag tag = tagSaveDto.toTagEntity(projectRepository.findById(projectId).get());
-                Optional<Tag> optionalTag = tagRepository.findByHtmlTagIdAndProjectId(tag.getHtmlTagId(), projectId);
+//                Optional<Tag> optionalTag = tagRepository.findByHtmlTagIdAndProjectId(tag.getHtmlTagId(), projectId);
+                Optional<Tag> optionalTag = tagRepository.findByHtmlTagIdAndProjectIdAndIsEnabledIsTrue(tag.getHtmlTagId(), projectId);
                 if(!optionalTag.isPresent()) tagRepository.saveAndFlush(tag);
                 else {
                     tag = optionalTag.get();
@@ -178,7 +182,8 @@ public class ProjectService {
                 for(String tagEventName : tagSaveDto.getTagEvents()){
                     Optional<Event> optionalEvent = eventRepository.findByEventNameAndProjectIdAndIsEnabledIsTrue(tagEventName, projectId);
                     if(optionalEvent.isPresent()) {
-                        Optional<TagEvent> optionalTagEvent = tagEventRepository.findByTagIdAndEventId(tag.getId(),optionalEvent.get().getId());
+//                        Optional<TagEvent> optionalTagEvent = tagEventRepository.findByTagIdAndEventId(tag.getId(),optionalEvent.get().getId());
+                        Optional<TagEvent> optionalTagEvent = tagEventRepository.findByTagIdAndEventIdAndIsEnabledIsTrue(tag.getId(),optionalEvent.get().getId());
                         if(optionalTagEvent.isPresent()) {
                             TagEvent tagEvent = optionalTagEvent.get();
                             tagEvent.setEnabled(true);
@@ -220,7 +225,8 @@ public class ProjectService {
     }
 
     public List<EventDto> getEventList(Long projectId) {
-        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(projectId));
+//        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(projectId));
+        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId));
         return eventDtoList;
     }
 }

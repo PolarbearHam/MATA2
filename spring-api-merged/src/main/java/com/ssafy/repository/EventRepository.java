@@ -10,8 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
-//    Optional<Event> findById(long eventId);
-    Optional<Event> findByEventName(String eventName);
     Optional<Event> findByEventNameAndIsEnabledTrue(String eventName);
     List<Event> findAllByProjectId(long projectId);
     List<Event> findAllByProjectIdAndIsEnabledIsTrue(long projectId);
