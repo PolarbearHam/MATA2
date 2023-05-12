@@ -1,7 +1,9 @@
 package com.ssafy;
 
+import com.ssafy.dto.ProjectDto;
 import com.ssafy.entity.*;
 import com.ssafy.repository.*;
+import com.ssafy.service.ProjectService;
 import com.ssafy.util.MemberPrivilege;
 import com.ssafy.util.ProjectCategory;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,8 @@ public class DummyData implements CommandLineRunner {
     private final TagRepository tagRepository;
     private final TagEventRepository tagEventRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final ProjectService projectService;
 
 
     @Override
@@ -108,12 +112,32 @@ public class DummyData implements CommandLineRunner {
         List<Member> memberList = memberRepository.findAll();
         for (int i = 0; i < memberList.size(); i++) {
             for (int j = 0; j < 5; j++) {
-                projectRepository.save(Project.builder()
+                long project_id = projectRepository.save(Project.builder()
                         .category(ProjectCategory.BLOG)
                         .url("ssafy.com/" + memberList.get(i).getName())
                         .name(memberList.get(i).getName() + "s "+ j +" project")
                         .token("token"+i+"asdf"+j)
                         .member(memberList.get(i))
+                        .build()).getId();
+                eventRepository.save(Event.builder()
+                        .project(projectRepository.findById(project_id).get())
+                        .eventBase("null")
+                        .eventName("click")
+                        .build());
+                eventRepository.save(Event.builder()
+                        .project(projectRepository.findById(project_id).get())
+                        .eventBase("null")
+                        .eventName("mouseenter")
+                        .build());
+                eventRepository.save(Event.builder()
+                        .project(projectRepository.findById(project_id).get())
+                        .eventBase("null")
+                        .eventName("mouseleave")
+                        .build());
+                eventRepository.save(Event.builder()
+                        .project(projectRepository.findById(project_id).get())
+                        .eventBase("null")
+                        .eventName("scroll")
                         .build());
             }
         }

@@ -82,7 +82,27 @@ public class ProjectService {
         Project project = projectDto.toEntity();
         // 없으면 추가
         if(!projectRepository.findById(project.getId()).isPresent()){
-            projectRepository.save(project);
+            long project_id = projectRepository.save(project).getId();
+            eventRepository.save(Event.builder()
+                    .project(projectRepository.findById(project_id).get())
+                    .eventBase("null")
+                    .eventName("click")
+                    .build());
+            eventRepository.save(Event.builder()
+                    .project(projectRepository.findById(project_id).get())
+                    .eventBase("null")
+                    .eventName("mouseenter")
+                    .build());
+            eventRepository.save(Event.builder()
+                    .project(projectRepository.findById(project_id).get())
+                    .eventBase("null")
+                    .eventName("mouseleave")
+                    .build());
+            eventRepository.save(Event.builder()
+                    .project(projectRepository.findById(project_id).get())
+                    .eventBase("null")
+                    .eventName("scroll")
+                    .build());
             return true;
         }else{
             return false;

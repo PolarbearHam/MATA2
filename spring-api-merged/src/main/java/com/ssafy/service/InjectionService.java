@@ -33,11 +33,11 @@ public class InjectionService {
                         "      bootstrap: 'https://mata2.co.kr/api/v1/dump',\n" +
                         "      projectToken: '"+projectToken+"',\n" +
                         "      spa: " + projectRepository.findById(projectId).get().isSpa() +",\n" +
-                        "      events: {\n" +
-                        "        click: {base: null, param: [], path: []}," +
-                        "        mouseenter: {base: null, param: [], path: []},\n" +
-                        "        mouseleave: {base: null, param: [], path: []},\n" +
-                        "        scroll: {base: null, param: [], path: []},\n";
+                        "      events: {\n";
+//                        "        click: {base: null, param: [], path: []}," +
+//                        "        mouseenter: {base: null, param: [], path: []},\n" +
+//                        "        mouseleave: {base: null, param: [], path: []},\n" +
+//                        "        scroll: {base: null, param: [], path: []},\n";
 
         StringBuilder code = new StringBuilder();
 //        List<Event> eventList = eventRepository.findAllByProjectId(projectId);
@@ -267,14 +267,14 @@ public class InjectionService {
         injection.put("spa", projectEntity.isSpa());
         // events
         Map<String, Object> events = new HashMap<>();
-        List<String> baseEvents = Arrays.asList("clicks", "mouseenter", "mouseleave", "scroll");
-        for (String be : baseEvents) {
-            Map<String, Object> event = new HashMap<>();
-            event.put("base", null);
-            event.put("param", new ArrayList<>());
-            event.put("path", new ArrayList<>());
-            events.put(be, event);
-        }
+//        List<String> baseEvents = Arrays.asList("clicks", "mouseenter", "mouseleave", "scroll");
+//        for (String be : baseEvents) {
+//            Map<String, Object> event = new HashMap<>();
+//            event.put("base", null);
+//            event.put("param", new ArrayList<>());
+//            event.put("path", new ArrayList<>());
+//            events.put(be, event);
+//        }
 //        List<Event> customEvents = eventRepository.findAllByProjectId(projectId);
         List<Event> customEvents = eventRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId);
         for (Event e : customEvents) {
