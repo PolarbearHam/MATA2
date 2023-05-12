@@ -325,7 +325,7 @@ def batching_hive_all(base_time, unit):
     table_select = "1h"
 
     session = SparkSession.builder \
-        .appName(f"Batching_Hive_{unit}") \
+        .appName(f"Batching_Hive_all") \
         .master("yarn") \
         .config("spark.yarn.queue", "stream") \
         .config("spark.hadoop.hive.exec.dynamic.partition.mode", "nonstrict") \
