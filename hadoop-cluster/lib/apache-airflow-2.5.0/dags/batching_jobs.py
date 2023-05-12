@@ -58,11 +58,11 @@ def timestamp_range(base_time, interval, unit):
 
 
 ##### Cassandra -> Hive Batching (분산 처리)
-##### 1분 최소단위 집계, 더 길어질 수도 있음
+##### 5분 단위 최소 집계
 def batching_cassandra_spark(base_time, amount, unit):
 
-    if str(amount)+unit != "1m":
-        print("invalid interval: interval should be 1m.")
+    if str(amount)+unit != "5m":
+        print("invalid interval: interval should be 5m.")
         return 2
 
     cassandra_keyspace = "tagmanager"
@@ -81,7 +81,7 @@ def batching_cassandra_spark(base_time, amount, unit):
     batch_df = session.read \
           .format("org.apache.spark.sql.cassandra") \
       .option("checkpointLocation", "/") \
-      .option("spark.cassandra.connection.host", "slave01") \
+      .option("spark.cassandra.connection.host", "master01") \
       .option("spark.cassandra.connection.port", 9042) \
       .option("keyspace", cassandra_keyspace) \
       .option("table", cassandra_table) \
@@ -190,8 +190,8 @@ def batching_cassandra_spark(base_time, amount, unit):
 ##### Hive -> Hive Batching (단일 처리)
 # 집계를 집계
 def batching_hive(base_time, amount, unit):
-    if str(amount)+unit not in ["5m", "10m", "30m", "1h", "6h", "12h", "1d", "1w", "1mo", "6mo", "1y"]:
-        print("invalid interval: interval should be 5m, 10m, 30m, 1h, 6h, 12h, 1d, 1w, 1mo, 6mo, 1y.")
+    if str(amount)+unit not in ["10m", "30m", "1h", "6h", "12h", "1d", "1w", "1mo", "6mo", "1y"]:
+        print("invalid interval: interval should be 10m, 30m, 1h, 6h, 12h, 1d, 1w, 1mo, 6mo, 1y.")
         return 2
 
     session = SparkSession.builder \
@@ -314,9 +314,9 @@ def batching_hive_all(base_time, unit):
         print("invalid interval: interval should be all")
         return 2
 
-    fixTime = 4
+    fixTime = 50
     unit = "m"
-    table_select = "5m"
+    table_select = "1h"
 
     session = SparkSession.builder \
         .appName("Batching_Hive_To_Hive") \
