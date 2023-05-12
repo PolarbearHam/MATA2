@@ -81,7 +81,7 @@ def batching_cassandra_spark(base_time, amount, unit):
     batch_df = session.read \
           .format("org.apache.spark.sql.cassandra") \
       .option("checkpointLocation", "/") \
-      .option("spark.cassandra.connection.host", "master01") \
+      .option("spark.cassandra.connection.host", "slave01") \
       .option("spark.cassandra.connection.port", 9042) \
       .option("keyspace", cassandra_keyspace) \
       .option("table", cassandra_table) \
