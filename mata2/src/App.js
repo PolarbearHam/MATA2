@@ -33,7 +33,7 @@ function App() {
 
   });
   const userInfo = async (accessToken) => {
-    if(!accessToken || accessToken=='') return;
+    if(!accessToken || accessToken === '') return;
     // fetch나 axios로 유저 정보 가져오기
     // 아래는 로그인 더미 로직
     // const formData= {

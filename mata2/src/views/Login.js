@@ -27,7 +27,7 @@ const Login = () => {
 
     .then(response => {
       console.log(response);
-      if (response.status==200) {
+      if (response.status === 200) {
         sessionStorage.setItem('accessToken',response.data.accessToken)  
         navigate('/')
       }else alert('틀림')

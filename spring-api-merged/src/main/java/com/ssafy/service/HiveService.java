@@ -34,12 +34,15 @@ public class HiveService {
         return hiveRepository.selectPageUser(baseTime, interval, serviceId);
     }
 
-
     public List<HivePageJournal> getPageJournals(long baseTime, String interval, long serviceId){
         return hiveRepository.selectPageJournal(baseTime, interval, serviceId);
     }
     public List<HivePageRefer> getPageRefers(long baseTime, String interval, long serviceId){
         return hiveRepository.selectpageRefer(baseTime, interval, serviceId);
+    }
+
+    public List<HiveEvent> getEvents(long baseTime, String interval, long serviceId){
+        return hiveRepository.selectEvent(baseTime, interval, serviceId);
     }
 //    public List<Referrer> getReferrers(){
 //        return hiveRepository.selectReferrer();

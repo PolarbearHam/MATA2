@@ -85,6 +85,16 @@ public class AnalyticsController {
         List<HivePageRefer> hivePageRefers = hiveService.getPageRefers(baseTime, interval, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(hivePageRefers);
     }
+
+    @GetMapping("/events")
+    public ResponseEntity<List<HiveEvent>> getEvents(@RequestParam(name="basetime") long baseTime,
+                                                             @RequestParam(name="interval") String interval,
+                                                             @RequestParam(name="projectId") long projectId,
+                                                             @AuthenticationPrincipal UserDetails userDetails) {
+        if(!validation.contains(interval)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        List<HiveEvent> hiveEvents = hiveService.getEvents(baseTime, interval, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(hiveEvents);
+    }
 //    @GetMapping("/referrers")
 //    public ResponseEntity<List<Referrer>> getReferrers(@AuthenticationPrincipal UserDetails userDetails){
 //        List<Referrer> referrers = hiveService.getReferrers();

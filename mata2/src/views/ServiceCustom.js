@@ -286,8 +286,8 @@ const ServiceCustom = (props) => {
     console.log('시작은 함')
 
     props.state.serviceList.map( (service) => {
-      if(serviceId.id==service.id){
-        currentService=service
+      if(serviceId.id === service.id){
+        currentService = service
         setOrigin(currentService.url)
         console.log('주소 찾음')
         
