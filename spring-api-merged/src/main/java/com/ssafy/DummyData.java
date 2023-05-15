@@ -113,7 +113,7 @@ public class DummyData implements CommandLineRunner {
             for (int j = 0; j < 5; j++) {
                 long project_id = projectRepository.saveAndFlush(Project.builder()
                         .category(ProjectCategory.BLOG)
-                        .url("ssafy.com/" + memberList.get(i).getName())
+                        .url("mata2.co.kr")
                         .name(memberList.get(i).getName() + "s "+ j +" project")
                         .token("token"+i+"asdf"+j)
                         .member(memberList.get(i))

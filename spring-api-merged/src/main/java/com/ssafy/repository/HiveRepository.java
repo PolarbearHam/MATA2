@@ -179,9 +179,9 @@ public class HiveRepository {
                 "WHERE project_id = ? " +
                 "AND update_timestamp < CAST(? AS TIMESTAMP) " +
                 "AND update_timestamp > CAST(? AS TIMESTAMP) " +
-                "AND (location_from LIKE ? " +
-                "OR location_from LIKE ? " +
-                "OR location_from LIKE ?)";
+                "AND (location_from NOT LIKE ? " +
+                "AND location_from NOT LIKE ? " +
+                "AND location_from NOT LIKE ?)";
         return jdbcTemplate.query(sql, new Object[] {projectId,
                 new Timestamp(baseTime),
                 new Timestamp(baseTime - 3600000),
@@ -201,9 +201,9 @@ public class HiveRepository {
                 "WHERE project_id = ? " +
                 "AND update_timestamp < CAST(? AS TIMESTAMP) " +
                 "AND update_timestamp > CAST(? AS TIMESTAMP) " +
-                "AND (location_from NOT LIKE ? " +
-                "AND location_from NOT LIKE ? " +
-                "AND location_from NOT LIKE ?)";
+                "AND (location_from LIKE ? " +
+                "OR location_from LIKE ? " +
+                "OR location_from LIKE ?)";
         return jdbcTemplate.query(sql, new Object[] {projectId,
                 new Timestamp(baseTime),
                 new Timestamp(baseTime - 3600000),
