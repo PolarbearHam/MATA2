@@ -10,10 +10,12 @@ import { Resizable,ResizableBox } from 'react-resizable';
 import GridLayout from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+
 // function DashboardMain() {
 
 import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class ToolBoxItem extends React.Component {
@@ -168,7 +170,7 @@ class ToolboxLayout extends React.Component {
             <span className="text">{l.i} {chartName}</span>
           )}
           <div className="h-100 ">
-            
+          
             {component}
           </div>
 

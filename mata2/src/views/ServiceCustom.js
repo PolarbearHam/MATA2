@@ -7,7 +7,28 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Select from 'react-select';
 const ServiceCustom = (props) => {
-  const [options,setOptions] = useState([  { value: 'click', label: 'click' },]);
+  function extractPropertyValues(array, key) {
+    return array.map(obj => obj[key]).filter(value => value !== undefined);
+  }
+  function findDuplicateValues(array) {
+    const uniqueValues = new Set();
+    const duplicateValues = [];
+  function hasCommonValues(array1, array2) {
+    return array1.some(value => array2.includes(value));
+  };
+  
+    for (const value of array) {
+      if (uniqueValues.has(value)) {
+        duplicateValues.push(value);
+      } else {
+        uniqueValues.add(value);
+      }
+    }
+  
+    return duplicateValues;
+  }
+  const reservedEventNames=['click','mouseenter','mouseleave','scroll']
+  const [options,setOptions] = useState([ ]);
   const handleChangeSelected = (index,e) => {
     console.log("셀렉트 바뀜", index,e);
     const newTagEvents=[]
@@ -21,6 +42,18 @@ const ServiceCustom = (props) => {
   }
   const [selectedOptions, setSelectedOptions] = useState([]);
   const saveEvent= (e)=>{
+    
+    const eventsNamesArray= extractPropertyValues(events,'eventName')
+    const duplicates=findDuplicateValues(eventsNamesArray);
+
+    if (duplicates.length) {
+      console.log(duplicates)
+      window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)
+      return
+    }
+    console.log('eventsNamesArray=',eventsNamesArray) 
+    
+
     e.preventDefault();
     const payload=[]
     const event={events:[]}
@@ -58,8 +91,13 @@ const ServiceCustom = (props) => {
   }
 
   const test=()=>{
+    const eventsNamesArray= extractPropertyValues(events,'eventName')
+    const duplicates=findDuplicateValues(eventsNamesArray);
+    if(duplicates){window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)}
+    console.log('eventsNamesArray=',eventsNamesArray) 
     console.log(fields,events,tags)
   }
+
   const [events,setEvents] = useState([])
   const [fields, setFields] = useState({service:{},events:events,tags:[]});
   const [tags,setTags]=useState([])
@@ -322,7 +360,7 @@ const ServiceCustom = (props) => {
 
     const optionsSet=new Set(eventsOptions)
     const uniqueOptions=[...optionsSet]
-    uniqueOptions.push({ value: 'click', label: 'click' })
+    // uniqueOptions.push({ value: 'click', label: 'click' })
     setOptions(uniqueOptions)   
     console.log("셀렉트 옵션은",options)
   },[events])
@@ -427,6 +465,7 @@ function App() {
           
             <div className='d-flex flex-column justify-content-center align-items-center gap-3 bg-white rounded Service'>
               {events.map((event, index1) => (
+                
                 <FormGroup key={index1}>
                   <div className='d-flex flex-auto gap-3'>
                     <Button
@@ -444,6 +483,7 @@ function App() {
                       paths 추가
                     </Button>
                   </div>
+                
                   <Input
                     className='mt-1'
                     type="text"
@@ -453,7 +493,7 @@ function App() {
                     placeholder='이벤트 명'
                     value={events[index1].eventName}
                   />
-                  
+             
                   <Input
                     className='mt-1'
                     type="text"
@@ -463,9 +503,11 @@ function App() {
                     placeholder='이벤트 조건'
                     value={events[index1].eventBase}
                   />
+                
                   <div>
-                    event {index1} params 
+                    event {index1-3} params 
                   </div>
+                  
                   {events[index1].eventParams.map((param,index2)=>(
                     
                     <FormGroup>
@@ -493,12 +535,13 @@ function App() {
                         <Button className='w-auto h-auto ' onClick={()=>handleRemoveParam(index1,index2)}>삭제</Button>
                       </div>
                     </FormGroup>
-                  ))}
-              <div>
-                event {index1} paths
-              </div>
-              {events[index1].eventPaths.map((path,index2)=>(
-                    
+                  )
+                  )}
+                
+                  <div>
+                    event {index1-3} paths
+                  </div>
+                  {events[index1].eventPaths.map((path,index2)=>( 
                     <FormGroup>
                       <div className='d-flex flex-row gap-3'>
                         <div className='flex-grow '> 
@@ -523,10 +566,12 @@ function App() {
                         </div>
                         <Button className='w-auto h-auto' onClick={()=>{handleRemovePath(index1,index2)}}>삭제</Button>
                       </div>
-
                     </FormGroup>
                   ))}
-                </FormGroup>
+              
+                  
+              </FormGroup>
+              
             ))}
               <Button color="dark" onClick={() => handleAddEvent()}>
                 이벤트 추가
@@ -550,9 +595,9 @@ function App() {
                     >
                       태그 삭제
                     </Button>
-                    <Button color="dark" onClick={() => handleAddTagEvent(index)}>
+                    {/* <Button color="dark" onClick={() => handleAddTagEvent(index)}>
                       tags {index} 이벤트 추가
-                    </Button>
+                    </Button> */}
                   </div>
                   <div className='inputSet'>
                   <Input
@@ -583,7 +628,7 @@ function App() {
                       value={selectedOptions[index]}
                       onChange={(e)=>{handleChangeSelected(index,e)}}
                     />
-                  {tags[index].tagEvents.map((event,index2)=>(
+                  {/* {tags[index].tagEvents.map((event,index2)=>(
                     <FormGroup className='d-flex flex-row gap-3'> 
                     
                     <Input
@@ -597,7 +642,7 @@ function App() {
                     <Button className='w-auto h-auto' onClick={()=>{handleRemoveTagEvent(index,index2)}}> 삭제</Button>
                   
                     </FormGroup>
-                  ))}
+                  ))} */}
 
                   </div>
 
