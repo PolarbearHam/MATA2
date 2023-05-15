@@ -12,6 +12,7 @@ import java.util.List;
 @DynamicInsert
 @AllArgsConstructor
 @Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -37,8 +38,7 @@ public class Tag {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ColumnDefault("true")
-    @Builder.Default()
+    @Builder.Default
     private boolean isEnabled = true;
 }
 

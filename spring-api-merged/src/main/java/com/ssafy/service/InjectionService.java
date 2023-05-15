@@ -33,14 +33,15 @@ public class InjectionService {
                         "      bootstrap: 'https://mata2.co.kr/api/v1/dump',\n" +
                         "      projectToken: '"+projectToken+"',\n" +
                         "      spa: " + projectRepository.findById(projectId).get().isSpa() +",\n" +
-                        "      events: {\n" +
-                        "        click: {base: null, param: [], path: []}," +
-                        "        mouseenter: {base: null, param: [], path: []},\n" +
-                        "        mouseleave: {base: null, param: [], path: []},\n" +
-                        "        scroll: {base: null, param: [], path: []},\n";
+                        "      events: {\n";
+//                        "        click: {base: null, param: [], path: []}," +
+//                        "        mouseenter: {base: null, param: [], path: []},\n" +
+//                        "        mouseleave: {base: null, param: [], path: []},\n" +
+//                        "        scroll: {base: null, param: [], path: []},\n";
 
         StringBuilder code = new StringBuilder();
-        List<Event> eventList = eventRepository.findAllByProjectId(projectId);
+//        List<Event> eventList = eventRepository.findAllByProjectId(projectId);
+        List<Event> eventList = eventRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId);
 
         for (int i = 0; i < eventList.size(); i++) {
             Event event = eventList.get(i);
@@ -66,10 +67,12 @@ public class InjectionService {
         }
         code.append("},");
         code.append("tags : {");
-        List<Tag> tagList = tagRepository.findAllByProjectId(projectId);
+//        List<Tag> tagList = tagRepository.findAllByProjectId(projectId);
+        List<Tag> tagList = tagRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId);
         for (int i = 0; i < tagList.size(); i++) {
             Tag tag = tagList.get(i);
-            List<TagEvent> tagEventList = tagEventRepository.findAllByTagId(tag.getId());
+//            List<TagEvent> tagEventList = tagEventRepository.findAllByTagId(tag.getId());
+            List<TagEvent> tagEventList = tagEventRepository.findAllByTagIdAndIsEnabledIsTrue(tag.getId());
 
             code.append(tag.getHtmlTagName() + ":{");
             code.append(String.format("id:'%s', class:'%s',",tag.getHtmlTagId(), tag.getHtmlTagClass()));
@@ -264,15 +267,16 @@ public class InjectionService {
         injection.put("spa", projectEntity.isSpa());
         // events
         Map<String, Object> events = new HashMap<>();
-        List<String> baseEvents = Arrays.asList("clicks", "mouseenter", "mouseleave", "scroll");
-        for (String be : baseEvents) {
-            Map<String, Object> event = new HashMap<>();
-            event.put("base", null);
-            event.put("param", new ArrayList<>());
-            event.put("path", new ArrayList<>());
-            events.put(be, event);
-        }
-        List<Event> customEvents = eventRepository.findAllByProjectId(projectId);
+//        List<String> baseEvents = Arrays.asList("clicks", "mouseenter", "mouseleave", "scroll");
+//        for (String be : baseEvents) {
+//            Map<String, Object> event = new HashMap<>();
+//            event.put("base", null);
+//            event.put("param", new ArrayList<>());
+//            event.put("path", new ArrayList<>());
+//            events.put(be, event);
+//        }
+//        List<Event> customEvents = eventRepository.findAllByProjectId(projectId);
+        List<Event> customEvents = eventRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId);
         for (Event e : customEvents) {
             Map<String, Object> event = new HashMap<>();
             List<EventParam> eventParamList = eventParamRepository.findAllByEventId(e.getId());
@@ -294,12 +298,14 @@ public class InjectionService {
         // tags
         injection.put("tags", null);
         Map<String, Object> tags = new HashMap<>();
-        List<Tag> customTags = tagRepository.findAllByProjectId(projectId);
+//        List<Tag> customTags = tagRepository.findAllByProjectId(projectId);
+        List<Tag> customTags = tagRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId);
         for (Tag t : customTags) {
             Map<String, Object> tag = new HashMap<>();
             tag.put("id", t.getHtmlTagId());
             tag.put("class", t.getHtmlTagClass());
-            tag.put("events", tagEventRepository.findAllByTagId(t.getId()).stream().map(e -> e.getEvent().getEventName()));
+//            tag.put("events", tagEventRepository.findAllByTagId(t.getId()).stream().map(e -> e.getEvent().getEventName()));
+            tag.put("events", tagEventRepository.findAllByTagIdAndIsEnabledIsTrue(t.getId()).stream().map(e -> e.getEvent().getEventName()));
             tags.put(t.getHtmlTagName(), tag);
         }
         injection.put("tags", tags);

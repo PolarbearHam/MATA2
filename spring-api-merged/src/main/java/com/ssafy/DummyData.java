@@ -1,7 +1,9 @@
 package com.ssafy;
 
+import com.ssafy.dto.ProjectDto;
 import com.ssafy.entity.*;
 import com.ssafy.repository.*;
+import com.ssafy.service.ProjectService;
 import com.ssafy.util.MemberPrivilege;
 import com.ssafy.util.ProjectCategory;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,8 @@ public class DummyData implements CommandLineRunner {
     private final TagEventRepository tagEventRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final ProjectService projectService;
+
 
     @Override
     public void run(String... args) throws Exception {
@@ -44,7 +48,7 @@ public class DummyData implements CommandLineRunner {
     }
 
     private void addEvent() throws IOException {
-        String stringDummy = "{\"events\": { \"login\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"click_main\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"click\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"purchase\": { \"base\": \"click\", \"param\": [ {\"name\": \"productName\", \"key\": \"product\"}, {\"name\": \"productName2\", \"key\": \"product2\"} ], \"path\": [ {\"name\": \"productId\", \"index\": 3} ] } }}";
+        String stringDummy = "{\"events\": { \"login\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"click_main\": { \"base\": \"click\", \"param\": [], \"path\": [ {\"name\": \"userId\", \"index\": 2} ] }, \"purchase\": { \"base\": \"click\", \"param\": [ {\"name\": \"productName\", \"key\": \"product\"}, {\"name\": \"productName2\", \"key\": \"product2\"} ], \"path\": [ {\"name\": \"productId\", \"index\": 3} ] } }}";
         Project project = projectRepository.findById(2l).get();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(stringDummy);
@@ -90,10 +94,9 @@ public class DummyData implements CommandLineRunner {
             tagRepository.saveAndFlush(temp);
 
             Iterator<JsonNode> eventNameList = tag.getValue().get("events").getElements();
-
             while (eventNameList.hasNext()) {
                 JsonNode eventName = eventNameList.next();
-                Event event = eventRepository.findByEventName(eventName.getTextValue()).get();
+                Event event = eventRepository.findByEventNameAndProjectIdAndIsEnabledIsTrue(eventName.getTextValue(), project.getId()).get();
 
                 tagEventRepository.save(TagEvent.builder()
                         .tag(temp)
@@ -108,15 +111,33 @@ public class DummyData implements CommandLineRunner {
         List<Member> memberList = memberRepository.findAll();
         for (int i = 0; i < memberList.size(); i++) {
             for (int j = 0; j < 5; j++) {
-                Project project = Project.builder()
+                long project_id = projectRepository.saveAndFlush(Project.builder()
                         .category(ProjectCategory.BLOG)
                         .url("ssafy.com/" + memberList.get(i).getName())
                         .name(memberList.get(i).getName() + "s "+ j +" project")
                         .token("token"+i+"asdf"+j)
                         .member(memberList.get(i))
-                        .build();
-                project.updateToken();
-                projectRepository.save(project);
+                        .build()).getId();
+                eventRepository.saveAndFlush(Event.builder()
+                        .project(projectRepository.findById(project_id).get())
+                        .eventBase("null")
+                        .eventName("click")
+                        .build());
+                eventRepository.saveAndFlush(Event.builder()
+                        .project(projectRepository.findById(project_id).get())
+                        .eventBase("null")
+                        .eventName("mouseenter")
+                        .build());
+                eventRepository.saveAndFlush(Event.builder()
+                        .project(projectRepository.findById(project_id).get())
+                        .eventBase("null")
+                        .eventName("mouseleave")
+                        .build());
+                eventRepository.saveAndFlush(Event.builder()
+                        .project(projectRepository.findById(project_id).get())
+                        .eventBase("null")
+                        .eventName("scroll")
+                        .build());
             }
         }
     }

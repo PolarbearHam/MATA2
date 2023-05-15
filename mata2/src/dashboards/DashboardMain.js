@@ -10,11 +10,12 @@ import { Resizable,ResizableBox } from 'react-resizable';
 import GridLayout from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-import axios from 'axios';
+
 // function DashboardMain() {
 
 import _ from "lodash";
 import { Responsive, WidthProvider } from "react-grid-layout";
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class ToolBoxItem extends React.Component {
@@ -169,7 +170,7 @@ class ToolboxLayout extends React.Component {
             <span className="text">{l.i} {chartName}</span>
           )}
           <div className="h-100 ">
-            
+          
             {component}
           </div>
 
@@ -296,7 +297,7 @@ class ToolboxLayout extends React.Component {
 }
 
 // function generateLayout() {
-//   return _.map(_.range(0, 25), function(item, i) {
+//   return _.map(_.range(0, 4), function(item, i) {
 //     var y = Math.ceil(Math.random() * 4) + 1;
 //     return {
 //       x: (_.random(0, 5) * 2) % 12,
@@ -308,16 +309,8 @@ class ToolboxLayout extends React.Component {
 //     };
 //   });
 // }
-const ANALYTICS_URL = "http://localhost:8080/api/v1/analytics";
-const REQUEST_STANDARD_TIME = Date.now();
-
 const DashboardMain = (props) => {
-  console.log(props.state.user);
-  const projectId = props.state.user.id;
-  const userEmail = props.state.user.email;
-  const userName = props.state.user.name;
-
-  const [layout, setLayout] = useState([
+  const [layout, setLayout] = useState ((localStorage.getItem("my-grid-layout")? JSON.parse(localStorage.getItem("my-grid-layout")) :[
     {
       "w": 5,
       "h": 7,
@@ -368,128 +361,14 @@ const DashboardMain = (props) => {
       "static": false,
       "name": '데모라인차트'
     }
-  ]);
-
-  const [componentsData, setComponentsData] = useState();
-  const [usersData, setUsersData] = useState();
-  const [clicksData, setClicksData] = useState();
-  const [durationsData, setDurationsData] = useState();
-  const [journalsData, setJournalsData] = useState();
-  const [refersData, setRefersData] = useState();
-
+  ]));
 
   useEffect(() => {
-    let accessToken = sessionStorage.getItem("accessToken");
-    
-    const headers = {
-      "Authorization": `Bearer ${sessionStorage.getItem("accessToken")}`,
-    }
     console.log('그리드 레이아웃은',layout)
     const storedLayout = JSON.parse(localStorage.getItem("my-grid-layout")) || [];
     setLayout(storedLayout);
     console.log('그리드 레이아웃은',layout)
-
-    axios.get(
-      ANALYTICS_URL + "/components",
-      {params:{
-        basetime: REQUEST_STANDARD_TIME,
-        interval: "1m",
-        projectId: projectId},
-      headers: headers}
-    )
-    .then((response) => {
-      console.log("components data ok");
-      setComponentsData(response.data);
-    })
-    .catch((error)=> {
-      console.log(error);
-    });
-  
-    axios.get(
-      ANALYTICS_URL + "/users",
-      {params:{
-        basetime: REQUEST_STANDARD_TIME,
-        interval: "1m",
-        projectId: projectId
-      },
-      headers: headers}
-    )
-    .then((response) => {
-      console.log("users data ok");
-      setUsersData(response.data);
-    })
-    .catch((error)=> {
-      console.log(error);
-    });
-
-    axios.get(
-      ANALYTICS_URL + "/clicks",
-      {params:{
-        basetime: REQUEST_STANDARD_TIME,
-        interval: "1m",
-        projectId: projectId
-      },
-      headers: headers}
-    )
-    .then((response) => {
-      console.log("clicks data ok");
-      setClicksData(response.data);
-    })
-    .catch((error)=> {
-      console.log(error);
-    });
-
-    axios.get(
-      ANALYTICS_URL + "/durations",
-      {params:{
-        basetime: REQUEST_STANDARD_TIME,
-        interval: "1m",
-        projectId: projectId
-      },
-      headers: headers}
-    )
-    .then((response) => {
-      console.log("durations data ok");
-      setDurationsData(response.data);
-    })
-    .catch((error)=> {
-      console.log(error);
-    });
-
-    axios.get(
-      ANALYTICS_URL + "/journals",
-      {params:{
-        basetime: REQUEST_STANDARD_TIME,
-        interval: "1m",
-        projectId: projectId
-      },
-      headers: headers}
-    )
-    .then((response) => {
-      console.log("journals data ok");
-      setJournalsData(response.data);
-    })
-    .catch((error)=> {
-      console.log(error);
-    });
-
-    axios.get(
-      ANALYTICS_URL + "/refers",
-      {params:{
-        basetime: REQUEST_STANDARD_TIME,
-        interval: "1m",
-        projectId: projectId
-      },
-      headers: headers}
-    )
-    .then((response) => {
-      console.log("refers data ok");
-      setRefersData(response.data);
-    })
-    .catch((error)=> {
-      console.log(error);
-    });
-  }, []);
+  },[]);
 
   const onLayoutChange = (newLayout) => {
     console.log('레이아웃 바뀜',newLayout)

@@ -83,7 +83,7 @@ public class EventController {
 
 
         for (long k = 0; k < 100; k++) {
-            long projectId = 10 + k % 20;
+            long projectId = 10 + k % 15;
 
             // 500명의 유저 접속, url 랜덤
             for (int i = 0; i < 500; i++) {
