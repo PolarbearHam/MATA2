@@ -104,36 +104,36 @@ function App() {
       })
       .catch(err=>{
       })
+      axios({
+        //request
+        method: "get",
+        url: process.env.REACT_APP_HOST+"/v1/member/info",
+        responseType: "type",
+        headers: headers
+    }).then(function (response) {
+        console.log(response)
+        const userResponse=JSON.parse(response.data)
+        console.log(userResponse)
+        setUser({
+          id: userResponse.id,
+          email: userResponse.email,
+          name: userResponse.name
+        });
+    })
+      .catch(error => {
+          console.error(error);
+      });
     }
     
     const formData= {
       "grantType": "Bearer",
       "accessToken": accessToken
     }
-    axios({
-      //request
-      method: "get",
-      url: process.env.REACT_APP_HOST+"/v1/member/info",
-      responseType: "type",
-      headers: headers
-  }).then(function (response) {
-      console.log(response)
-      const userResponse=JSON.parse(response.data)
-      console.log(userResponse)
-      setUser({
-        id: userResponse.id,
-        email: userResponse.email,
-        name: userResponse.name
-      });
-  })
-    .catch(error => {
-        console.error(error);
-    });
+    
     
     // accessToken = 'dummy-token'; // 더미 데이터
     // userInfo(accessToken);
-    return () => {
-    }
+
   },[]);
   useEffect(() => {
     let accessToken = sessionStorage.getItem("accessToken");
@@ -148,32 +148,54 @@ function App() {
       })
       .catch(err=>{
       })
+
+      axios({
+        //request
+        method: "get",
+        url: process.env.REACT_APP_HOST+"/v1/member/info",
+        responseType: "type",
+        headers: headers
+    }).then(function (response) {
+        console.log(response)
+        const userResponse=JSON.parse(response.data)
+        console.log(userResponse)
+        setUser({
+          id: userResponse.id,
+          email: userResponse.email,
+          name: userResponse.name
+        });
+  
+    })
+      .catch(error => {
+          console.error(error);
+      });
+      
     }
     
     const formData= {
       "grantType": "Bearer",
       "accessToken": accessToken
     }
-    axios({
-      //request
-      method: "get",
-      url: process.env.REACT_APP_HOST+"/v1/member/info",
-      responseType: "type",
-      headers: headers
-  }).then(function (response) {
-      console.log(response)
-      const userResponse=JSON.parse(response.data)
-      console.log(userResponse)
-      setUser({
-        id: userResponse.id,
-        email: userResponse.email,
-        name: userResponse.name
-      });
+  //   axios({
+  //     //request
+  //     method: "get",
+  //     url: process.env.REACT_APP_HOST+"/v1/member/info",
+  //     responseType: "type",
+  //     headers: headers
+  // }).then(function (response) {
+  //     console.log(response)
+  //     const userResponse=JSON.parse(response.data)
+  //     console.log(userResponse)
+  //     setUser({
+  //       id: userResponse.id,
+  //       email: userResponse.email,
+  //       name: userResponse.name
+  //     });
 
-  })
-    .catch(error => {
-        console.error(error);
-    });
+  // })
+  //   .catch(error => {
+  //       console.error(error);
+  //   });
     
 
  
