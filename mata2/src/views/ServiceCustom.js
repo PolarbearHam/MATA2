@@ -467,7 +467,7 @@ function App() {
               {events.map((event, index1) => (
                 
                 <FormGroup key={index1}>
-                  <div className='d-flex flex-auto gap-3'>
+  ``                  <div className='d-flex flex-auto gap-3'>
                     <Button
                       color="danger"
                       onClick={() => handleRemoveEvent(index1)}
