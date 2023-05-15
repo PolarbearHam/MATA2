@@ -138,13 +138,60 @@ public class HiveRepository {
         return jdbcTemplate.query(sql, eventRowMapper);
     }
 
-
-    public List<HivePageDuration> selectPageUser(long baseTime, String interval, long projectId) {
+    // 누적 정보 repo
+    public List<HiveComponent> selectComponentAll(long baseTime, long projectId) {
         String sql = String.format(//language=sql
-                "SELECT * FROM mata.page_durations_%s "+
-                    "WHERE project_id=%d "+
+                "SELECT * FROM mata.components_all "+
+                        "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 100", interval, projectId, baseTime);
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
+                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+        return jdbcTemplate.query(sql, componentRowMapper);
+    }
+    public List<HiveClick> selectClickAll(long baseTime, long projectId) {
+        String sql = String.format(//language=sql
+                "SELECT * FROM mata.clicks_all "+
+                        "WHERE project_id=%d "+
+                        "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
+                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+        return jdbcTemplate.query(sql, clickRowMapper);
+    }
+    public List<HivePageDuration> selectPageDurationAll(long baseTime, long projectId) {
+        String sql = String.format(//language=sql
+                "SELECT * FROM mata.page_durations_all "+
+                        "WHERE project_id=%d "+
+                        "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
+                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
         return jdbcTemplate.query(sql, pageDurationRowMapper);
     }
+    public List<HivePageJournal> selectPageJournalAll(long baseTime, long projectId) {
+        String sql = String.format(//language=sql
+                "SELECT * FROM mata.page_journals_all "+
+                        "WHERE project_id=%d "+
+                        "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
+                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+        return jdbcTemplate.query(sql, pageJournalRowMapper);
+    }
+    public List<HivePageRefer> selectpageReferAll(long baseTime, long projectId) {
+        String sql = String.format(//language=sql
+                "SELECT * FROM mata.page_refers_all "+
+                        "WHERE project_id=%d "+
+                        "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
+                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+        return jdbcTemplate.query(sql, pageReferRowMapper);
+    }
+    public List<HiveEvent> selectEventAll(long baseTime, long projectId) {
+        String sql = String.format(//language=sql
+                "SELECT * FROM mata.events_all "+
+                        "WHERE project_id=%d "+
+                        "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
+                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+        return jdbcTemplate.query(sql, eventRowMapper);
+    }
+
 }

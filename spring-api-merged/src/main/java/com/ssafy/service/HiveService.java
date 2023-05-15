@@ -19,33 +19,42 @@ public class HiveService {
         return hiveRepository.selectData();
     }
 
-    public List<HiveComponent> getComponents(long baseTime, String interval, long serviceId){
-        return hiveRepository.selectComponent(baseTime, interval, serviceId);
+    public List<HiveComponent> getComponents(long baseTime, String interval, long projectId){
+        return hiveRepository.selectComponent(baseTime, interval, projectId);
+    }
+    public List<HiveClick> getClicks(long baseTime, String interval, long projectId){
+        return hiveRepository.selectClick(baseTime, interval, projectId);
+    }
+    public List<HivePageDuration> getPageDurations(long baseTime, String interval, long projectId){
+        return hiveRepository.selectPageDuration(baseTime, interval, projectId);
+    }
+    public List<HivePageJournal> getPageJournals(long baseTime, String interval, long projectId){
+        return hiveRepository.selectPageJournal(baseTime, interval, projectId);
+    }
+    public List<HivePageRefer> getPageRefers(long baseTime, String interval, long projectId){
+        return hiveRepository.selectpageRefer(baseTime, interval, projectId);
+    }
+    public List<HiveEvent> getEvents(long baseTime, String interval, long projectId){
+        return hiveRepository.selectEvent(baseTime, interval, projectId);
     }
 
-    public List<HiveClick> getClicks(long baseTime, String interval, long serviceId){
-        return hiveRepository.selectClick(baseTime, interval, serviceId);
+    public List<HiveComponent> getComponentsAll(long baseTime, long projectId){
+        return hiveRepository.selectComponentAll(baseTime, projectId);
     }
-    public List<HivePageDuration> getPageDurations(long baseTime, String interval, long serviceId){
-        return hiveRepository.selectPageDuration(baseTime, interval, serviceId);
+    public List<HiveClick> getClicksAll(long baseTime, long projectId){
+        return hiveRepository.selectClickAll(baseTime, projectId);
     }
-
-    public List<HivePageDuration> getPageUsers(long baseTime, String interval, long serviceId){
-        return hiveRepository.selectPageUser(baseTime, interval, serviceId);
+    public List<HivePageDuration> getPageDurationsAll(long baseTime, long projectId){
+        return hiveRepository.selectPageDurationAll(baseTime, projectId);
     }
-
-    public List<HivePageJournal> getPageJournals(long baseTime, String interval, long serviceId){
-        return hiveRepository.selectPageJournal(baseTime, interval, serviceId);
+    public List<HivePageJournal> getPageJournalsAll(long baseTime, long projectId){
+        return hiveRepository.selectPageJournalAll(baseTime, projectId);
     }
-    public List<HivePageRefer> getPageRefers(long baseTime, String interval, long serviceId){
-        return hiveRepository.selectpageRefer(baseTime, interval, serviceId);
+    public List<HivePageRefer> getPageRefersAll(long baseTime, long projectId){
+        return hiveRepository.selectpageReferAll(baseTime, projectId);
     }
-
-    public List<HiveEvent> getEvents(long baseTime, String interval, long serviceId){
-        return hiveRepository.selectEvent(baseTime, interval, serviceId);
+    public List<HiveEvent> getEventsAll(long baseTime, long projectId){
+        return hiveRepository.selectEventAll(baseTime, projectId);
     }
-//    public List<Referrer> getReferrers(){
-//        return hiveRepository.selectReferrer();
-//    }
 
 }

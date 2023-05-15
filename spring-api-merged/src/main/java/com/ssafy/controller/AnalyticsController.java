@@ -56,17 +56,6 @@ public class AnalyticsController {
         List<HivePageDuration> hivePageDurations = hiveService.getPageDurations(baseTime, interval, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(hivePageDurations);
     }
-
-    @GetMapping("/users")
-    public ResponseEntity<List<HivePageDuration>> getPageUsers(@RequestParam(name="basetime") long baseTime,
-                                                               @RequestParam(name="interval") String interval,
-                                                               @RequestParam(name="projectId") long projectId,
-                                                               @AuthenticationPrincipal UserDetails userDetails) {
-        if(!validation.contains(interval)) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        List<HivePageDuration> hivePageDurations = hiveService.getPageUsers(baseTime, interval, projectId);
-        return ResponseEntity.status(HttpStatus.OK).body(hivePageDurations);
-    }
-
     @GetMapping("/journals")
     public ResponseEntity<List<HivePageJournal>> getPageJournals(@RequestParam(name="basetime") long baseTime,
                                                                  @RequestParam(name="interval") String interval,
@@ -85,7 +74,6 @@ public class AnalyticsController {
         List<HivePageRefer> hivePageRefers = hiveService.getPageRefers(baseTime, interval, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(hivePageRefers);
     }
-
     @GetMapping("/events")
     public ResponseEntity<List<HiveEvent>> getEvents(@RequestParam(name="basetime") long baseTime,
                                                              @RequestParam(name="interval") String interval,
@@ -95,9 +83,63 @@ public class AnalyticsController {
         List<HiveEvent> hiveEvents = hiveService.getEvents(baseTime, interval, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(hiveEvents);
     }
-//    @GetMapping("/referrers")
-//    public ResponseEntity<List<Referrer>> getReferrers(@AuthenticationPrincipal UserDetails userDetails){
-//        List<Referrer> referrers = hiveService.getReferrers();
-//        return ResponseEntity.status(HttpStatus.OK).body(referrers);
-//    }
+
+    // 누적 데이터 api
+    @GetMapping("/components_all")
+    public ResponseEntity<?> getComponents(@RequestParam(name="basetime") long baseTime,
+                                           @RequestParam(name="projectId") long projectId,
+                                           @AuthenticationPrincipal UserDetails userDetails){
+        // 임시
+        baseTime = 1684025143516l;
+        List<HiveComponent> hiveComponents = hiveService.getComponentsAll(baseTime, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(hiveComponents);
+    }
+    @GetMapping("/clicks_all")
+    public ResponseEntity<List<HiveClick>> getClicks(@RequestParam(name="basetime") long baseTime,
+                                                     @RequestParam(name="projectId") long projectId,
+                                                     @AuthenticationPrincipal UserDetails userDetails) {
+        // 임시
+        baseTime = 1684025143516l;
+        List<HiveClick> clicks = hiveService.getClicksAll(baseTime, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(clicks);
+    }
+    @GetMapping("/durations_all")
+    public ResponseEntity<List<HivePageDuration>> getPageDurations(@RequestParam(name="basetime") long baseTime,
+                                                                   @RequestParam(name="projectId") long projectId,
+                                                                   @AuthenticationPrincipal UserDetails userDetails) {
+        // 임시
+        baseTime = 1684025143516l;
+        List<HivePageDuration> hivePageDurations = hiveService.getPageDurationsAll(baseTime, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(hivePageDurations);
+    }
+    @GetMapping("/journals_all")
+    public ResponseEntity<List<HivePageJournal>> getPageJournals(@RequestParam(name="basetime") long baseTime,
+                                                                 @RequestParam(name="projectId") long projectId,
+                                                                 @AuthenticationPrincipal UserDetails userDetails) {
+        // 임시
+        baseTime = 1684025143516l;
+        List<HivePageJournal> hivePageJournals = hiveService.getPageJournalsAll(baseTime, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(hivePageJournals);
+    }
+    @GetMapping("/refers_all")
+    public ResponseEntity<List<HivePageRefer>> getPageRefers(@RequestParam(name="basetime") long baseTime,
+                                                             @RequestParam(name="projectId") long projectId,
+                                                             @AuthenticationPrincipal UserDetails userDetails) {
+        // 임시
+        baseTime = 1684025143516l;
+        List<HivePageRefer> hivePageRefers = hiveService.getPageRefersAll(baseTime, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(hivePageRefers);
+    }
+    @GetMapping("/events_all")
+    public ResponseEntity<List<HiveEvent>> getEvents(@RequestParam(name="basetime") long baseTime,
+                                                     @RequestParam(name="projectId") long projectId,
+                                                     @AuthenticationPrincipal UserDetails userDetails) {
+        // 임시
+        baseTime = 1684025143516l;
+        List<HiveEvent> hiveEvents = hiveService.getEventsAll(baseTime, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(hiveEvents);
+    }
+
+
+
 }
