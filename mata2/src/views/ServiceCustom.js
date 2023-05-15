@@ -465,9 +465,10 @@ function App() {
           
             <div className='d-flex flex-column justify-content-center align-items-center gap-3 bg-white rounded Service'>
               {events.map((event, index1) => (
-                
-                <FormGroup key={index1}>
-  ``                  <div className='d-flex flex-auto gap-3'>
+                index1 > 3 && (
+                <FormGroup  key={index1}>
+                  
+                  <div className='d-flex flex-auto gap-3'>
                     <Button
                       color="danger"
                       onClick={() => handleRemoveEvent(index1)}
@@ -572,7 +573,9 @@ function App() {
                   
               </FormGroup>
               
-            ))}
+              )
+            ))
+          }
               <Button color="dark" onClick={() => handleAddEvent()}>
                 이벤트 추가
               </Button>
