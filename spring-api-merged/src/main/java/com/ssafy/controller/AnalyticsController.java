@@ -122,14 +122,23 @@ public class AnalyticsController {
         return ResponseEntity.status(HttpStatus.OK).body(hivePageJournals);
     }
     @GetMapping("/refers_all")
-    public ResponseEntity<List<HivePageRefer>> getPageRefers(@RequestParam(name="basetime") long baseTime,
+    public ResponseEntity<List<HivePageJournal>> getPageRefers(@RequestParam(name="basetime") long baseTime,
                                                              @RequestParam(name="projectId") long projectId,
                                                              @AuthenticationPrincipal UserDetails userDetails) {
         // 임시
         baseTime = 1684025143516l;
-        List<HivePageRefer> hivePageRefers = hiveService.getPageRefersAll(baseTime, projectId);
-        return ResponseEntity.status(HttpStatus.OK).body(hivePageRefers);
+        List<HivePageJournal> hivePageJournalList = hiveService.getPageRefersAll(baseTime, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(hivePageJournalList);
     }
+//    @GetMapping("/refers_all")
+//    public ResponseEntity<List<HivePageRefer>> getPageRefers(@RequestParam(name="basetime") long baseTime,
+//                                                             @RequestParam(name="projectId") long projectId,
+//                                                             @AuthenticationPrincipal UserDetails userDetails) {
+//        // 임시
+//        baseTime = 1684025143516l;
+//        List<HivePageRefer> hivePageRefers = hiveService.getPageRefersAll(baseTime, projectId);
+//        return ResponseEntity.status(HttpStatus.OK).body(hivePageRefers);
+//    }
     @GetMapping("/events_all")
     public ResponseEntity<List<HiveEvent>> getEvents(@RequestParam(name="basetime") long baseTime,
                                                      @RequestParam(name="projectId") long projectId,

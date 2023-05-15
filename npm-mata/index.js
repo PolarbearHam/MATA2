@@ -78,6 +78,10 @@ export default class TagManager {
         this.stackLog(e, 'pageleave');
         this.flushLog();
       }.bind(this);
+      this.handlerDict['click_heatmap'] = function (e) {
+        this.stackLog(e, 'click_heatmap');
+      }.bind(this);
+      
       let keys = Object.keys(this.events);
       for (let i=0; i<keys.length; i++) {
         this.handlerDict[keys[i]] = function (e) {
@@ -168,6 +172,13 @@ export default class TagManager {
 
           }
         }
+        // 히트맵 이벤트 부착
+        let dispatcher = function (e) { // base DOM 이벤트에 dispatcher 붙이기
+          this.handlerDict['click_heatmap'](e);
+        }.bind(this)
+        window.addEventListener('click', dispatcher);
+        this.attachedListeners.push({target: window, type: 'click', listener: dispatcher})
+        
         // 태그에 종속되지 않는 이벤트 발생시키기
         this.handlerDict['pageenter']({target: window});
       }

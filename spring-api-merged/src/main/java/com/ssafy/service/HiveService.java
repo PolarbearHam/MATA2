@@ -2,10 +2,12 @@ package com.ssafy.service;
 
 import com.ssafy.entity.*;
 import com.ssafy.repository.HiveRepository;
+import com.ssafy.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +16,7 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public class HiveService {
     private final HiveRepository hiveRepository;
+    private final ProjectRepository projectRepository;
 
     public List<Map<String, Object>> getWebLogs(){
         return hiveRepository.selectData();
@@ -48,10 +51,12 @@ public class HiveService {
         return hiveRepository.selectPageDurationAll(baseTime, projectId);
     }
     public List<HivePageJournal> getPageJournalsAll(long baseTime, long projectId){
-        return hiveRepository.selectPageJournalAll(baseTime, projectId);
+        String domain = projectRepository.findById(projectId).get().getUrl();
+        return hiveRepository.selectPageJournalAll(baseTime, projectId, domain);
     }
-    public List<HivePageRefer> getPageRefersAll(long baseTime, long projectId){
-        return hiveRepository.selectpageReferAll(baseTime, projectId);
+    public List<HivePageJournal> getPageRefersAll(long baseTime, long projectId){
+        String domain = projectRepository.findById(projectId).get().getUrl();
+        return hiveRepository.selectpageReferAll(baseTime, projectId, domain);
     }
     public List<HiveEvent> getEventsAll(long baseTime, long projectId){
         return hiveRepository.selectEventAll(baseTime, projectId);
