@@ -94,7 +94,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.components_%s "+
                     "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 100", interval, projectId, baseTime);
+                    "LIMIT 1000", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, componentRowMapper);
     }
     public List<HiveClick> selectClick(long baseTime, String interval, long projectId) {
@@ -102,7 +102,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.clicks_%s "+
                     "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 100", interval, projectId, baseTime);
+                    "LIMIT 1000", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, clickRowMapper);
     }
     public List<HivePageDuration> selectPageDuration(long baseTime, String interval, long projectId) {
@@ -110,7 +110,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.page_durations_%s "+
                     "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 100", interval, projectId, baseTime);
+                    "LIMIT 1000", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, pageDurationRowMapper);
     }
     public List<HivePageJournal> selectPageJournal(long baseTime, String interval, long projectId) {
@@ -118,7 +118,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.page_journals_%s "+
                     "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 100", interval, projectId, baseTime);
+                    "LIMIT 1000", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, pageJournalRowMapper);
     }
     public List<HivePageRefer> selectpageRefer(long baseTime, String interval, long projectId) {
@@ -126,7 +126,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.page_refers_%s "+
                 "WHERE project_id=%d "+
                     "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                "LIMIT 100", interval, projectId, baseTime);
+                "LIMIT 1000", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, pageReferRowMapper);
     }
     public List<HiveEvent> selectEvent(long baseTime, String interval, long projectId) {
@@ -134,7 +134,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.events_%s "+
                         "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                        "LIMIT 100", interval, projectId, baseTime);
+                        "LIMIT 1000", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, eventRowMapper);
     }
 
@@ -144,8 +144,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.components_all "+
                         "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
-                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) ", projectId, baseTime, baseTime-3600000);
         return jdbcTemplate.query(sql, componentRowMapper);
     }
     public List<HiveClick> selectClickAll(long baseTime, long projectId) {
@@ -153,8 +152,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.clicks_all "+
                         "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
-                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) ", projectId, baseTime, baseTime-3600000);
         return jdbcTemplate.query(sql, clickRowMapper);
     }
     public List<HivePageDuration> selectPageDurationAll(long baseTime, long projectId) {
@@ -162,8 +160,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.page_durations_all "+
                         "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
-                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) ", projectId, baseTime, baseTime-3600000);
         return jdbcTemplate.query(sql, pageDurationRowMapper);
     }
     public List<HivePageJournal> selectPageJournalAll(long baseTime, long projectId) {
@@ -171,8 +168,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.page_journals_all "+
                         "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
-                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) ", projectId, baseTime, baseTime-3600000);
         return jdbcTemplate.query(sql, pageJournalRowMapper);
     }
     public List<HivePageRefer> selectpageReferAll(long baseTime, long projectId) {
@@ -180,8 +176,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.page_refers_all "+
                         "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
-                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) ", projectId, baseTime, baseTime-3600000);
         return jdbcTemplate.query(sql, pageReferRowMapper);
     }
     public List<HiveEvent> selectEventAll(long baseTime, long projectId) {
@@ -189,8 +184,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.events_all "+
                         "WHERE project_id=%d "+
                         "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                        "AND update_timestamp>CAST(%d AS TIMESTAMP) "+
-                        "LIMIT 100", projectId, baseTime, baseTime-3600000);
+                        "AND update_timestamp>CAST(%d AS TIMESTAMP) ", projectId, baseTime, baseTime-3600000);
         return jdbcTemplate.query(sql, eventRowMapper);
     }
 
