@@ -150,6 +150,9 @@ public class InjectionService {
                 "      this.stackLog(e, 'pageleave');\n" +
                 "      this.flushLog();\n" +
                 "    }.bind(this);\n" +
+                "    this.handlerDict['click_heatmap'] = function (e) {\n" +
+                "      this.stackLog(e, 'click_heatmap');\n" +
+                "    }.bind(this);\n" +
                 "    let keys = Object.keys(this.events);\n" +
                 "    for (let i=0; i<keys.length; i++) {\n" +
                 "      this.handlerDict[keys[i]] = function (e) {\n" +
@@ -233,6 +236,11 @@ public class InjectionService {
                 "        } else { \n" +
                 "        }\n" +
                 "      }\n" +
+                "      let dispatcher = function (e) { // base DOM 이벤트에 dispatcher 붙이기\n" +
+                "        this.handlerDict['click_heatmap'](e);\n" +
+                "      }.bind(this)\n" +
+                "      window.addEventListener('click', dispatcher);\n" +
+                "      this.attachedListeners.push({target: window, type: 'click', listener: dispatcher})\n" +
                 "      this.handlerDict['pageenter']({target: window});\n" +
                 "    }\n" +
                 "    this.detach = function () {\n" +
