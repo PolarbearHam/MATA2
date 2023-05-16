@@ -83,7 +83,7 @@ export default class DemoPieChart extends PureComponent {
   }
 
   componentDidMount(){
-    const projectID = this.props.projectID;
+    const projectID = window.location.href.split('/')[4];
     const du_BASEURL=`https://mata2.co.kr/api/v1/analytics/durations_all?basetime=${Date.now()}&projectId=${projectID}`;
     const re_BASEURL=`https://mata2.co.kr/api/v1/analytics/refers_all?basetime=${Date.now()}&projectId=${projectID}`;
     const headers = {
@@ -139,7 +139,7 @@ export default class DemoPieChart extends PureComponent {
 
     return (
       <>
-      <DropdownComponent menuName = {"선택"} menus={["디바이스 비율","유입 경로 비율"]} onSelect={this.handleSelect} ></DropdownComponent>
+      <DropdownComponent menus={["디바이스 비율","유입 경로 비율"]} onSelect={this.handleSelect} title={"비율 정보 선택"} ></DropdownComponent>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart width={400} height={400}>
           <Pie

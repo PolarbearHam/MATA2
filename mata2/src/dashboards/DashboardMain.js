@@ -146,7 +146,7 @@ class ToolboxLayout extends React.Component {
           component = <DemoBarChart />;
           break
         case "d":
-          component= <DemoPieChart projectID={10}/>
+          component= <DemoPieChart />
           break
         case "e" :
           component= <DemoSankeyChart/>
