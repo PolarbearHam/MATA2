@@ -1,8 +1,27 @@
-import React from 'react';
+import React,{ useEffect,useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
 
 const Header = (props) => {
+  const [services,setServices]=useState([{id:-1}])
+  // useEffect(()=>{
+  //   const accessToken=sessionStorage.getItem('accessToken')
+    
+  //   console.log('header시작',props,accessToken)
+    
+  //   if(props.state.serviceList){
+  //     const newServices=[...props.state.serviceList]
+  //     console.log('header 시작',props)
+  //     console.log('header 시작',newServices)
+  //     console.log('header 시작',accessToken)
+  //     setServices(newServices)
+  //     console.log('header 시작',services)
+  //   }
+    
+    
+  // },[props.serviceList]
+  // )
+
   const dropdown = () => {
     document.getElementById("nav-content").classList.toggle("hidden");
   }
@@ -28,7 +47,7 @@ const Header = (props) => {
         </button>
       </div>
       <div id="nav-content" className="w-full lg:flex lg:w-auto hidden">
-        {!props.state.user.name ? ( <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
+        {!props.state.user ? ( <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
           <Link to="/"
              className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 hover:scale-105 mr-4">
             홈
@@ -39,7 +58,7 @@ const Header = (props) => {
           </Link>
         </div>) : (
         <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
-          <Link to="/start"
+          <Link to={`/service/${props.state.headService}/dashboard`}
              className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 hover:scale-105 mr-4">
             {props.state.user.name}의 대시보드
           </Link>
