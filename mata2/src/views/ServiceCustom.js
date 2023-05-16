@@ -30,7 +30,6 @@ const ServiceCustom = (props) => {
   const reservedEventNames=['click','mouseenter','mouseleave','scroll']
   const [options,setOptions] = useState([ ]);
   const handleChangeSelected = (index,e) => {
-    console.log("셀렉트 바뀜", index,e);
     const newTagEvents=[]
     e.forEach(element => {newTagEvents.push(element.value)
       
@@ -38,7 +37,6 @@ const ServiceCustom = (props) => {
     const values = [...tags];
     values[index].tagEvents = newTagEvents;
     setTags(values);
-    console.log('태그이벤트 변경후', options)
   }
   const [selectedOptions, setSelectedOptions] = useState([]);
   const saveEvent= (e)=>{
@@ -47,11 +45,9 @@ const ServiceCustom = (props) => {
     const duplicates=findDuplicateValues(eventsNamesArray);
 
     if (duplicates.length) {
-      console.log(duplicates)
       window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)
       return
     }
-    console.log('eventsNamesArray=',eventsNamesArray) 
     
 
     e.preventDefault();
@@ -67,16 +63,15 @@ const ServiceCustom = (props) => {
     }
     )
     
-    const url=process.env.REACT_APP_HOST+'/v1/project/'+serviceId.id+'/events';
+    const url=process.env.REACT_APP_HOST+'/v1/project/'+projectId+'/events';
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
     }
-    console.log("이벤트 설정 저장 시작 보내는 건:", url,event,{headers} )
     axios.post(url,event,{headers})
 
     .then(response => {
-      console.log(response);
+
       // if (response.status==200) {
       //   sessionStorage.setItem('accessToken',response.data.accessToken)  
       //   navigate('/')
@@ -94,8 +89,6 @@ const ServiceCustom = (props) => {
     const eventsNamesArray= extractPropertyValues(events,'eventName')
     const duplicates=findDuplicateValues(eventsNamesArray);
     if(duplicates){window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)}
-    console.log('eventsNamesArray=',eventsNamesArray) 
-    console.log(fields,events,tags)
   }
 
   const [events,setEvents] = useState([])
@@ -227,20 +220,15 @@ const ServiceCustom = (props) => {
 
     }
     );
-    const url=process.env.REACT_APP_HOST+'/v1/project/'+serviceId.id+'/tags';
+    const url=process.env.REACT_APP_HOST+'/v1/project/'+projectId+'/tags';
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
     }
-    console.log("이벤트 설정 저장 시작 보내는 건:", url,tag,{headers} )
     axios.post(url,tag,{headers})
 
     .then(response => {
-      console.log(response);
-      // if (response.status==200) {
-      //   sessionStorage.setItem('accessToken',response.data.accessToken)  
-      //   navigate('/')
-      // }else alert('틀림')
+
       window.location.reload();
     })
     .catch(error => {
@@ -255,20 +243,17 @@ const ServiceCustom = (props) => {
   const[token,setToken]=useState(null)
   const getToken=(e)=>{
     e.preventDefault()
-    console.log('토큰발급시작')
     const url=process.env.REACT_APP_HOST+'/v1/project/token';
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
     }
     const payload={
-      id:serviceId
+      id:{id:projectId}
     }
-    console.log("이벤트 설정 저장 시작 보내는 건:", url,serviceId,{headers} )
-    axios.post(url,serviceId,{headers})
+    axios.post(url,{id:projectId},{headers})
 
     .then(response => {
-      console.log('토큰은',response);
       setToken(response.data.token)
       
     })
@@ -280,27 +265,24 @@ const ServiceCustom = (props) => {
   }
   let currentService={}
   const [origin,setOrigin]=useState('')
-  const  serviceId  = useParams();
+  const  {projectId}  = useParams();
   const location = useLocation();
   useLayoutEffect(()=>{
-    console.log('시작은 함')
 
     props.state.serviceList.map( (service) => {
-      if(serviceId.id==service.id){
+      if(projectId==projectId){
         currentService=service
         setOrigin(currentService.url)
-        console.log('주소 찾음')
         
       }else{console.log('주소 못 찾음')
     }
     });
-    const url=process.env.REACT_APP_HOST+'/v1/project/'+serviceId.id+'/settings'
+    const url=process.env.REACT_APP_HOST+'/v1/project/'+projectId+'/settings'
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
     }
     axios.get(url,headers)
     .then(res=>{
-      console.log('현재 세팅은',res.data)
       setOrigin(res.data.projectDto.url)
       setToken(res.data.projectDto.token)
       const currentEvents=res.data.eventDtoList
@@ -326,26 +308,15 @@ const ServiceCustom = (props) => {
         })
         delete element.tagEventDtoList
       });
-      console.log(newTags)
       setTags(newTags)
-
-      // events.forEach(event => {
-      //   currentOptions.push({ value: event.eventName, label: event.eventName })
-      // });
-      // console.log('current tagEvent 옵션', currentOptions)  
-      // setOptions(currentOptions)
-      // console.log("111111",options)
     })
     .catch(err=>{
       console.log('잘못됨',err)
     },)
-    console.log("222222",options)
+
 
     
 
-  // console.log('받은 세팅은',currentSetting)
-  // const currentEvents=currentSetting.events
-  // setEvents(currentEvents)
   },[])
 
   useEffect(()=>{  
@@ -362,7 +333,6 @@ const ServiceCustom = (props) => {
     const uniqueOptions=[...optionsSet]
     // uniqueOptions.push({ value: 'click', label: 'click' })
     setOptions(uniqueOptions)   
-    console.log("셀렉트 옵션은",options)
   },[events])
 
   useEffect(()=>{
@@ -378,7 +348,6 @@ const ServiceCustom = (props) => {
     const selectedOptionsSet=new Set(newSelectedOptions)
     const uniqueSelectedOptions=[...selectedOptionsSet]
     setSelectedOptions(uniqueSelectedOptions)
-    console.log('선택된 태그 이벤트들',selectedOptions)
   },[tags])
   return (
     <div id='form-background' className='flex w-100 justify-content-center'>

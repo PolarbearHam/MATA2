@@ -62,7 +62,6 @@ export default class DurationsAreaChart extends PureComponent {
   };
   handleSelect(selectedValue) {
     this.setState({interval:selectedValue})
-    console.log('선택된 값:', selectedValue);
     // 선택된 값에 대한 로직 처리 등을 수행
   }
   componentDidMount(){
@@ -71,10 +70,8 @@ export default class DurationsAreaChart extends PureComponent {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
       }
-      console.log('바뀐 url',url)
       axios.get(url,{headers})
       .then((res)=>{
-        console.log('바뀐res',res)
         const sessionByTimestamp = {};
         for (let i = 0; i < res.data.length; i++) {
           const el = res.data[i];
@@ -101,7 +98,6 @@ export default class DurationsAreaChart extends PureComponent {
         this.setState({
           durationsData:sortedData
         })
-        console.log('영역 넣을 데이터',this.state.durationsData)
     })
       .catch((err)=>{
         console.log('영역 데이터 실패',err)
@@ -116,10 +112,8 @@ export default class DurationsAreaChart extends PureComponent {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
       }
-      console.log('바뀐 url',url)
       axios.get(url,{headers})
       .then((res)=>{
-        console.log('바뀐res',res)
         const sessionByTimestamp = {};
         for (let i = 0; i < res.data.length; i++) {
           const el = res.data[i];
@@ -146,7 +140,6 @@ export default class DurationsAreaChart extends PureComponent {
         this.setState({
           durationsData:sortedData
         })
-        console.log('영역 넣을 데이터',this.state.durationsData)
     })
       .catch((err)=>{
         console.log('영역 데이터 실패',err)
