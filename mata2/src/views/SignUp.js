@@ -22,9 +22,7 @@ const SignUp = () => {
     }
     const headers = {
       'Content-type': 'application/json'
-    }
-    console.log("회원가입 시도",formData)
-    
+    }    
     axios.post(process.env.REACT_APP_HOST+'/v1/member/signup',formData,{headers})
 
     .then(response => {

@@ -31,37 +31,10 @@ function App() {
   const [headService,setHeadService]=useState(-1)
   // GLOBAL: ************** 사용자 정보 **************
   const [user, setUser] = useState({
-
   });
   const userInfo = async (accessToken) => {
-    if(!accessToken || accessToken === '') return;
-    // fetch나 axios로 유저 정보 가져오기
-    // 아래는 로그인 더미 로직
-    // const formData= {
-    //   "grantType": "Bearer",
-    //   "accessToken": accessToken
-    // }
+    if(!accessToken || accessToken=='') return;
 
-    // const headers = {
-    //   'Content-type': 'application/json'
-    // }
-    // console.log('axios요청 보냄',formData)
-    // axios.get("localhost:8081/api/v1/member/info",formData)
-    
-    // .then(response => {
-    //     console.log(response);
-        
-    // })
-    // .catch(error => {
-    //     console.error(error);
-    // });
-    // await setTimeout(()=>{
-    //   setUser({
-    //     id: 1,
-    //     email: "dummy@dummy.dum",
-    //     name: "dummy"
-    //   });
-    // }, 3000);
     accessToken = sessionStorage.getItem("accessToken");
     const headers = {
       "Authorization": `Bearer ${accessToken}`,
@@ -77,9 +50,7 @@ function App() {
       responseType: "type",
       headers: headers
   }).then(function (response) {
-      console.log(response)
       const userResponse=JSON.parse(response.data)
-      console.log(userResponse)
       setUser({
         id: userResponse.id,
         email: userResponse.email,
@@ -113,9 +84,7 @@ function App() {
         responseType: "type",
         headers: headers
     }).then(function (response) {
-        console.log(response)
         const userResponse=JSON.parse(response.data)
-        console.log(userResponse)
         setUser({
           id: userResponse.id,
           email: userResponse.email,
@@ -158,9 +127,7 @@ function App() {
         responseType: "type",
         headers: headers
     }).then(function (response) {
-        console.log(response)
         const userResponse=JSON.parse(response.data)
-        console.log(userResponse)
         setUser({
           id: userResponse.id,
           email: userResponse.email,
@@ -178,27 +145,7 @@ function App() {
       "grantType": "Bearer",
       "accessToken": accessToken
     }
-  //   axios({
-  //     //request
-  //     method: "get",
-  //     url: process.env.REACT_APP_HOST+"/v1/member/info",
-  //     responseType: "type",
-  //     headers: headers
-  // }).then(function (response) {
-  //     console.log(response)
-  //     const userResponse=JSON.parse(response.data)
-  //     console.log(userResponse)
-  //     setUser({
-  //       id: userResponse.id,
-  //       email: userResponse.email,
-  //       name: userResponse.name
-  //     });
 
-  // })
-  //   .catch(error => {
-  //       console.error(error);
-  //   });
-    
 
  
   },[sessionStorage.getItem('accessToken')]);
@@ -237,12 +184,12 @@ function App() {
             <ServiceStart/>
           </DashboardLayout>
         }/>
-        <Route path='/service/:id/dashboard' element={
+        <Route path='/service/:projectId/dashboard' element={
           <DashboardLayout state={ {user: user,serviceList:serviceList,headService:headService} }>
               <DashboardMain state={{user: user}}/>
           </DashboardLayout>
         }/>
-        <Route path='/service/:id/setting' element={
+        <Route path='/service/:projectId/setting' element={
           <DashboardLayout state={ {user: user,serviceList:serviceList,headService:headService} }>
             <ServiceCustom state={ {user: user,serviceList:serviceList,headService:headService} }/>
           </DashboardLayout>
