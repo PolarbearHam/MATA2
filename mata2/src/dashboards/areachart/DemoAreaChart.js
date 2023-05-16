@@ -53,11 +53,12 @@ export default class DemoAreaChart extends PureComponent {
     super(props);
     this.state = {
       data:[],
-      interval:'1m',
+      interval:'10m',
     };
     this.handleSelect = this.handleSelect.bind(this);
   }
   handleSelect(selectedValue) {
+    this.setState({interval:selectedValue})
     console.log('선택된 값:', selectedValue);
     // 선택된 값에 대한 로직 처리 등을 수행
   }
@@ -109,8 +110,10 @@ export default class DemoAreaChart extends PureComponent {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
       }
+      console.log('바뀐 url',url)
       axios.get(url,{headers})
       .then((res)=>{
+        console.log('바뀐res',res)
         const timestampByscreenDevice = {};
         for (let i = 0; i < res.data.length; i++) {
           const el = res.data[i];
@@ -145,7 +148,7 @@ export default class DemoAreaChart extends PureComponent {
   render() {
     return (
       <>
-      <DropdownComponent menuName={"interval:"} menus={['1m','5m','10m']} onSelect={this.handleSelect} ></DropdownComponent>
+      <DropdownComponent menus={['10m','1h','1d']} onSelect={this.handleSelect} title='interval'></DropdownComponent>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           width={500}

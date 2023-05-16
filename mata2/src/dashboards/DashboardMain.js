@@ -10,7 +10,7 @@ import { Resizable,ResizableBox } from 'react-resizable';
 import GridLayout from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-
+import DurationsAreaChart from './areachart/DurationsAreaChart';
 // function DashboardMain() {
 
 import _ from "lodash";
@@ -58,7 +58,7 @@ class ToolboxLayout extends React.Component {
       {
         "w": 5,
         "h": 7,
-        "x": 0,
+        "x": 12,
         "y": 0,
         "i": "a",
         "moved": false,
@@ -98,13 +98,23 @@ class ToolboxLayout extends React.Component {
       {
         "w": 11,
         "h": 14,
-        "x": 0,
-        "y": 14,
+        "x": 15,
+        "y": 15,
         "i": "e",
         "moved": false,
+        "static": true,
+        "name": '샌키'
+      },
+      {
+        "w": 5,
+        "h": 7,
+        "x": 12,
+        "y": 7,
+        "i": "f",
+        "moved": false,
         "static": false,
-        "name": '데모라인차트'
-      }
+        "name": '듀레이션'
+      },
     ])
   };
 
@@ -141,6 +151,9 @@ class ToolboxLayout extends React.Component {
         case "e" :
           component= <DemoSankeyChart/>
           break
+        case "f" :
+          component= <DurationsAreaChart/>
+          break  
         default :
         component= '기타입니다.'
       }
@@ -314,7 +327,7 @@ const DashboardMain = (props) => {
     {
       "w": 5,
       "h": 7,
-      "x": 0,
+      "x": 12,
       "y": 0,
       "i": "a",
       "moved": false,
@@ -354,13 +367,23 @@ const DashboardMain = (props) => {
     {
       "w": 11,
       "h": 14,
-      "x": 0,
-      "y": 14,
+      "x": 30,
+      "y": 30,
       "i": "e",
       "moved": false,
+      "static": true,
+      "name": '샌키'
+    },
+    {
+      "w": 5,
+      "h": 7,
+      "x": 12,
+      "y": 7,
+      "i": "f",
+      "moved": false,
       "static": false,
-      "name": '데모라인차트'
-    }
+      "name": '듀레이션'
+    },
   ]));
 
   useEffect(() => {
