@@ -54,14 +54,21 @@ export default class DurationsAreaChart extends PureComponent {
     this.state = {
       durationsData:[],
       interval:'10m',
+      urls:[],
+      selectedUrl:null
     };
-    this.handleSelect = this.handleSelect.bind(this);
+    this.handleSelectInterval = this.handleSelectInterval.bind(this);
+    this.handleSelectUrl=this.handleSelectUrl.bind(this)
   }
   averageDuration  (dataPoint) {
     return dataPoint.totalDuration / dataPoint.totalSession;
   };
-  handleSelect(selectedValue) {
+  handleSelectInterval(selectedValue) {
     this.setState({interval:selectedValue})
+    // 선택된 값에 대한 로직 처리 등을 수행
+  }
+  handleSelectUrl(selectedValue) {
+    this.setState({selectedUrl:selectedValue})
     // 선택된 값에 대한 로직 처리 등을 수행
   }
   componentDidMount(){
@@ -72,6 +79,7 @@ export default class DurationsAreaChart extends PureComponent {
       }
       axios.get(url,{headers})
       .then((res)=>{
+        const newUrls=[]
         const sessionByTimestamp = {};
         for (let i = 0; i < res.data.length; i++) {
           const el = res.data[i];
@@ -84,8 +92,14 @@ export default class DurationsAreaChart extends PureComponent {
           if(!sessionByTimestamp[el.updateTimestamp].totalDuration){
             sessionByTimestamp[el.updateTimestamp].totalDuration=0
           } sessionByTimestamp[el.updateTimestamp].totalDuration+=el.totalDuration
+          if(!sessionByTimestamp[el.updateTimestamp][el.location]){
+            sessionByTimestamp[el.updateTimestamp][el.location]=0
+            newUrls.push(el.location)
+          } sessionByTimestamp[el.updateTimestamp][el.location]+=el.totalSession
         }
-        
+        this.setState({
+          urls:newUrls
+        })
         const sessionByTimestampObject = Object.entries(sessionByTimestamp).map(([timestamp, values]) => {
           return {timestamp:new Date( parseInt(timestamp)),...values};
         });
@@ -98,6 +112,7 @@ export default class DurationsAreaChart extends PureComponent {
         this.setState({
           durationsData:sortedData
         })
+        console.log(sortedData)
     })
       .catch((err)=>{
         console.log('영역 데이터 실패',err)
@@ -114,6 +129,7 @@ export default class DurationsAreaChart extends PureComponent {
       }
       axios.get(url,{headers})
       .then((res)=>{
+        const newUrls=[]
         const sessionByTimestamp = {};
         for (let i = 0; i < res.data.length; i++) {
           const el = res.data[i];
@@ -126,8 +142,14 @@ export default class DurationsAreaChart extends PureComponent {
           if(!sessionByTimestamp[el.updateTimestamp].totalDuration){
             sessionByTimestamp[el.updateTimestamp].totalDuration=0
           } sessionByTimestamp[el.updateTimestamp].totalDuration+=el.totalDuration
+          if(!sessionByTimestamp[el.updateTimestamp][el.location]){
+            sessionByTimestamp[el.updateTimestamp][el.location]=0
+            newUrls.push(el.location)
+          } sessionByTimestamp[el.updateTimestamp][el.location]+=el.totalSession
         }
-        
+        this.setState({
+          urls:newUrls
+        })
         const sessionByTimestampObject = Object.entries(sessionByTimestamp).map(([timestamp, values]) => {
           return {timestamp:new Date( parseInt(timestamp)),...values};
         });
@@ -140,6 +162,7 @@ export default class DurationsAreaChart extends PureComponent {
         this.setState({
           durationsData:sortedData
         })
+        console.log(sortedData)
     })
       .catch((err)=>{
         console.log('영역 데이터 실패',err)
@@ -150,7 +173,10 @@ export default class DurationsAreaChart extends PureComponent {
   render() {
     return (
       <>
-      <DropdownComponent menus={['10m','1h','1d']} onSelect={this.handleSelect} title='interval'></DropdownComponent>
+      <div className='d-flex flex-row'>
+        <DropdownComponent menus={['10m','1h','1d']} onSelect={this.handleSelectInterval} title='interval'></DropdownComponent>
+        <DropdownComponent menus={this.state.urls} onSelect={this.handleSelectUrl} title='page'></DropdownComponent>
+      </div>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           width={500}
@@ -169,6 +195,7 @@ export default class DurationsAreaChart extends PureComponent {
           <Tooltip />
           <Area type="monotone" dataKey="totalSession" stackId="1" stroke="#8884d8" fill="#8884d8" />
           <Area type="monotone" dataKey={this.averageDuration} stackId="2" stroke="green" fill="green" />
+          <Area type="monotone" dataKey={this.state.selectedUrl} stackId="3" stroke="red" fill="red" />
         </AreaChart>
       </ResponsiveContainer>
       </>
