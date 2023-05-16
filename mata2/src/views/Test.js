@@ -59,7 +59,6 @@ export default class Test extends PureComponent {
   }
   handleSelect(selectedValue) {
     this.setState({interval:selectedValue})
-    console.log('선택된 값:', selectedValue);
     // 선택된 값에 대한 로직 처리 등을 수행
   }
   componentDidMount(){
@@ -95,10 +94,8 @@ export default class Test extends PureComponent {
       this.setState({
         data:sortedData
       })
-      console.log('영역 넣을 데이터',this.state.data)
   })
     .catch((err)=>{
-      console.log('영역 데이터 실패',err)
     })
     
   }
@@ -113,7 +110,6 @@ export default class Test extends PureComponent {
       console.log('바뀐 url',url)
       axios.get(url,{headers})
       .then((res)=>{
-        console.log('바뀐res',res)
         const timestampByscreenDevice = {};
         for (let i = 0; i < res.data.length; i++) {
           const el = res.data[i];
@@ -137,7 +133,6 @@ export default class Test extends PureComponent {
         this.setState({
           data:sortedData
         })
-        console.log('영역 넣을 데이터',this.state.data)
     })
       .catch((err)=>{
         console.log('영역 데이터 실패',err)

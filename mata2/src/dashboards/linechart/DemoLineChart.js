@@ -81,7 +81,6 @@ export default class DemoLineChart extends PureComponent {
     .then((res)=>{
       
       
-      console.log('꺾은선 스테이트',this.state)
       const timestampByscreenDevice = {};
       for (let i = 0; i < res.data.length; i++) {
         const el = res.data[i];
@@ -105,10 +104,8 @@ export default class DemoLineChart extends PureComponent {
       this.setState({
         data:sortedData
       })
-      console.log('꺾은선 넣을 데이터',this.state)
   })
     .catch((err)=>{
-      console.log('꺾은선 데이터 실패',err)
     })
     
   }
