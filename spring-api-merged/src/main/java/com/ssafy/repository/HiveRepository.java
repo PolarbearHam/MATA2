@@ -207,7 +207,7 @@ public class HiveRepository {
         return jdbcTemplate.query(sql, new Object[] {projectId,
                 new Timestamp(baseTime),
                 new Timestamp(baseTime - 3600000),
-                "%google%", "%danum%", "%naver%"}, pageJournalRowMapper);
+                "%google%", "%daum%", "%naver%"}, pageJournalRowMapper);
     }
     public List<HiveEvent> selectEventAll(long baseTime, long projectId) {
         String sql = String.format(//language=sql
