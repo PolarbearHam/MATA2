@@ -145,7 +145,7 @@ export default class DemoAreaChart extends PureComponent {
   render() {
     return (
       <>
-      <DropdownComponent menus={['1m','5m','10m']} onSelect={this.handleSelect} ></DropdownComponent>
+      <DropdownComponent menuName={"interval:"} menus={['1m','5m','10m']} onSelect={this.handleSelect} ></DropdownComponent>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           width={500}

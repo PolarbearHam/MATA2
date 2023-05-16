@@ -17,7 +17,7 @@ const DropdownComponent = (props) => {
   return (
     <Dropdown isOpen={isOpen} toggle={toggleMenu}>
       <DropdownToggle caret>
-        interval:
+        {props.menuName}
       </DropdownToggle>
 
       <DropdownMenu>
