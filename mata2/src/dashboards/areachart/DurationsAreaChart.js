@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,Legend } from 'recharts';
 import DropdownComponent from '../../components/DropdownComponent';
 import axios from 'axios';
 const data = [
@@ -196,6 +196,7 @@ export default class DurationsAreaChart extends PureComponent {
           <Area type="monotone" dataKey="totalSession" stackId="1" stroke="#8884d8" fill="#8884d8" />
           <Area type="monotone" dataKey={this.averageDuration} stackId="2" stroke="green" fill="green" />
           <Area type="monotone" dataKey={this.state.selectedUrl} stackId="3" stroke="red" fill="red" />
+          <Legend/>
         </AreaChart>
       </ResponsiveContainer>
       </>

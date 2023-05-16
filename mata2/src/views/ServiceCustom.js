@@ -86,9 +86,10 @@ const ServiceCustom = (props) => {
   }
 
   const test=()=>{
-    const eventsNamesArray= extractPropertyValues(events,'eventName')
-    const duplicates=findDuplicateValues(eventsNamesArray);
-    if(duplicates){window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)}
+    // const eventsNamesArray= extractPropertyValues(events,'eventName')
+    // const duplicates=findDuplicateValues(eventsNamesArray);
+    // if(duplicates){window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)}
+    console.log(fields,events,tags)
   }
 
   const [events,setEvents] = useState([])
@@ -167,7 +168,7 @@ const ServiceCustom = (props) => {
 
   const handleAddTag = () => {
     const values = [...tags]
-    values.push({tagName:'',tagOd:'',tagClass:'',tagEvents:[]});
+    values.push({tagName:'',tagId:'',tagClass:'',tagEvents:[]});
     setTags(values);
   };  
   const handleRemoveTag= (index)=>{
