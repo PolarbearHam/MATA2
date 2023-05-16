@@ -3,6 +3,7 @@ package com.ssafy.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.dto.WebLogDto;
+import com.ssafy.service.CassandraService;
 import com.ssafy.service.InjectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class EventController {
 
     private final InjectionService injectionService;
     //private final KafkaProducerService kafkaProducerService;
+    private final CassandraService cassandraService;
     private static final String SUCCESS = "success in EventController";
     private static final String FAIL = "fail in EventController";
 
@@ -48,9 +50,6 @@ public class EventController {
 
     @GetMapping("/exampledata_webtojava")
     public ResponseEntity<?> dummyDataSetting() throws InterruptedException {
-
-//        kafkaProducerService.checkValidation(serviceToken); // 토큰 검증 로직
-//        Long projectId = kafkaProducerService.getProjectId(serviceToken);
 
         List referlist = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -83,17 +82,16 @@ public class EventController {
         idList.add("map2");
 
 
-        for (long k = 1; k < 60; k++) {
-            Thread.sleep(1500);
-
-            long projectId = k%3;
+        for (long k = 0; k < 100; k++) {
+            long projectId = 10 + k % 15;
 
             // 500명의 유저 접속, url 랜덤
             for (int i = 0; i < 500; i++) {
+                List<WebLogDto> webLogDtoList = new ArrayList<>();
                 // 10개의 event
                 for (int j = 0; j < 20; j++) {
                     WebLogDto wl = new WebLogDto();
-                    wl.setProjectId(projectId);
+//                    wl.setProjectId(projectId);
                     int hashValue = (int) (Math.random() * 100000);
                     int hashValue2 = (int) (Math.random() * 5) + 1;
 
@@ -117,6 +115,7 @@ public class EventController {
                     int hashValue3 = (int) (Math.random() * 100000);
                     wl.setTimestamp(time + hashValue * 300);
                     wl.setEvent("none");
+                    wl.setData("{}");
                     if (j == 0) {
                         // pageenter
                         wl.setEvent("pageenter");
@@ -134,23 +133,31 @@ public class EventController {
                         wl.setPageDuration(duTime * j);
                         wl.setPositionX(hashValue % 1000 + hashValue3 % 10);
                         wl.setPositionY(hashValue % 520 + hashValue3 % 10);
-                        if(j > 15) {
-                            wl.setTargetName("클릭 태그" + i%3);
+                        if (j > 15) {
+                            wl.setTargetName("클릭 태그" + i % 3);
                             wl.setEvent("click");
-                        } else if ( j > 17 ) {
+                        } else if (j > 15) {
                             wl.setTargetName("로그인");
                             wl.setEvent("login");
                         } else {
                             wl.setTargetName("구매 클릭");
                             wl.setEvent("purchase");
+                            if (j % 7 == 0) wl.setData("{}");
+                            else if (i % 7 < 3) wl.setData("{id:" + i % 8 + "}");
+                            else wl.setData("{item_id:" + i % 3 + "}");
                         }
                     }
-
+                    webLogDtoList.add(wl);
 //                    try {
-//                        //kafkaProducerService.sendToKafka(wl);
+//                        cassandraService.sendToCassandra(wl);
 //                    } catch (JsonProcessingException e) {
 //                        e.printStackTrace();
 //                    }
+                }
+                try {
+                    cassandraService.sendToCassandra(webLogDtoList, projectId);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
                 }
             }
         }

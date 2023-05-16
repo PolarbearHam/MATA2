@@ -1,12 +1,10 @@
+import axios from 'axios';
 import React, { PureComponent } from 'react';
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
 
 const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-];
+  {name:"asdf", value:123}
+]
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -67,14 +65,45 @@ export default class DemoPieChart extends PureComponent {
     });
   };
 
+  componentDidMount(){
+    const ProjectID = this.props.ProjectID;
+    const BASEURL=`https://mata2.co.kr/api/v1/analytics/durations_all?basetime=${Date.now()}&projectId=${ProjectID}`
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
+      'Content-type': 'application/json',
+    }
+
+    axios.get(BASEURL,{headers})
+    .then((res)=>{
+      const transformedData = res.data.reduce((result, item) => {
+        const { screenDevice, totalSession } = item;
+        const existingItem = result.find(obj => obj.name === screenDevice);
+      
+        if (existingItem) {
+          existingItem.value += totalSession;
+        } else {
+          result.push({ name: screenDevice, value: totalSession });
+        }
+      
+        return result;
+      }, []);
+      console.log(transformedData);
+      this.setState({transformedData});
+    })
+    .catch((error)=>{
+      console.log(error);
+    });
+  }
+
   render() {
+
     return (
       <ResponsiveContainer width="100%" height="100%">
         <PieChart width={400} height={400}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
-            data={data}
+            data={this.state.transformedData}
             cx="50%"
             cy="50%"
             innerRadius={60}

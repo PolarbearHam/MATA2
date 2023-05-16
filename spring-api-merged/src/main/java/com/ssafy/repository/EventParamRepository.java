@@ -12,5 +12,5 @@ import java.util.Optional;
 @Repository
 public interface EventParamRepository extends JpaRepository<EventParam, Long> {
     List<EventParam> findAllByEventId(long eventId);
-    Optional<EventParam> findByParamNameAndParamKeyAndEvent_Id(String paramName, String paramKey, long eventId);
+    Optional<EventParam> findByParamNameAndParamKeyAndEvent_IdAndEvent_IsEnabledIsTrue(String paramName, String paramKey, long eventId);
 }

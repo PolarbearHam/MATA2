@@ -35,7 +35,28 @@ public class ProjectService {
         Member member = memberRepository.findByEmail(email).orElseThrow(NoSuchMemberException::new);
         log.info(member.toString());
         Project project = request.toEntity(member);
-        projectRepository.save(project);
+        long project_id = projectRepository.save(project).getId();
+
+        eventRepository.save(Event.builder()
+                .project(projectRepository.findById(project_id).get())
+                .eventBase("null")
+                .eventName("click")
+                .build());
+        eventRepository.save(Event.builder()
+                .project(projectRepository.findById(project_id).get())
+                .eventBase("null")
+                .eventName("mouseenter")
+                .build());
+        eventRepository.save(Event.builder()
+                .project(projectRepository.findById(project_id).get())
+                .eventBase("null")
+                .eventName("mouseleave")
+                .build());
+        eventRepository.save(Event.builder()
+                .project(projectRepository.findById(project_id).get())
+                .eventBase("null")
+                .eventName("scroll")
+                .build());
     }
 
     public List<ProjectResponse> getList(String email) {
@@ -90,64 +111,131 @@ public class ProjectService {
     }
 
     public boolean saveEvent(SaveEventListDto saveEventListDto, Long projectId){
-        boolean saveEventOK = true;
-
-        for(SaveEventDto saveEventDto : saveEventListDto.getEvents()){
-            Event event = saveEventDto.toEntity(projectRepository.findById(projectId).get());
-            Optional<Event> optionalEvent =
-                    eventRepository.findByEventNameAndEventBaseAndProjectIdAndIsEnabledIsTrue(event.getEventName(), event.getEventBase(), projectId);
-            if (!optionalEvent.isPresent()) eventRepository.saveAndFlush(event);
-            else event = optionalEvent.get(); // 중복 시
-
-            for(SaveEventParamDto saveEventParamDto : ListUtils.emptyIfNull(saveEventDto.getEventParam())){
-                EventParam eventParam = saveEventParamDto.toEntity(event);
-                Optional<EventParam> optionalEventParam =
-                        eventParamRepository.findByParamNameAndParamKeyAndEvent_Id(eventParam.getParamName(),eventParam.getParamKey(),eventParam.getEvent().getId());
-                if(!optionalEventParam.isPresent()) eventParamRepository.save(eventParam);
+//        List<Event> eventList = eventRepository.findAllByProjectId(projectId);
+        List<Event> eventList = eventRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId);
+        for(Event event : eventList){
+            List<EventParam> eventParamList = eventParamRepository.findAllByEventId(event.getId());
+            for(EventParam eventParam : eventParamList) {
+                eventParam.setEnabled(false);
+                eventParamRepository.save(eventParam);
             }
-
-            for(SaveEventPathDto saveEventPathDto : ListUtils.emptyIfNull(saveEventDto.getEventPath())){
-                EventPath eventPath = saveEventPathDto.toEntity(event);
-                Optional<EventPath> optionalEventPath
-                        = eventPathRepository.findByPathIndexAndPathNameAndEvent_Id(eventPath.getPathIndex(), eventPath.getPathName(), eventPath.getEvent().getId());
-                if(!optionalEventPath.isPresent())  eventPathRepository.save(eventPath);
+            List<EventPath> eventPathList = eventPathRepository.findAllByEventId(event.getId());
+            for(EventPath eventPath : eventPathList){
+                eventPath.setEnabled(false);
+                eventPathRepository.save(eventPath);
             }
+            event.setEnabled(false);
+            eventRepository.saveAndFlush(event);
         }
-        return saveEventOK;
+
+        try {
+            for(SaveEventDto saveEventDto : saveEventListDto.getEvents()){
+                Event event = saveEventDto.toEntity(projectRepository.findById(projectId).get());
+                Optional<Event> optionalEvent =
+                        eventRepository.findByEventNameAndEventBaseAndProjectId(event.getEventName(), event.getEventBase(), projectId);
+                if (!optionalEvent.isPresent()) eventRepository.saveAndFlush(event);
+                else {
+                    event = optionalEvent.get();
+                    event.setEnabled(true);
+                    eventRepository.saveAndFlush(event);
+                } // 중복 시
+
+                for(SaveEventParamDto saveEventParamDto : ListUtils.emptyIfNull(saveEventDto.getEventParam())){
+                    EventParam eventParam = saveEventParamDto.toEntity(event);
+                    Optional<EventParam> optionalEventParam =
+                            eventParamRepository.findByParamNameAndParamKeyAndEvent_IdAndEvent_IsEnabledIsTrue(eventParam.getParamName(),eventParam.getParamKey(),eventParam.getEvent().getId());
+                    if(!optionalEventParam.isPresent()) eventParamRepository.save(eventParam);
+                    else {
+                        eventParam = optionalEventParam.get();
+                        eventParam.setEnabled(true);
+                        eventParamRepository.save(eventParam);
+                    }
+                }
+
+                for(SaveEventPathDto saveEventPathDto : ListUtils.emptyIfNull(saveEventDto.getEventPath())){
+                    EventPath eventPath = saveEventPathDto.toEntity(event);
+                    Optional<EventPath> optionalEventPath
+                            = eventPathRepository.findByPathIndexAndPathNameAndEvent_IdAndEvent_IsEnabledIsTrue(eventPath.getPathIndex(), eventPath.getPathName(), eventPath.getEvent().getId());
+                    if(!optionalEventPath.isPresent())  eventPathRepository.save(eventPath);
+                    else{
+                        eventPath = optionalEventPath.get();
+                        eventPath.setEnabled(true);
+                        eventPathRepository.save(eventPath);
+                    }
+                }
+            }
+
+        }catch (Exception e){
+            return false;
+        }
+
+        return true;
+
     }
 
     public boolean saveTag(SaveTagListDto saveTagListDto, Long projectId){
         boolean saveTagOK = true;
+//        List<Tag> tagList = tagRepository.findAllByProjectId(projectId);
+        List<Tag> tagList = tagRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId);
+        for(Tag tag : tagList){
+//            List<TagEvent> tagEventList = tagEventRepository.findAllByTagId(tag.getId());
+            List<TagEvent> tagEventList = tagEventRepository.findAllByTagIdAndIsEnabledIsTrue(tag.getId());
+            for(TagEvent tagEvent : tagEventList){
+                tagEvent.setEnabled(false);
+                tagEventRepository.save(tagEvent);
+            }
+            tag.setEnabled(false);
+            tagRepository.saveAndFlush(tag);
+        }
 
-        for(SaveTagDto tagSaveDto : saveTagListDto.getTags()){
-            Tag tag = tagSaveDto.toTagEntity(projectRepository.findById(projectId).get());
-            Optional<Tag> optionalTag = tagRepository.findByHtmlTagIdAndProjectIdAndIsEnabledIsTrue(tag.getHtmlTagId(), projectId);
-            if(!optionalTag.isPresent()) tagRepository.saveAndFlush(tag);
-            else tag = optionalTag.get(); // 태그 중복의 경우 업데이트를 위해 검색된 객체 사용
+        try{
+            for(SaveTagDto tagSaveDto : saveTagListDto.getTags()){
+                Tag tag = tagSaveDto.toTagEntity(projectRepository.findById(projectId).get());
+//                Optional<Tag> optionalTag = tagRepository.findByHtmlTagIdAndProjectId(tag.getHtmlTagId(), projectId);
+                Optional<Tag> optionalTag = tagRepository.findByHtmlTagIdAndProjectIdAndIsEnabledIsTrue(tag.getHtmlTagId(), projectId);
+                if(!optionalTag.isPresent()) tagRepository.saveAndFlush(tag);
+                else {
+                    tag = optionalTag.get();
+                    tag.setEnabled(true);
+                    tagRepository.saveAndFlush(tag);
+                } // 태그 중복의 경우 업데이트를 위해 검색된 객체 사용
 
-            for(String tagEventName : tagSaveDto.getTagEvents()){
-                Optional<Event> optionalEvent = eventRepository.findByEventNameAndProjectIdAndIsEnabledIsTrue(tagEventName, projectId);
-                if(optionalEvent.isPresent()) {
-                    Optional<TagEvent> optionalTagEvent = tagEventRepository.findByTagIdAndEventId(tag.getId(),optionalEvent.get().getId());
-                    if(optionalTagEvent.isPresent()) continue; // 중복 태그-이벤트 의 경우 건너뜀
-                    tagEventRepository.save(TagEvent.builder()
-                            .tag(tag)
-                            .event(optionalEvent.get())
-                            .build());
-                } else {
-                    System.out.println("등록된 이벤트가 아님...");
-                    saveTagOK = false;
+                for(String tagEventName : tagSaveDto.getTagEvents()){
+                    Optional<Event> optionalEvent = eventRepository.findByEventNameAndProjectIdAndIsEnabledIsTrue(tagEventName, projectId);
+                    if(optionalEvent.isPresent()) {
+//                        Optional<TagEvent> optionalTagEvent = tagEventRepository.findByTagIdAndEventId(tag.getId(),optionalEvent.get().getId());
+                        Optional<TagEvent> optionalTagEvent = tagEventRepository.findByTagIdAndEventIdAndIsEnabledIsTrue(tag.getId(),optionalEvent.get().getId());
+                        if(optionalTagEvent.isPresent()) {
+                            TagEvent tagEvent = optionalTagEvent.get();
+                            tagEvent.setEnabled(true);
+                            tagEventRepository.save(tagEvent);
+                        }
+                        else{
+                            tagEventRepository.save(TagEvent.builder()
+                                .tag(tag)
+                                .event(optionalEvent.get())
+                                .build());
+                        }
+                    } else {
+                        System.out.println("등록된 이벤트가 아님...");
+                        saveTagOK = false;
+                    }
                 }
             }
         }
+        catch (Exception e){
+            System.out.println("exception 발생");
+            return false;
+        }
+
         return saveTagOK;
 
     }
 
     public SettingDto getProjectSettings(long projectId){
         ProjectDto projectDto = ProjectDto.toDto(projectRepository.findById(projectId).get());
-        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(projectId));
-        List<TagDto> tagDtoList = TagDto.toDtoList(tagRepository.findAllByProjectId(projectId));
+        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId));
+        List<TagDto> tagDtoList = TagDto.toDtoList(tagRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId));
 
         SettingDto settingDto = SettingDto.builder()
                 .projectDto(projectDto)
@@ -158,7 +246,8 @@ public class ProjectService {
     }
 
     public List<EventDto> getEventList(Long projectId) {
-        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(projectId));
+//        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectId(projectId));
+        List<EventDto> eventDtoList = EventDto.toDtoList(eventRepository.findAllByProjectIdAndIsEnabledIsTrue(projectId));
         return eventDtoList;
     }
 }
