@@ -12,8 +12,8 @@ const Sidebar = (props) => {
   return (
     <div id='sidebar-container'>
       <Nav vertical id='sidebar'>
-        {services.map((service) => (
-          <NavItem className='nav-item-button position-relative'>
+        {services.map((service, index) => (
+          <NavItem key={index} className='nav-item-button position-relative'>
             <NavLink href={`/service/${service.id}/dashboard`} className='nav-link '>{service.name}</NavLink>
             <NavLink href={`/service/${service.id}/setting`} className='nav-item-settings'>
               <svg fill="#000000" width="18px" version="1.1" id="Capa_1" viewBox="0 0 478.703 478.703">
