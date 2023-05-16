@@ -191,8 +191,6 @@ export default class TagManager {
         data: e.detail ? e.detail : null,
         screenDevice : (window.innerWidth >= 1024) ? "desktop" :
                        (window.innerWidth >= 768) ? "tablet" : "phone" ,
-        // screenSizeX: window.innerWidth,
-        // screenSizeY: window.innerHeight,
         userLanguage: navigator.language.substring(0, 2)
       }
       this.logStash.push(body)

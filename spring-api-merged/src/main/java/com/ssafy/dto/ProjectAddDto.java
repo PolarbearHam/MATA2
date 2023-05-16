@@ -24,6 +24,7 @@ public class ProjectAddDto {
                 .member(member)
                 .name(name)
                 .build();
+        project.updateToken();
         return project;
     }
 }
