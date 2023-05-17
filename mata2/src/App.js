@@ -27,7 +27,7 @@ function App() {
   }, [location])
 
   
-
+  const[isLoggedIn,setIsLoggedIn]=useState(false)
   const [serviceList,setServiceList]=useState([])
   const [headService,setHeadService]=useState(-1)
   // GLOBAL: ************** 사용자 정보 **************
@@ -57,6 +57,7 @@ function App() {
         email: userResponse.email,
         name: userResponse.name
       });
+      setIsLoggedIn(true)
   })
     .catch(error => {
         console.error(error);
@@ -96,6 +97,7 @@ function App() {
       .catch(error => {
           console.error(error);
       });
+      setIsLoggedIn(true)
     }
     
     const formData= {
@@ -141,7 +143,7 @@ function App() {
       .catch(error => {
           console.error(error);
       });
-      
+      setIsLoggedIn(true)
     }
     
     const formData= {
@@ -179,7 +181,7 @@ function App() {
         }/>
         <Route path='/service-add' element={
           <DashboardLayout state={ {user: user,serviceList:serviceList,headService:headService} } >
-            <ServiceAdd state={ {user: user,serviceList:serviceList,headService:headService} }/>
+            <ServiceAdd state={ {user: user,serviceList:serviceList,headService:headService, isLoggedIn:isLoggedIn} }/>
           </DashboardLayout>
         }/>
         <Route path='/service-start' element={

@@ -72,7 +72,8 @@ export default class DemoLineChart extends PureComponent {
   }
   static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
   componentDidMount(){
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=1h&projectId=15`
+    const projectID = window.location.href.split('/')[4];
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=1h&projectId=${projectID}`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
