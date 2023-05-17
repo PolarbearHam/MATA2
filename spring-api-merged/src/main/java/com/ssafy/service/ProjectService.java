@@ -192,7 +192,7 @@ public class ProjectService {
             for(SaveTagDto tagSaveDto : saveTagListDto.getTags()){
                 Tag tag = tagSaveDto.toTagEntity(projectRepository.findById(projectId).get());
 //                Optional<Tag> optionalTag = tagRepository.findByHtmlTagIdAndProjectId(tag.getHtmlTagId(), projectId);
-                Optional<Tag> optionalTag = tagRepository.findByHtmlTagIdAndProjectIdAndIsEnabledIsTrue(tag.getHtmlTagId(), projectId);
+                Optional<Tag> optionalTag = tagRepository.findByHtmlTagNameAndProjectIdAndIsEnabledIsTrue(tag.getHtmlTagName(), projectId);
                 if(!optionalTag.isPresent()) tagRepository.saveAndFlush(tag);
                 else {
                     tag = optionalTag.get();
