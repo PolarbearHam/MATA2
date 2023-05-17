@@ -28,7 +28,7 @@ const ServiceAdd = () => {
 
     .then(response => {
       if (response.status==200) {
-        navigate('/start') 
+        window.location.replace('/')
         
       }else alert('틀림')
     })
