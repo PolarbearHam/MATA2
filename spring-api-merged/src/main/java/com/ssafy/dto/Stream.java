@@ -36,6 +36,30 @@ public class Stream {
     private String user_agent;
     private String user_language;
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Stream{");
+        sb.append("key='").append(key).append('\'');
+        sb.append(", project_id=").append(project_id);
+        sb.append(", session_id='").append(session_id).append('\'');
+        sb.append(", event='").append(event).append('\'');
+        sb.append(", target_id='").append(target_id).append('\'');
+        sb.append(", position_x=").append(position_x);
+        sb.append(", position_y=").append(position_y);
+        sb.append(", location='").append(location).append('\'');
+        sb.append(", referrer='").append(referrer).append('\'');
+        sb.append(", creation_timestamp=").append(creation_timestamp);
+        sb.append(", page_duration=").append(page_duration);
+        sb.append(", data='").append(data).append('\'');
+        sb.append(", screen_device='").append(screen_device).append('\'');
+        sb.append(", target_name='").append(target_name).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", user_agent='").append(user_agent).append('\'');
+        sb.append(", user_language='").append(user_language).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
     public static Stream webLogFormChange(WebLogDto webLogDto, UUID key, long project_id) {
         return Stream.builder()
                 .key(key.toString())
