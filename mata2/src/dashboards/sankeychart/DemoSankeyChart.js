@@ -18,11 +18,12 @@ export default function DemoSankeyChart() {
     setSelectedNode(nodeName); // 클릭한 payload.name 값을 selectedNode 변수에 저장
   };
 
+  // selectedNode 시작 노드 선택 -> 그림 초기화, node, link 재설정
   useEffect(() => {
     // 그림 초기화
     setData(null)
     setColorGradients(null)
-    
+
     if(selectedNode) {
       console.log(selectedNode)
       console.log()
@@ -48,10 +49,12 @@ export default function DemoSankeyChart() {
           temp_url = key
         }
       })
-      setSelectedNode(temp_url)
+      if(temp_url != "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        setSelectedNode(temp_url)
     }
   }, [axios_data])
 
+  // axios로 데이터 받아오기
   useEffect(()=>{
     const projectID = window.location.href.split('/')[4];
     const url=`${process.env.REACT_APP_HOST}/v1/analytics/journals_all?basetime=${Date.now()}&projectId=${projectID}`
@@ -118,7 +121,11 @@ export default function DemoSankeyChart() {
       <br />
     </div>
   ) : (
-    <div>Loading...</div>
+    axios_data ? (
+      <div>데이터 없음...</div>
+    ) : (
+      <div>Loading...</div>
+    )
   );
 }
 
