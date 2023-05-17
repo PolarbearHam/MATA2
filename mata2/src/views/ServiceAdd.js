@@ -37,6 +37,7 @@ const ServiceAdd = (props) => {
     });
   }
   useEffect(()=>{
+    console.log(props)
     // if (!props.state.name) {
     //   navigate('/login')
     // }
