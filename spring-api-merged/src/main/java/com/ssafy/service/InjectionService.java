@@ -166,7 +166,8 @@ public class InjectionService {
                 "        headers: {\n" +
                 "          'Content-Type': 'application/json'\n" +
                 "        },\n" +
-                "        body: JSON.stringify(this.logStash)\n" +
+                "        body: JSON.stringify(this.logStash)\n," +
+                "        keepalive: true" +
                 "      })\n" +
                 "      this.logStash = [];\n" +
                 "    }\n" +

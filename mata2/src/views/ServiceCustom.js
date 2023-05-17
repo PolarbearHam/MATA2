@@ -353,7 +353,7 @@ const ServiceCustom = (props) => {
   return (
     <div id='form-background' className='flex w-100 justify-content-center'>
       <div className='lg:w-3/5 w-full m-8'>
-        <div className='bg-white mt-3 p-3 rounded-3xl'>
+        <div className='row flex justify-content-center bg-white mt-3 p-3 rounded-3xl'>
           <p>스크립트</p>
           <div>
             { !spaChecked ? (
@@ -411,7 +411,7 @@ function App() {
         </div>
         <button onClick={test}>test</button>
         <Form>
-          <div className='bg-white mt-3 p-3 rounded-3xl'>
+          <div className='row flex justify-content-center bg-white mt-3 p-3 rounded-3xl'>
             <p>서비스 설정</p>
             <div>
               토큰: {token}
@@ -425,24 +425,22 @@ function App() {
                 <Input type='checkbox' name='spa'  onChange={handleCheckboxChange}/>
                 <span className='ms-2'>SPA로 구성되었다면 체크해주세요.</span>
               </label>
-              <Button>스크립트 재발급</Button>
             </FormGroup>
           </div>
 
-          <div className='bg-white mt-3 p-3 rounded-3xl'>
+          <div className='row flex justify-content-center bg-white mt-3 p-3 rounded-3xl'>
           <p>이벤트 설정</p>
           <button onClick={saveEvent}> 이벤트 저장</button>
           
-            <div className='d-flex flex-column justify-content-center align-items-center gap-3 bg-white rounded Service'>
+            <div className='col-8 align-items-center gap-3 bg-white rounded'>
               {events.map((event, index1) => (
                 index1 > 3 && (
-                <FormGroup  key={index1}>
-                  
+                <FormGroup className="row border border-b-gray-50 p-5 py-3 rounded-2xl" key={index1}>
                   <div className='d-flex flex-auto gap-3'>
                     <Button
                       color="danger"
                       onClick={() => handleRemoveEvent(index1)}
-                    
+
                       key={index1}
                     >
                       삭제
@@ -454,126 +452,135 @@ function App() {
                       paths 추가
                     </Button>
                   </div>
-                
-                  <Input
-                    className='mt-1'
-                    type="text"
-                    name={`eventName-${index1}`}
-                    // value={event[index].eventName || ''}
-                    onChange={(e) => handleChangeName(index1, e)}
-                    placeholder='이벤트 명'
-                    value={events[index1].eventName}
-                  />
-             
-                  <Input
-                    className='mt-1'
-                    type="text"
-                    name={`eventCondition-${index1}`}
-                    // value={event[index].base || ''}
-                    onChange={(e) => handleChangeCondition(index1, e)}
-                    placeholder='이벤트 조건'
-                    value={events[index1].eventBase}
-                  />
-                
+                  <span className="text-xl my-3">이벤트 정의 설정</span>
                   <div>
-                    event {index1-3} params 
-                  </div>
-                  
-                  {events[index1].eventParams.map((param,index2)=>(
-                    
-                    <FormGroup>
-                      <div className='d-flex flex-row gap-3 '>
-                        <div className='flex-grow'>
-                          <Input
-                           className='mt-1'
-                            type="text"
-                            name={`paramName-${index2}`}
-                            // value={param.name || ''}
-                            placeholder='param name'
-                            onChange={(e)=>handleChangeParamName(index1,index2,e)}
-                            value={events[index1].eventParams[index2].paramName}
-                          />
-                          <Input
-                           className='mt-1'
-                            type="text"
-                            name={`paramKey-${index2}`}
-                            // value={param.key || ''}
-                            placeholder='param key'
-                            onChange={(e)=>{handleChangeParamKey(index1,index2,e)}}
-                            value={events[index1].eventParams[index2].paramKey}
-                          />
+                    <Input
+                      className='mt-1'
+                      type="text"
+                      name={`eventName-${index1}`}
+                      // value={event[index].eventName || ''}
+                      onChange={(e) => handleChangeName(index1, e)}
+                      placeholder='이벤트 명'
+                      value={events[index1].eventName}
+                    />
+
+                    <Input
+                      className='mt-1'
+                      type="text"
+                      name={`eventCondition-${index1}`}
+                      // value={event[index].base || ''}
+                      onChange={(e) => handleChangeCondition(index1, e)}
+                      placeholder='이벤트 조건'
+                      value={events[index1].eventBase}
+                    />
+                  <div className="border mt-3 p-3 rounded-2xl">
+                    <span className="text-xl my-3">이벤트 페이로드 설정</span>
+                    <div>
+                      Params
+                    </div>
+                    <div>
+                      {events[index1].eventParams.map((param,index2)=>(
+                        <FormGroup>
+                          <div className='d-flex flex-row gap-3 '>
+                            <div className='flex-grow'>
+                              <Input
+                               className='mt-1'
+                                type="text"
+                                name={`paramName-${index2}`}
+                                // value={param.name || ''}
+                                placeholder='param name'
+                                onChange={(e)=>handleChangeParamName(index1,index2,e)}
+                                value={events[index1].eventParams[index2].paramName}
+                              />
+                              <Input
+                               className='mt-1'
+                                type="text"
+                                name={`paramKey-${index2}`}
+                                // value={param.key || ''}
+                                placeholder='param key'
+                                onChange={(e)=>{handleChangeParamKey(index1,index2,e)}}
+                                value={events[index1].eventParams[index2].paramKey}
+                              />
+                            </div>
+                            <Button className='w-auto h-auto ' onClick={()=>handleRemoveParam(index1,index2)}>삭제</Button>
+                          </div>
+                        </FormGroup>
+                        ))
+                      }
+                    </div>
+                    <hr/>
+                    <div>
+                      Paths
+                    </div>
+                    <div>
+                      {events[index1].eventPaths.map((path,index2)=>(
+                        <FormGroup>
+                          <div className='d-flex flex-row gap-3'>
+                            <div className='flex-grow '>
+                              <Input
+                               className='mt-1'
+                                type="text"
+                                name={`pathName-${index2}`}
+                                // value={path.name || ''}
+                                placeholder='path name'
+                                onChange={(e)=>{handleChangePathName(index1,index2,e)}}
+                                value={events[index1].eventPaths[index2].pathName}
+                              />
+                              <Input
+                               className='mt-1'
+                                type="text"
+                                name={`pathKey-${index2}`}
+                                // value={path.index || ''}
+                                placeholder='path index'
+                                onChange={(e)=>{handleChangePathIndex(index1,index2,e)}}
+                                value={events[index1].eventPaths[index2].pathIndex}
+                              />
+                            </div>
+                            <Button className='w-auto h-auto' onClick={()=>{handleRemovePath(index1,index2)}}>삭제</Button>
+                          </div>
+                        </FormGroup>
+                      ))}
+                          </div>
                         </div>
-                        <Button className='w-auto h-auto ' onClick={()=>handleRemoveParam(index1,index2)}>삭제</Button>
                       </div>
                     </FormGroup>
+
                   )
-                  )}
-                
-                  <div>
-                    event {index1-3} paths
-                  </div>
-                  {events[index1].eventPaths.map((path,index2)=>( 
-                    <FormGroup>
-                      <div className='d-flex flex-row gap-3'>
-                        <div className='flex-grow '> 
-                          <Input
-                           className='mt-1'
-                            type="text"
-                            name={`pathName-${index2}`}
-                            // value={path.name || ''}
-                            placeholder='path name'
-                            onChange={(e)=>{handleChangePathName(index1,index2,e)}}
-                            value={events[index1].eventPaths[index2].pathName}
-                          />
-                          <Input
-                           className='mt-1'
-                            type="text"
-                            name={`pathKey-${index2}`}
-                            // value={path.index || ''}
-                            placeholder='path index'
-                            onChange={(e)=>{handleChangePathIndex(index1,index2,e)}}
-                            value={events[index1].eventPaths[index2].pathIndex}
-                          />
-                        </div>
-                        <Button className='w-auto h-auto' onClick={()=>{handleRemovePath(index1,index2)}}>삭제</Button>
-                      </div>
-                    </FormGroup>
-                  ))}
-              
-                  
-              </FormGroup>
-              
-              )
-            ))
-          }
-              <Button color="dark" onClick={() => handleAddEvent()}>
-                이벤트 추가
-              </Button>
+                ))
+              }
+              <div className="col-12 flex justify-content-center">
+                <Button color="dark" onClick={() => handleAddEvent()}>
+                  이벤트 추가
+                </Button>
+              </div>
             </div>
           </div>
 
-          <div className='bg-white mt-3 p-3 rounded-3xl'>
+          <div className='row flex justify-content-center bg-white mt-3 p-3 rounded-3xl'>
             <p>태그 설정</p>
             <button onClick={saveTag}>태그 저장</button>
-            <div className='d-flex flex-column justify-content-center align-items-center gap-3 flex-auto bg-white rounded Service'>
-
+            <div className='col-8 align-items-center gap-3 bg-white rounded'>
 
               {tags.map((tag, index) => (
 
-                <FormGroup key={index}>
+                <FormGroup className="row border border-b-gray-50 p-5 py-3 rounded-2xl" key={index}>
                   <div className='d-flex flex-auto gap-3'>
                     <Button
                       color="danger"
                       onClick={()=>{handleRemoveTag(index)}}
                     >
-                      태그 삭제
+                      삭제
                     </Button>
                     {/* <Button color="dark" onClick={() => handleAddTagEvent(index)}>
                       tags {index} 이벤트 추가
                     </Button> */}
+
+
                   </div>
-                  <div className='inputSet'>
+                  <span className="text-xl my-3">태그 설정</span>
+                  <div>
                   <Input
+                    className="my-1"
                     type="text"
                     name={`eventName-${index}`}
                     onChange={(e) => handleChangeTagName(index, e)}
@@ -581,6 +588,7 @@ function App() {
                     value={tags[index].tagName}
                   />
                    <Input
+                     className="my-1"
                     type="text"
                     name={`eventCondition-${index}`}
                     onChange={(e) => {handleChangeTagId(index,e)} }
@@ -588,6 +596,7 @@ function App() {
                     value={tags[index].tagId}
                   />
                    <Input
+                     className="my-1"
                     type="text"
                     name={`eventCondition-${index}`}
                     onChange={(e) =>{handleChangeTagClass(index,e)} }
@@ -595,6 +604,7 @@ function App() {
                     value={tags[index].tagClass}
                   />
                     <Select
+                      className="my-1"
                       key={index}
                       isMulti
                       options={options}
@@ -621,14 +631,16 @@ function App() {
 
                 </FormGroup>
               ))}
-              <Button color="dark" onClick={() => handleAddTag()}>
-                태그 추가
-              </Button>
-            </div>
+              <div className="col-12 flex justify-content-center">
+                <Button color="dark" onClick={() => handleAddTag()}>
+                  태그 추가
+                </Button>
+              </div>
+              </div>
           </div>
 
         </Form>
-        <div className=' d-flex flex-column justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center m-3'>
           <Button color="primary">설정 저장</Button>
         </div>
       </div>
