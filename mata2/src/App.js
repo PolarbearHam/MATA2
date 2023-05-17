@@ -26,6 +26,7 @@ function App() {
     }
   }, [location])
 
+  
 
   const [serviceList,setServiceList]=useState([])
   const [headService,setHeadService]=useState(-1)
@@ -64,6 +65,7 @@ function App() {
   // GLOBAL: ************** 사용자 정보 **************
 
   useEffect(() => {
+    console.log(location)
     let accessToken = sessionStorage.getItem("accessToken");
     
     const headers = {
@@ -73,7 +75,7 @@ function App() {
       axios({method:"get",url:process.env.REACT_APP_HOST+"/v1/project/",headers:headers})
       .then(res=>{
         setServiceList(res.data)
-        setHeadService(res.data[0].id)
+        if(res.data[0].id){setHeadService(res.data[0].id)}
       })
       .catch(err=>{
       })
@@ -105,7 +107,7 @@ function App() {
     // accessToken = 'dummy-token'; // 더미 데이터
     // userInfo(accessToken);
 
-  },[]);
+  },[location]);
   useEffect(() => {
     let accessToken = sessionStorage.getItem("accessToken");
     
@@ -116,6 +118,7 @@ function App() {
       axios({method:"get",url:process.env.REACT_APP_HOST+"/v1/project/",headers:headers})
       .then(res=>{
         setServiceList(res.data)
+        if(res.data[0].id){setHeadService(res.data[0].id)}
       })
       .catch(err=>{
       })
@@ -176,7 +179,7 @@ function App() {
         }/>
         <Route path='/service-add' element={
           <DashboardLayout state={ {user: user,serviceList:serviceList,headService:headService} } >
-            <ServiceAdd/>
+            <ServiceAdd state={ {user: user,serviceList:serviceList,headService:headService} }/>
           </DashboardLayout>
         }/>
         <Route path='/service-start' element={
@@ -186,12 +189,17 @@ function App() {
         }/>
         <Route path='/service/:projectId/dashboard' element={
           <DashboardLayout state={ {user: user,serviceList:serviceList,headService:headService} }>
-              <DashboardMain state={{user: user}}/>
+              <DashboardMain state={{user: user,serviceList:serviceList,headService:headService}}/>
           </DashboardLayout>
         }/>
         <Route path='/service/:projectId/setting' element={
           <DashboardLayout state={ {user: user,serviceList:serviceList,headService:headService} }>
             <ServiceCustom state={ {user: user,serviceList:serviceList,headService:headService} }/>
+          </DashboardLayout>
+        }/>
+        <Route path='*' element={
+          <DashboardLayout state={ {user: user,serviceList:serviceList,headService:headService} }>
+            <ServiceStart/>
           </DashboardLayout>
         }/>
         <Route path='test' element={<Test/>}/>

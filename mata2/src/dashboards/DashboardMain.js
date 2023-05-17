@@ -388,6 +388,8 @@ const DashboardMain = (props) => {
   ]));
 
   useEffect(() => {
+    const ownServiceIds=props.state.serviceList
+    console.log('대쉬보드 진입', props.state)
     const storedLayout = JSON.parse(localStorage.getItem("my-grid-layout")) || [];
     console.log("대쉬보드 화면,",projectId)
     setLayout(storedLayout);
