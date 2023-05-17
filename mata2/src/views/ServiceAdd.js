@@ -7,8 +7,8 @@ const ServiceAdd = () => {
   const navigate=useNavigate()
   const [serviceName, setServiceName] = useState('');
   const [serviceUrl, setServiceUrl] = useState('');
-  const [category, SetCategory]=useState('')
-  function handleClick(e) {
+  const [category, SetCategory]=useState('BLOG')
+  function  handleClick(e) {
     e.preventDefault();
     
     navigate('/signup')
