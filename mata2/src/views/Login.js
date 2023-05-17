@@ -25,7 +25,7 @@ const Login = () => {
     .then(response => {
       if (response.status==200) {
         sessionStorage.setItem('accessToken',response.data.accessToken)  
-        navigate('/')
+        window.location.replace('/')
       }else alert('틀림')
     })
     .catch(error => {
