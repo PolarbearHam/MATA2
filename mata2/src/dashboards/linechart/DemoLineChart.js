@@ -127,7 +127,13 @@ export default class DemoLineChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="timestamp" />
           <YAxis />
-          <Tooltip />
+          <Tooltip 
+          overrideStyle={{
+            fontSize: '14px',
+            width: '70px',
+            height: '50px',
+            // ... 다른 CSS 스타일 지정
+          }}/>
           <Legend />
           <Line type="monotone" dataKey="tablet" stroke="#8884d8" activeDot={{ r: 8 }} />
           <Line type="monotone" dataKey="phone" stroke="#82ca9d" />

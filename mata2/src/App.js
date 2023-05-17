@@ -73,7 +73,7 @@ function App() {
       axios({method:"get",url:process.env.REACT_APP_HOST+"/v1/project/",headers:headers})
       .then(res=>{
         setServiceList(res.data)
-        if(res.data[0].id){setHeadService(res.data[0].id)}
+        setHeadService(res.data[0].id)
       })
       .catch(err=>{
       })
