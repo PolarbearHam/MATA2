@@ -97,7 +97,7 @@ spring:
       port: 6379
       password:  ssafy8a309
     cassandra:
-      contact-points: 172.31.62.247:9042
+      contact-points: 172.31.58.239:9042
       keyspace-name: tagmanager
       local-datacenter: datacenter1
     hive:
