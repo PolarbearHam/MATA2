@@ -14,5 +14,5 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     List<Tag> findAllByProjectId(long projectId);
     List<Tag> findAllByProjectIdAndIsEnabledIsTrue(long projectId);
     Optional<Tag> findByHtmlTagIdAndProjectId(String htmlTagId, long projectId);
-    Optional<Tag> findByHtmlTagIdAndProjectIdAndIsEnabledIsTrue(String htmlTagId, long projectId);
+    Optional<Tag> findByHtmlTagNameAndProjectIdAndIsEnabledIsTrue(String htmlTagName, long projectId);
 }

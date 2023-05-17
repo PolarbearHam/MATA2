@@ -9,11 +9,15 @@ export default function DemoSankeyNode({
                                          index,
                                          payload,
                                          containerWidth,
-                                         colors
+                                         colors,
+                                         onNodeDoubleClick
                                        }) {
   const isOut = x + width + 6 > containerWidth;
+  const handleNodeDoubleClick = () => {
+    onNodeDoubleClick(payload.name); // 클릭 시 payload.name 값을 전달하여 핸들러 함수 호출
+  };
   return (
-    <Layer key={`CustomNode${index}`}>
+    <Layer key={`CustomNode${index}`} onDoubleClick={handleNodeDoubleClick}>
       <Rectangle
        x={x}
        y={y}
@@ -47,7 +51,7 @@ export default function DemoSankeyNode({
         stroke="#333"
         strokeOpacity="0.5"
       >
-        {payload.value + "k"}
+        {payload.value + "명"}
       </text>
     </Layer>
   );
