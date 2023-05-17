@@ -1,9 +1,9 @@
 import React from 'react';
 import './ServiceAdd.css'
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-const ServiceAdd = () => {
+const ServiceAdd = (props) => {
   const navigate=useNavigate()
   const [serviceName, setServiceName] = useState('');
   const [serviceUrl, setServiceUrl] = useState('');
@@ -36,6 +36,12 @@ const ServiceAdd = () => {
       console.error(error);
     });
   }
+  useEffect(()=>{
+    // if (!props.state.name) {
+    //   navigate('/login')
+    // }
+  },[])
+
   return (
     <div id='ServiceAdd-background' className='vh-100'>
       <form  id='ServiceAddForm' onSubmit={serviceAdd} >

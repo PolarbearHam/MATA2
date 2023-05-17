@@ -86,9 +86,11 @@ const ServiceCustom = (props) => {
   }
 
   const test=()=>{
-    // const eventsNamesArray= extractPropertyValues(events,'eventName')
-    // const duplicates=findDuplicateValues(eventsNamesArray);
-    // if(duplicates){window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)}
+    const tagsNamesArray= extractPropertyValues(tags,'tagName')
+    console.log('태그명들:',tagsNamesArray)
+    const duplicates=findDuplicateValues(tagsNamesArray);
+    console.log('중복태그들:',duplicates)
+    if(duplicates.length){window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)}
     console.log(fields,events,tags)
   }
 
@@ -208,18 +210,31 @@ const ServiceCustom = (props) => {
     setTags(values);
   };
   const saveTag= (e)=>{
+    const tagsNamesArray= extractPropertyValues(tags,'tagName')
+    console.log('태그명들:',tagsNamesArray)
+    const duplicates=findDuplicateValues(tagsNamesArray);
+    console.log('중복태그들:',duplicates)
+    if(duplicates.length){
+      window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)
+      window.location.reload();
+    }
+    
     e.preventDefault();
     const payload=[]
     const tag={tags:[]}
+
     tags.forEach((element,index) => {
-      tag.tags[index]={
+      // console.log(tags,element,index)
+      tag.tags.push({
         tagName:element.tagName,
         tagId:element.tagId,
         tagClass:element.tagClass,
         tagEvents:element.tagEvents
-      }
+      })
+      console.log(tag.tags)
 
     }
+
     );
     const url=process.env.REACT_APP_HOST+'/v1/project/'+projectId+'/tags';
     const headers = {
@@ -300,16 +315,27 @@ const ServiceCustom = (props) => {
       const currentTags=res.data.tagDtoList
       const newTags=currentTags.map(obj=>{
         const {htmlTagName,htmlTagId,htmlTagClass,tagEventDtoList, ...rest}=obj
-        return {tagName:htmlTagName,tagId:htmlTagId,tagClass:htmlTagClass,tagEventDtoList:tagEventDtoList}
+        return {tagName:htmlTagName,tagId:htmlTagId,tagClass:htmlTagClass,tagEventDtoList:tagEventDtoList,tagEvents:[], ...rest}
       })
       newTags.forEach(element => {
-        element.tagEvents=[]
+        
         element.tagEventDtoList.forEach(tagEventDto=>{
           element.tagEvents.push(tagEventDto.eventName)
         })
         delete element.tagEventDtoList
       });
+      // const newSelectedOptions=[]
+      // newTags.forEach(element => {
+      //   const newSelectedOption=[]
+      //   element.tagEventDtoList.forEach(element2=>{
+      //     newSelectedOption.push(element2.eventName)
+      //   })
+      //   newSelectedOptions.push(newSelectedOption)
+      // });
+      // setSelectedOptions(newSelectedOptions)
+
       setTags(newTags)
+
     })
     .catch(err=>{
       console.log('잘못됨',err)
