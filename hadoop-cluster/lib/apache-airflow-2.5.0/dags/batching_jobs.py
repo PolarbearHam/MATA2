@@ -101,7 +101,7 @@ def batching_cassandra_spark(base_time, amount, unit):
     components_df = batch_df.select("*") \
         .where(col("creation_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
-        .where(col("event").like("click")) \
+        .where(col("target_name").isNotNull()) \
         .groupBy("project_id", "target_name", "location", "screen_device", "user_language").agg( \
             count("key").alias("total_click"), \
         ).withColumn("update_timestamp", lit(base_time).cast("timestamp")) \
@@ -116,7 +116,7 @@ def batching_cassandra_spark(base_time, amount, unit):
     click_df = batch_df.select("*") \
         .where(col("creation_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
-        .where(col("event").like("click")) \
+        .where(col("event").like("click_heatmap")) \
         .groupBy("project_id", "position_x", "position_y", "location", "screen_device", "user_language").agg( \
             count("key").alias("total_click"), \
         ).withColumn("update_timestamp", lit(base_time).cast("timestamp")) \

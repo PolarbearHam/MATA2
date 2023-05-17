@@ -37,11 +37,7 @@ public class CassandraService {
         List<Stream> streamList = webLogDtoList.stream()
                 .map(webLogDto -> Stream.webLogFormChange(webLogDto, Uuids.timeBased(), project_id))
                 .collect(Collectors.toList());
-        for (Stream stream: streamList) {
-            System.out.println("log info..............................." + stream.toString());
-        }
-        List<Stream> streams = weblogRepository.saveAll(streamList);
-        System.out.println("saveall return..................." + streams.size());
+        weblogRepository.saveAll(streamList);
     }
 
 

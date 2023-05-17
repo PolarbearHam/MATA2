@@ -25,7 +25,7 @@ CREATE TABLE stream (
   title TEXT,
   user_agent TEXT,
   user_language TEXT,
-  PRIMARY KEY ((project_id), creation_timestamp, session_id)
+  PRIMARY KEY ((project_id), creation_timestamp, session_id, event)
 ) WITH CLUSTERING ORDER BY (creation_timestamp DESC);"
 
 sudo docker exec master01 hive -e "
