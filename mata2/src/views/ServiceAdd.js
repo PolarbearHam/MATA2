@@ -38,9 +38,9 @@ const ServiceAdd = (props) => {
   }
   useEffect(()=>{
     console.log(props)
-    // if (!props.state.name) {
-    //   navigate('/login')
-    // }
+    if (!sessionStorage.getItem('accessToken')) {
+      navigate('/login')
+    }
   },[])
 
   return (

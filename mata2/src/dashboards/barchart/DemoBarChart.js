@@ -130,7 +130,7 @@ export default class DemoBarChart extends PureComponent {
   }
   componentDidMount() {
     const projectID = window.location.href.split('/')[4];
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=1h&projectId=${projectID}`
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=10m&projectId=${projectID}`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
