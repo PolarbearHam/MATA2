@@ -136,7 +136,7 @@ public class EventController {
                         if (j > 15) {
                             wl.setTargetName("클릭 태그" + i % 3);
                             wl.setEvent("click");
-                        } else if (j > 15) {
+                        } else if (j > 17) {
                             wl.setTargetName("로그인");
                             wl.setEvent("login");
                         } else {
@@ -148,11 +148,6 @@ public class EventController {
                         }
                     }
                     webLogDtoList.add(wl);
-//                    try {
-//                        cassandraService.sendToCassandra(wl);
-//                    } catch (JsonProcessingException e) {
-//                        e.printStackTrace();
-//                    }
                 }
                 try {
                     cassandraService.sendToCassandra(webLogDtoList, projectId);

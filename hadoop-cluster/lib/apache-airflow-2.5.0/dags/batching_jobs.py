@@ -65,8 +65,8 @@ def inner_timestamp(base_time):
 ##### 5분 단위 최소 집계
 def batching_cassandra_spark(base_time, amount, unit):
 
-    if str(amount)+unit != "5m":
-        print("invalid interval: interval should be 5m.")
+    if str(amount)+unit != "10m":
+        print("invalid interval: interval should be 10m.")
         return 2
 
     cassandra_keyspace = "tagmanager"
@@ -98,7 +98,7 @@ def batching_cassandra_spark(base_time, amount, unit):
 
     #########
     # components 테이블 집계
-    component_df = batch_df.select("*") \
+    components_df = batch_df.select("*") \
         .where(col("creation_timestamp") \
                 .between(*timestamp_range(base_time, -amount, unit))) \
         .where(col("event").like("click")) \
@@ -106,7 +106,8 @@ def batching_cassandra_spark(base_time, amount, unit):
             count("key").alias("total_click"), \
         ).withColumn("update_timestamp", lit(base_time).cast("timestamp")) \
         .select("total_click", col("target_name").alias("tag_name"), "location", "screen_device", "user_language", "update_timestamp",  "project_id")
-    component_df.write.mode("append") \
+
+    components_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.components_{}{}".format(str(amount), unit))
 
@@ -120,6 +121,7 @@ def batching_cassandra_spark(base_time, amount, unit):
             count("key").alias("total_click"), \
         ).withColumn("update_timestamp", lit(base_time).cast("timestamp")) \
         .select("total_click", "position_x", "position_y", "location", "screen_device", "user_language", "update_timestamp", "project_id")
+
     click_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.clicks_{}{}".format(str(amount), unit))
@@ -136,6 +138,7 @@ def batching_cassandra_spark(base_time, amount, unit):
             sum("page_duration").alias("total_duration") \
         ).withColumn("update_timestamp", lit(base_time).cast("timestamp")) \
         .select("total_duration","total_session","location", "screen_device", "user_language", "update_timestamp","project_id")
+
     page_durations_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.page_durations_{}{}".format(str(amount), unit))
@@ -150,6 +153,7 @@ def batching_cassandra_spark(base_time, amount, unit):
             count("key").alias("total_journal"),\
          ).withColumn("update_timestamp", lit(base_time).cast("timestamp")) \
     .select("total_journal", col("referrer").alias("location_from"), col("location").alias("location_to"), "screen_device", "user_language", "update_timestamp", "project_id")
+
     page_journals_df.write.mode("append") \
         .format("hive") \
         .insertInto("mata.page_journals_{}{}".format(str(amount), unit))
@@ -198,7 +202,7 @@ def batching_hive(base_time, amount, unit):
         print("invalid interval: interval should be 10m, 30m, 1h, 6h, 12h, 1d, 1w, 1mo, 6mo, 1y.")
         return 2
 
-    table_select = "5m"
+    table_select = "10m"
 
     session = SparkSession.builder \
         .appName(f"Batching_Hive_{amount}{unit}") \
