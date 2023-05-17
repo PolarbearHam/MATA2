@@ -1,10 +1,9 @@
 export default class TagManager {
-
-  constructor(serviceToken) {
-    this.token = serviceToken
-    return (async () => {
+  constructor(projectToken) {
+    this.token = projectToken
+    return (async function() {
       // *************** JS에 주입돼서 들어가는 영역 ***************
-      let response = await fetch("https://mata2.co.kr/api/v1/js/" + this.token+ "/config");
+      let response = await fetch("https://mata2.co.kr/api/v1/js/" + this.token + "/config");
       this.injection = await response.json();
       // *************** JS에 주입돼서 들어가는 영역 ***************
 
@@ -17,7 +16,7 @@ export default class TagManager {
       }
       this.sessionId = sessionStorage.getItem('TAGMANAGER_SESSION');
       this.bootstrap = this.injection.bootstrap;
-      this.serviceToken = this.injection.serviceToken;
+      this.projectToken = this.injection.projectToken;
       this.spa = this.injection.spa;
       this.userAgent = (() => {
         let userAgent = navigator.userAgent.toLowerCase()
@@ -39,10 +38,7 @@ export default class TagManager {
       this.location = null;
       this.prevLocation = null;
       this.referrer = null;
-      this.data = {};
-      this.screenSizeX = window.innerWidth;
-      this.screenSizeY = window.innerHeight;
-      this.userLanguage = navigator.language;
+      this.data = '{}';
 
 
       // 추가적으로 필요한 데이터
@@ -82,6 +78,10 @@ export default class TagManager {
         this.stackLog(e, 'pageleave');
         this.flushLog();
       }.bind(this);
+      this.handlerDict['click_heatmap'] = function (e) {
+        this.stackLog(e, 'click_heatmap');
+      }.bind(this);
+      
       let keys = Object.keys(this.events);
       for (let i=0; i<keys.length; i++) {
         this.handlerDict[keys[i]] = function (e) {
@@ -103,7 +103,7 @@ export default class TagManager {
       }
       this.stackLog = function (e, eventType = '') {
         let body = {
-          serviceToken: this.serviceToken,
+          projectToken: this.projectToken,
           sessionId: this.sessionId,
           userAgent: this.userAgent,
           event: eventType,
@@ -116,10 +116,10 @@ export default class TagManager {
           referrer: this.referrer,
           timestamp: Date.now(),
           pageDuration: Date.now() - this.enterTimer,
-          data: e.detail ? e.detail : null,
-          screenSizeX: this.screenSizeX,
-          screenSizeY: this.screenSizeY,
-          userLanguage: this.userLanguage
+          data: e.detail ? JSON.stringify(e.detail) : '{}',
+          screenDevice : (window.innerWidth >= 1024) ? "desktop" :
+                         (window.innerWidth >= 768) ? "tablet" : "phone" ,
+          userLanguage: navigator.language.substring(0, 2)
         }
         this.logStash.push(body)
 
@@ -130,7 +130,7 @@ export default class TagManager {
       this.attach = function () {
         this.title = document.title;
         this.location = document.location.href;
-        this.referrer = this.spa ? (this.prevLocation ? this.prevLocation : document.referrer) : document.referrer;
+        this.referrer = this.prevLocation ? this.prevLocation : document.referrer;
 
         let keys = Object.keys(this.tags);
         for (let i=0; i<keys.length; i++) { // 모든 태그 중
@@ -172,6 +172,13 @@ export default class TagManager {
 
           }
         }
+        // 히트맵 이벤트 부착
+        let dispatcher = function (e) { // base DOM 이벤트에 dispatcher 붙이기
+          this.handlerDict['click_heatmap'](e);
+        }.bind(this)
+        window.addEventListener('click', dispatcher);
+        this.attachedListeners.push({target: window, type: 'click', listener: dispatcher})
+        
         // 태그에 종속되지 않는 이벤트 발생시키기
         this.handlerDict['pageenter']({target: window});
       }
@@ -183,16 +190,6 @@ export default class TagManager {
         // 태그에 종속되지 않는 이벤트 발생시키기
         this.handlerDict['pageleave']({target: window});
       }
-
-      window.addEventListener("load", function (e) {
-        this.attach();
-        console.log("loaded")
-      }.bind(this));
-      window.addEventListener("unload", function (e) {
-        this.detach();
-        console.log("unloaded")
-      }.bind(this));
-
       return this;
     }).bind(this)();
   }

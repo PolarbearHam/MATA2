@@ -1,12 +1,7 @@
+import axios from 'axios';
 import React, { PureComponent } from 'react';
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
-
-const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-];
+import DropdownComponent from '../../components/DropdownComponent';
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -57,24 +52,100 @@ const renderActiveShape = (props) => {
 export default class DemoPieChart extends PureComponent {
   static demoUrl = 'https://codesandbox.io/s/pie-chart-with-customized-active-shape-y93si';
 
-  state = {
-    activeIndex: 0,
-  };
-
   onPieEnter = (_, index) => {
     this.setState({
       activeIndex: index,
     });
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeIndex: 0,
+      dataClass:0,
+      transformedData:[]
+    };
+    this.handleSelect = this.handleSelect.bind(this);
+  }
+
+  handleSelect(selectedValue) {
+    console.log('선택된 값:', selectedValue);
+    if(selectedValue === "디바이스 비율")
+      this.setState({
+        dataClass:0
+    })
+    else if(selectedValue === "유입 경로 비율"){
+      this.setState({
+        dataClass:1
+      })
+    }
+    // 선택된 값에 대한 로직 처리 등을 수행
+  }
+
+  componentDidMount(){
+    const projectID = window.location.href.split('/')[4];
+    const du_BASEURL=`https://mata2.co.kr/api/v1/analytics/durations_all?basetime=${Date.now()}&projectId=${projectID}`;
+    const re_BASEURL=`https://mata2.co.kr/api/v1/analytics/refers_all?basetime=${Date.now()}&projectId=${projectID}`;
+    const headers = {
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
+      'Content-type': 'application/json',
+    }
+
+    const transformedData = [];
+
+    axios.get(du_BASEURL,{headers})
+    .then((res)=>{
+      const durations_all_Data = res.data.reduce((result, item) => {
+          const { screenDevice, totalSession } = item;
+          const existingItem = result.find(obj => obj.name === screenDevice);
+        
+          if (existingItem) {
+            existingItem.value += totalSession;
+          } else {
+            result.push({ name: screenDevice, value: totalSession });
+          }
+        
+          return result;
+        }, []);
+      transformedData.push(durations_all_Data);
+
+      axios.get(re_BASEURL, {headers})
+      .then((res) => {
+        const refers_all_data = res.data.reduce((result, item) => {
+          const domain = item.locationFrom.split('/')[2].split('.')[1];
+          const existingItem = result.find(obj => obj.name === domain);
+        
+          if (existingItem) {
+            existingItem.value += item.totalJournal;
+          } else {
+            result.push({ name: domain, value: item.totalJournal });
+          }
+        
+          return result;
+        }, []);
+        transformedData.push(refers_all_data);
+        this.setState({
+          ...this.state,
+          transformedData
+        });
+      })
+    })
+    .catch((error)=>{
+      console.log(error);
+    });
+  }
+
   render() {
+
     return (
+      <>
+      <DropdownComponent menus={["디바이스 비율","유입 경로 비율"]} onSelect={this.handleSelect} title={"비율 정보 선택"} ></DropdownComponent>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart width={400} height={400}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
-            data={data}
+            data={this.state.transformedData[this.state.dataClass]}
             cx="50%"
             cy="50%"
             innerRadius={60}
@@ -85,6 +156,7 @@ export default class DemoPieChart extends PureComponent {
           />
         </PieChart>
       </ResponsiveContainer>
+      </>
     );
   }
 }

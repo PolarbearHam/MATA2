@@ -129,7 +129,7 @@ export default class DemoBarChart extends PureComponent {
     };
   }
   componentDidMount() {
-    const url=`http://70.12.246.60:8080/api/v1/analytics/components?basetime=${Date.now()}&interval=1m&projectId=15`
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=1h&projectId=15`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',

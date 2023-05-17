@@ -9,7 +9,6 @@ const Login = () => {
   function handleClick(e) {
     e.preventDefault();
     
-    console.log('Button clicked!');
     navigate('/signup')
   }
   function login (e) {
@@ -20,16 +19,13 @@ const Login = () => {
     }
     const headers = {
       'Content-type': 'application/json'
-    }
-    console.log("로그인 시도",formData)
-    
+    }    
     axios.post(process.env.REACT_APP_HOST+'/v1/member/login',formData,{headers})
 
     .then(response => {
-      console.log(response);
       if (response.status==200) {
         sessionStorage.setItem('accessToken',response.data.accessToken)  
-        navigate('/')
+        window.location.replace('/')
       }else alert('틀림')
     })
     .catch(error => {

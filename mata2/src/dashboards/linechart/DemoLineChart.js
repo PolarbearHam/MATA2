@@ -72,7 +72,7 @@ export default class DemoLineChart extends PureComponent {
   }
   static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
   componentDidMount(){
-    const url=`http://70.12.246.60:8080/api/v1/analytics/components?basetime=${Date.now()}&interval=1m&projectId=15`
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=1h&projectId=15`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
@@ -81,7 +81,6 @@ export default class DemoLineChart extends PureComponent {
     .then((res)=>{
       
       
-      console.log('꺾은선 스테이트',this.state)
       const timestampByscreenDevice = {};
       for (let i = 0; i < res.data.length; i++) {
         const el = res.data[i];
@@ -105,10 +104,8 @@ export default class DemoLineChart extends PureComponent {
       this.setState({
         data:sortedData
       })
-      console.log('꺾은선 넣을 데이터',this.state)
   })
     .catch((err)=>{
-      console.log('꺾은선 데이터 실패',err)
     })
     
   }
@@ -130,7 +127,13 @@ export default class DemoLineChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="timestamp" />
           <YAxis />
-          <Tooltip />
+          <Tooltip 
+          overrideStyle={{
+            fontSize: '14px',
+            width: '70px',
+            height: '50px',
+            // ... 다른 CSS 스타일 지정
+          }}/>
           <Legend />
           <Line type="monotone" dataKey="tablet" stroke="#8884d8" activeDot={{ r: 8 }} />
           <Line type="monotone" dataKey="phone" stroke="#82ca9d" />

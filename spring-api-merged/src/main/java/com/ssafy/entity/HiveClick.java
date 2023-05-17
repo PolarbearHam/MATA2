@@ -1,17 +1,22 @@
 package com.ssafy.entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Data
-public class Click {
+@Builder
+public class HiveClick {
 
-    private int totalClick;
+    private long totalClick;
     private int positionX;
     private int positionY;
     private String location;
+    private String screenDevice;
+    private String userLanguage;
     private Timestamp updateTimestamp;
     private long projectId;
+
 
 }

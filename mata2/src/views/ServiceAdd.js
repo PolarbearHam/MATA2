@@ -11,7 +11,6 @@ const ServiceAdd = () => {
   function handleClick(e) {
     e.preventDefault();
     
-    console.log('Button clicked!');
     navigate('/signup')
   }
   function serviceAdd (e) {
@@ -24,14 +23,12 @@ const ServiceAdd = () => {
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
     }
-    console.log("로그인 시도",formData)
     
     axios.post(process.env.REACT_APP_HOST+'/v1/project/',formData,{headers})
 
     .then(response => {
-      console.log(response);
       if (response.status==200) {
-        navigate('/start') 
+        window.location.replace('/')
         
       }else alert('틀림')
     })

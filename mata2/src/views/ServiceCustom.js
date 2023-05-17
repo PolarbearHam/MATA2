@@ -7,9 +7,29 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import Select from 'react-select';
 const ServiceCustom = (props) => {
-  const [options,setOptions] = useState([  { value: 'click', label: 'click' },]);
+  function extractPropertyValues(array, key) {
+    return array.map(obj => obj[key]).filter(value => value !== undefined);
+  }
+  function findDuplicateValues(array) {
+    const uniqueValues = new Set();
+    const duplicateValues = [];
+  function hasCommonValues(array1, array2) {
+    return array1.some(value => array2.includes(value));
+  };
+  
+    for (const value of array) {
+      if (uniqueValues.has(value)) {
+        duplicateValues.push(value);
+      } else {
+        uniqueValues.add(value);
+      }
+    }
+  
+    return duplicateValues;
+  }
+  const reservedEventNames=['click','mouseenter','mouseleave','scroll']
+  const [options,setOptions] = useState([ ]);
   const handleChangeSelected = (index,e) => {
-    console.log("셀렉트 바뀜", index,e);
     const newTagEvents=[]
     e.forEach(element => {newTagEvents.push(element.value)
       
@@ -17,10 +37,19 @@ const ServiceCustom = (props) => {
     const values = [...tags];
     values[index].tagEvents = newTagEvents;
     setTags(values);
-    console.log('태그이벤트 변경후', options)
   }
   const [selectedOptions, setSelectedOptions] = useState([]);
   const saveEvent= (e)=>{
+    
+    const eventsNamesArray= extractPropertyValues(events,'eventName')
+    const duplicates=findDuplicateValues(eventsNamesArray);
+
+    if (duplicates.length) {
+      window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)
+      return
+    }
+    
+
     e.preventDefault();
     const payload=[]
     const event={events:[]}
@@ -34,16 +63,15 @@ const ServiceCustom = (props) => {
     }
     )
     
-    const url=process.env.REACT_APP_HOST+'/v1/project/'+serviceId.id+'/events';
+    const url=process.env.REACT_APP_HOST+'/v1/project/'+projectId+'/events';
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
     }
-    console.log("이벤트 설정 저장 시작 보내는 건:", url,event,{headers} )
     axios.post(url,event,{headers})
 
     .then(response => {
-      console.log(response);
+
       // if (response.status==200) {
       //   sessionStorage.setItem('accessToken',response.data.accessToken)  
       //   navigate('/')
@@ -58,8 +86,12 @@ const ServiceCustom = (props) => {
   }
 
   const test=()=>{
+    // const eventsNamesArray= extractPropertyValues(events,'eventName')
+    // const duplicates=findDuplicateValues(eventsNamesArray);
+    // if(duplicates){window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)}
     console.log(fields,events,tags)
   }
+
   const [events,setEvents] = useState([])
   const [fields, setFields] = useState({service:{},events:events,tags:[]});
   const [tags,setTags]=useState([])
@@ -136,7 +168,7 @@ const ServiceCustom = (props) => {
 
   const handleAddTag = () => {
     const values = [...tags]
-    values.push({tagName:'',tagOd:'',tagClass:'',tagEvents:[]});
+    values.push({tagName:'',tagId:'',tagClass:'',tagEvents:[]});
     setTags(values);
   };  
   const handleRemoveTag= (index)=>{
@@ -189,20 +221,15 @@ const ServiceCustom = (props) => {
 
     }
     );
-    const url=process.env.REACT_APP_HOST+'/v1/project/'+serviceId.id+'/tags';
+    const url=process.env.REACT_APP_HOST+'/v1/project/'+projectId+'/tags';
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
     }
-    console.log("이벤트 설정 저장 시작 보내는 건:", url,tag,{headers} )
     axios.post(url,tag,{headers})
 
     .then(response => {
-      console.log(response);
-      // if (response.status==200) {
-      //   sessionStorage.setItem('accessToken',response.data.accessToken)  
-      //   navigate('/')
-      // }else alert('틀림')
+
       window.location.reload();
     })
     .catch(error => {
@@ -217,20 +244,17 @@ const ServiceCustom = (props) => {
   const[token,setToken]=useState(null)
   const getToken=(e)=>{
     e.preventDefault()
-    console.log('토큰발급시작')
     const url=process.env.REACT_APP_HOST+'/v1/project/token';
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
     }
     const payload={
-      id:serviceId
+      id:{id:projectId}
     }
-    console.log("이벤트 설정 저장 시작 보내는 건:", url,serviceId,{headers} )
-    axios.post(url,serviceId,{headers})
+    axios.post(url,{id:projectId},{headers})
 
     .then(response => {
-      console.log('토큰은',response);
       setToken(response.data.token)
       
     })
@@ -242,27 +266,24 @@ const ServiceCustom = (props) => {
   }
   let currentService={}
   const [origin,setOrigin]=useState('')
-  const  serviceId  = useParams();
+  const  {projectId}  = useParams();
   const location = useLocation();
   useLayoutEffect(()=>{
-    console.log('시작은 함')
 
     props.state.serviceList.map( (service) => {
-      if(serviceId.id==service.id){
+      if(projectId==projectId){
         currentService=service
         setOrigin(currentService.url)
-        console.log('주소 찾음')
         
       }else{console.log('주소 못 찾음')
     }
     });
-    const url=process.env.REACT_APP_HOST+'/v1/project/'+serviceId.id+'/settings'
+    const url=process.env.REACT_APP_HOST+'/v1/project/'+projectId+'/settings'
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
     }
     axios.get(url,headers)
     .then(res=>{
-      console.log('현재 세팅은',res.data)
       setOrigin(res.data.projectDto.url)
       setToken(res.data.projectDto.token)
       const currentEvents=res.data.eventDtoList
@@ -288,26 +309,15 @@ const ServiceCustom = (props) => {
         })
         delete element.tagEventDtoList
       });
-      console.log(newTags)
       setTags(newTags)
-
-      // events.forEach(event => {
-      //   currentOptions.push({ value: event.eventName, label: event.eventName })
-      // });
-      // console.log('current tagEvent 옵션', currentOptions)  
-      // setOptions(currentOptions)
-      // console.log("111111",options)
     })
     .catch(err=>{
       console.log('잘못됨',err)
     },)
-    console.log("222222",options)
+
 
     
 
-  // console.log('받은 세팅은',currentSetting)
-  // const currentEvents=currentSetting.events
-  // setEvents(currentEvents)
   },[])
 
   useEffect(()=>{  
@@ -322,9 +332,8 @@ const ServiceCustom = (props) => {
 
     const optionsSet=new Set(eventsOptions)
     const uniqueOptions=[...optionsSet]
-    uniqueOptions.push({ value: 'click', label: 'click' })
+    // uniqueOptions.push({ value: 'click', label: 'click' })
     setOptions(uniqueOptions)   
-    console.log("셀렉트 옵션은",options)
   },[events])
 
   useEffect(()=>{
@@ -340,12 +349,11 @@ const ServiceCustom = (props) => {
     const selectedOptionsSet=new Set(newSelectedOptions)
     const uniqueSelectedOptions=[...selectedOptionsSet]
     setSelectedOptions(uniqueSelectedOptions)
-    console.log('선택된 태그 이벤트들',selectedOptions)
   },[tags])
   return (
     <div id='form-background' className='flex w-100 justify-content-center'>
       <div className='lg:w-3/5 w-full m-8'>
-        <div className='bg-white mt-3 p-3 rounded-3xl'>
+        <div className='row flex justify-content-center bg-white mt-3 p-3 rounded-3xl'>
           <p>스크립트</p>
           <div>
             { !spaChecked ? (
@@ -403,7 +411,7 @@ function App() {
         </div>
         <button onClick={test}>test</button>
         <Form>
-          <div className='bg-white mt-3 p-3 rounded-3xl'>
+          <div className='row flex justify-content-center bg-white mt-3 p-3 rounded-3xl'>
             <p>서비스 설정</p>
             <div>
               토큰: {token}
@@ -417,22 +425,22 @@ function App() {
                 <Input type='checkbox' name='spa'  onChange={handleCheckboxChange}/>
                 <span className='ms-2'>SPA로 구성되었다면 체크해주세요.</span>
               </label>
-              <Button>스크립트 재발급</Button>
             </FormGroup>
           </div>
 
-          <div className='bg-white mt-3 p-3 rounded-3xl'>
+          <div className='row flex justify-content-center bg-white mt-3 p-3 rounded-3xl'>
           <p>이벤트 설정</p>
           <button onClick={saveEvent}> 이벤트 저장</button>
           
-            <div className='d-flex flex-column justify-content-center align-items-center gap-3 bg-white rounded Service'>
+            <div className='col-8 align-items-center gap-3 bg-white rounded'>
               {events.map((event, index1) => (
-                <FormGroup key={index1}>
+                index1 > 3 && (
+                <FormGroup className="row border border-b-gray-50 p-5 py-3 rounded-2xl" key={index1}>
                   <div className='d-flex flex-auto gap-3'>
                     <Button
                       color="danger"
                       onClick={() => handleRemoveEvent(index1)}
-                    
+
                       key={index1}
                     >
                       삭제
@@ -444,118 +452,135 @@ function App() {
                       paths 추가
                     </Button>
                   </div>
-                  <Input
-                    className='mt-1'
-                    type="text"
-                    name={`eventName-${index1}`}
-                    // value={event[index].eventName || ''}
-                    onChange={(e) => handleChangeName(index1, e)}
-                    placeholder='이벤트 명'
-                    value={events[index1].eventName}
-                  />
-                  
-                  <Input
-                    className='mt-1'
-                    type="text"
-                    name={`eventCondition-${index1}`}
-                    // value={event[index].base || ''}
-                    onChange={(e) => handleChangeCondition(index1, e)}
-                    placeholder='이벤트 조건'
-                    value={events[index1].eventBase}
-                  />
+                  <span className="text-xl my-3">이벤트 정의 설정</span>
                   <div>
-                    event {index1} params 
-                  </div>
-                  {events[index1].eventParams.map((param,index2)=>(
-                    
-                    <FormGroup>
-                      <div className='d-flex flex-row gap-3 '>
-                        <div className='flex-grow'>
-                          <Input
-                           className='mt-1'
-                            type="text"
-                            name={`paramName-${index2}`}
-                            // value={param.name || ''}
-                            placeholder='param name'
-                            onChange={(e)=>handleChangeParamName(index1,index2,e)}
-                            value={events[index1].eventParams[index2].paramName}
-                          />
-                          <Input
-                           className='mt-1'
-                            type="text"
-                            name={`paramKey-${index2}`}
-                            // value={param.key || ''}
-                            placeholder='param key'
-                            onChange={(e)=>{handleChangeParamKey(index1,index2,e)}}
-                            value={events[index1].eventParams[index2].paramKey}
-                          />
-                        </div>
-                        <Button className='w-auto h-auto ' onClick={()=>handleRemoveParam(index1,index2)}>삭제</Button>
-                      </div>
-                    </FormGroup>
-                  ))}
-              <div>
-                event {index1} paths
-              </div>
-              {events[index1].eventPaths.map((path,index2)=>(
-                    
-                    <FormGroup>
-                      <div className='d-flex flex-row gap-3'>
-                        <div className='flex-grow '> 
-                          <Input
-                           className='mt-1'
-                            type="text"
-                            name={`pathName-${index2}`}
-                            // value={path.name || ''}
-                            placeholder='path name'
-                            onChange={(e)=>{handleChangePathName(index1,index2,e)}}
-                            value={events[index1].eventPaths[index2].pathName}
-                          />
-                          <Input
-                           className='mt-1'
-                            type="text"
-                            name={`pathKey-${index2}`}
-                            // value={path.index || ''}
-                            placeholder='path index'
-                            onChange={(e)=>{handleChangePathIndex(index1,index2,e)}}
-                            value={events[index1].eventPaths[index2].pathIndex}
-                          />
-                        </div>
-                        <Button className='w-auto h-auto' onClick={()=>{handleRemovePath(index1,index2)}}>삭제</Button>
-                      </div>
+                    <Input
+                      className='mt-1'
+                      type="text"
+                      name={`eventName-${index1}`}
+                      // value={event[index].eventName || ''}
+                      onChange={(e) => handleChangeName(index1, e)}
+                      placeholder='이벤트 명'
+                      value={events[index1].eventName}
+                    />
 
+                    <Input
+                      className='mt-1'
+                      type="text"
+                      name={`eventCondition-${index1}`}
+                      // value={event[index].base || ''}
+                      onChange={(e) => handleChangeCondition(index1, e)}
+                      placeholder='이벤트 조건'
+                      value={events[index1].eventBase}
+                    />
+                  <div className="border mt-3 p-3 rounded-2xl">
+                    <span className="text-xl my-3">이벤트 페이로드 설정</span>
+                    <div>
+                      Params
+                    </div>
+                    <div>
+                      {events[index1].eventParams.map((param,index2)=>(
+                        <FormGroup>
+                          <div className='d-flex flex-row gap-3 '>
+                            <div className='flex-grow'>
+                              <Input
+                               className='mt-1'
+                                type="text"
+                                name={`paramName-${index2}`}
+                                // value={param.name || ''}
+                                placeholder='param name'
+                                onChange={(e)=>handleChangeParamName(index1,index2,e)}
+                                value={events[index1].eventParams[index2].paramName}
+                              />
+                              <Input
+                               className='mt-1'
+                                type="text"
+                                name={`paramKey-${index2}`}
+                                // value={param.key || ''}
+                                placeholder='param key'
+                                onChange={(e)=>{handleChangeParamKey(index1,index2,e)}}
+                                value={events[index1].eventParams[index2].paramKey}
+                              />
+                            </div>
+                            <Button className='w-auto h-auto ' onClick={()=>handleRemoveParam(index1,index2)}>삭제</Button>
+                          </div>
+                        </FormGroup>
+                        ))
+                      }
+                    </div>
+                    <hr/>
+                    <div>
+                      Paths
+                    </div>
+                    <div>
+                      {events[index1].eventPaths.map((path,index2)=>(
+                        <FormGroup>
+                          <div className='d-flex flex-row gap-3'>
+                            <div className='flex-grow '>
+                              <Input
+                               className='mt-1'
+                                type="text"
+                                name={`pathName-${index2}`}
+                                // value={path.name || ''}
+                                placeholder='path name'
+                                onChange={(e)=>{handleChangePathName(index1,index2,e)}}
+                                value={events[index1].eventPaths[index2].pathName}
+                              />
+                              <Input
+                               className='mt-1'
+                                type="text"
+                                name={`pathKey-${index2}`}
+                                // value={path.index || ''}
+                                placeholder='path index'
+                                onChange={(e)=>{handleChangePathIndex(index1,index2,e)}}
+                                value={events[index1].eventPaths[index2].pathIndex}
+                              />
+                            </div>
+                            <Button className='w-auto h-auto' onClick={()=>{handleRemovePath(index1,index2)}}>삭제</Button>
+                          </div>
+                        </FormGroup>
+                      ))}
+                          </div>
+                        </div>
+                      </div>
                     </FormGroup>
-                  ))}
-                </FormGroup>
-            ))}
-              <Button color="dark" onClick={() => handleAddEvent()}>
-                이벤트 추가
-              </Button>
+
+                  )
+                ))
+              }
+              <div className="col-12 flex justify-content-center">
+                <Button color="dark" onClick={() => handleAddEvent()}>
+                  이벤트 추가
+                </Button>
+              </div>
             </div>
           </div>
 
-          <div className='bg-white mt-3 p-3 rounded-3xl'>
+          <div className='row flex justify-content-center bg-white mt-3 p-3 rounded-3xl'>
             <p>태그 설정</p>
             <button onClick={saveTag}>태그 저장</button>
-            <div className='d-flex flex-column justify-content-center align-items-center gap-3 flex-auto bg-white rounded Service'>
-
+            <div className='col-8 align-items-center gap-3 bg-white rounded'>
 
               {tags.map((tag, index) => (
 
-                <FormGroup key={index}>
+                <FormGroup className="row border border-b-gray-50 p-5 py-3 rounded-2xl" key={index}>
                   <div className='d-flex flex-auto gap-3'>
                     <Button
                       color="danger"
                       onClick={()=>{handleRemoveTag(index)}}
                     >
-                      태그 삭제
+                      삭제
                     </Button>
                     {/* <Button color="dark" onClick={() => handleAddTagEvent(index)}>
                       tags {index} 이벤트 추가
                     </Button> */}
+
+
                   </div>
-                  <div className='inputSet'>
+                  <span className="text-xl my-3">태그 설정</span>
+                  <div>
                   <Input
+                    className="my-1"
                     type="text"
                     name={`eventName-${index}`}
                     onChange={(e) => handleChangeTagName(index, e)}
@@ -563,6 +588,7 @@ function App() {
                     value={tags[index].tagName}
                   />
                    <Input
+                     className="my-1"
                     type="text"
                     name={`eventCondition-${index}`}
                     onChange={(e) => {handleChangeTagId(index,e)} }
@@ -570,6 +596,7 @@ function App() {
                     value={tags[index].tagId}
                   />
                    <Input
+                     className="my-1"
                     type="text"
                     name={`eventCondition-${index}`}
                     onChange={(e) =>{handleChangeTagClass(index,e)} }
@@ -577,6 +604,7 @@ function App() {
                     value={tags[index].tagClass}
                   />
                     <Select
+                      className="my-1"
                       key={index}
                       isMulti
                       options={options}
@@ -603,14 +631,16 @@ function App() {
 
                 </FormGroup>
               ))}
-              <Button color="dark" onClick={() => handleAddTag()}>
-                태그 추가
-              </Button>
-            </div>
+              <div className="col-12 flex justify-content-center">
+                <Button color="dark" onClick={() => handleAddTag()}>
+                  태그 추가
+                </Button>
+              </div>
+              </div>
           </div>
 
         </Form>
-        <div className=' d-flex flex-column justify-content-center align-items-center'>
+        <div className='d-flex justify-content-center align-items-center m-3'>
           <Button color="primary">설정 저장</Button>
         </div>
       </div>

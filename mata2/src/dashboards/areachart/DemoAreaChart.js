@@ -53,16 +53,16 @@ export default class DemoAreaChart extends PureComponent {
     super(props);
     this.state = {
       data:[],
-      interval:'1m',
+      interval:'10m',
     };
     this.handleSelect = this.handleSelect.bind(this);
   }
   handleSelect(selectedValue) {
-    console.log('선택된 값:', selectedValue);
+    this.setState({interval:selectedValue})
     // 선택된 값에 대한 로직 처리 등을 수행
   }
   componentDidMount(){
-    const url=`http://70.12.246.60:8080/api/v1/analytics/components?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
@@ -94,7 +94,6 @@ export default class DemoAreaChart extends PureComponent {
       this.setState({
         data:sortedData
       })
-      console.log('영역 넣을 데이터',this.state.data)
   })
     .catch((err)=>{
       console.log('영역 데이터 실패',err)
@@ -104,7 +103,7 @@ export default class DemoAreaChart extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.interval !== this.state.interval) {
-      const url=`http://70.12.246.60:8080/api/v1/analytics/components?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
+      const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
@@ -134,7 +133,6 @@ export default class DemoAreaChart extends PureComponent {
         this.setState({
           data:sortedData
         })
-        console.log('영역 넣을 데이터',this.state.data)
     })
       .catch((err)=>{
         console.log('영역 데이터 실패',err)
@@ -145,7 +143,7 @@ export default class DemoAreaChart extends PureComponent {
   render() {
     return (
       <>
-      <DropdownComponent menus={['1m','5m','10m']} onSelect={this.handleSelect} ></DropdownComponent>
+      <DropdownComponent menus={['10m','1h','1d']} onSelect={this.handleSelect} title='interval'></DropdownComponent>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           width={500}

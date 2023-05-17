@@ -13,13 +13,15 @@ public class ProjectDto {
     private String url;
     private String name;
     private boolean spa;
+    private String token;
     public static ProjectDto toDto(Project project){
 
         return new ProjectDto(
                 project.getId(),
                 project.getUrl(),
                 project.getName(),
-                project.isSpa()
+                project.isSpa(),
+                project.getToken()
         );
     }
     public Project toEntity(){
@@ -29,6 +31,7 @@ public class ProjectDto {
                 .url(url)
                 .name(name)
                 .isSpa(spa)
+                .token(token)
                 .build();
     }
 }

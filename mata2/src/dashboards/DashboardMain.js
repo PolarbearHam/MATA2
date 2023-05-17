@@ -10,7 +10,8 @@ import { Resizable,ResizableBox } from 'react-resizable';
 import GridLayout from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-
+import DurationsAreaChart from './areachart/DurationsAreaChart';
+import { useParams } from 'react-router-dom';
 // function DashboardMain() {
 
 import _ from "lodash";
@@ -58,7 +59,7 @@ class ToolboxLayout extends React.Component {
       {
         "w": 5,
         "h": 7,
-        "x": 0,
+        "x": 12,
         "y": 0,
         "i": "a",
         "moved": false,
@@ -98,13 +99,23 @@ class ToolboxLayout extends React.Component {
       {
         "w": 11,
         "h": 14,
-        "x": 0,
-        "y": 14,
+        "x": 15,
+        "y": 15,
         "i": "e",
         "moved": false,
+        "static": true,
+        "name": '샌키'
+      },
+      {
+        "w": 5,
+        "h": 7,
+        "x": 12,
+        "y": 7,
+        "i": "f",
+        "moved": false,
         "static": false,
-        "name": '데모라인차트'
-      }
+        "name": '듀레이션'
+      },
     ])
   };
 
@@ -136,11 +147,14 @@ class ToolboxLayout extends React.Component {
           component = <DemoBarChart />;
           break
         case "d":
-          component= <DemoPieChart/>
+          component= <DemoPieChart />
           break
         case "e" :
           component= <DemoSankeyChart/>
           break
+        case "f" :
+          component= <DurationsAreaChart/>
+          break  
         default :
         component= '기타입니다.'
       }
@@ -243,7 +257,6 @@ class ToolboxLayout extends React.Component {
   };
 
   onLayoutChange = (layout, layouts) => {
-    console.log('레이아웃 바뀜 layout,layouts',layout,layouts)
     this.props.onLayoutChange(layout, layouts);
     this.setState({ layouts });
     localStorage.setItem("my-grid-layout", JSON.stringify(layout));
@@ -310,11 +323,12 @@ class ToolboxLayout extends React.Component {
 //   });
 // }
 const DashboardMain = (props) => {
+  const { projectId } = useParams();
   const [layout, setLayout] = useState ((localStorage.getItem("my-grid-layout")? JSON.parse(localStorage.getItem("my-grid-layout")) :[
     {
       "w": 5,
       "h": 7,
-      "x": 0,
+      "x": 12,
       "y": 0,
       "i": "a",
       "moved": false,
@@ -354,30 +368,38 @@ const DashboardMain = (props) => {
     {
       "w": 11,
       "h": 14,
-      "x": 0,
-      "y": 14,
+      "x": 30,
+      "y": 30,
       "i": "e",
       "moved": false,
+      "static": true,
+      "name": '샌키'
+    },
+    {
+      "w": 5,
+      "h": 7,
+      "x": 12,
+      "y": 7,
+      "i": "f",
+      "moved": false,
       "static": false,
-      "name": '데모라인차트'
-    }
+      "name": '듀레이션'
+    },
   ]));
 
   useEffect(() => {
-    console.log('그리드 레이아웃은',layout)
     const storedLayout = JSON.parse(localStorage.getItem("my-grid-layout")) || [];
+    console.log("대쉬보드 화면,",projectId)
     setLayout(storedLayout);
-    console.log('그리드 레이아웃은',layout)
   },[]);
 
   const onLayoutChange = (newLayout) => {
-    console.log('레이아웃 바뀜',newLayout)
     localStorage.setItem("my-grid-layout", JSON.stringify(newLayout));
     setLayout(newLayout);
   };
   return (
     <div className="dashboard flex-grow-1">
-      <header className="header" >
+      <header className="header" >  
         {!props.state.user
           ? (<h1> 김 아무개의 대시보드 </h1>)
           : (<h1> {props.state.user.name}의 대시보드</h1>)

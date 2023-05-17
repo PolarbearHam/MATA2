@@ -77,9 +77,13 @@ public class EventDto {
             List<EventPathDto> toEventPathDtoList = new ArrayList<>();
 
             for (int i = 0; i < fromEventParamList.size(); i++) {
-                toEventParamDtoList.add(EventParamDto.toDto(fromEventParamList.get(i)));
+                EventParam eventParam = fromEventParamList.get(i);
+                if(!eventParam.isEnabled()) continue;
+                toEventParamDtoList.add(EventParamDto.toDto(eventParam));
             }
             for (int i = 0; i < fromEventPathList.size(); i++) {
+                EventPath eventPath = fromEventPathList.get(i);
+                if(!eventPath.isEnabled()) continue;
                 toEventPathDtoList.add(EventPathDto.toDto(fromEventPathList.get(i)));
             }
 

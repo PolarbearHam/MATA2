@@ -10,7 +10,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   function signup (e) {
-    if (password!=password2) {
+    if (password!==password2) {
       alert('비밀번호 확인 다름')
       return}
     e.preventDefault();
@@ -22,14 +22,12 @@ const SignUp = () => {
     }
     const headers = {
       'Content-type': 'application/json'
-    }
-    console.log("회원가입 시도",formData)
-    
+    }    
     axios.post(process.env.REACT_APP_HOST+'/v1/member/signup',formData,{headers})
 
     .then(response => {
       console.log(response);
-      if (response.status==200) {
+      if (response.status === 200) {
         sessionStorage.setItem('accessToken',response.data.accessToken)  
         navigate('/')
       }else alert('틀림')

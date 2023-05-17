@@ -4,7 +4,7 @@ import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap
 
 const DropdownComponent = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(props.title);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -17,7 +17,7 @@ const DropdownComponent = (props) => {
   return (
     <Dropdown isOpen={isOpen} toggle={toggleMenu}>
       <DropdownToggle caret>
-        interval:
+        {selectedItem}:
       </DropdownToggle>
 
       <DropdownMenu>

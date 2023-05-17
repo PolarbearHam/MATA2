@@ -1,8 +1,10 @@
-import React from 'react';
+import React,{ useEffect,useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
 
 const Header = (props) => {
+  const [services,setServices]=useState([{id:-1}])
+
   const dropdown = () => {
     document.getElementById("nav-content").classList.toggle("hidden");
   }
@@ -39,7 +41,7 @@ const Header = (props) => {
           </Link>
         </div>) : (
         <div className="text-sm lg:flex-grow lg:items-center lg:justify-end">
-          <Link to="/start"
+          <Link to={`/service/${props.state.headService}/dashboard`}
              className="block no-underline mt-2 lg:mt-1 lg:inline-block text-white hover:text-blue-200 hover:scale-105 mr-4">
             {props.state.user.name}의 대시보드
           </Link>
