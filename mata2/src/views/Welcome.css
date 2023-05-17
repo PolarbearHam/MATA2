@@ -1,14 +1,16 @@
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+
 #background {
   display: flex;
 flex-direction: column;
-justify-content: center;
-align-items: center;
+justify-content: space-between;
+align-items: end;
 padding: 10px;
 gap: 10px;
 background-image: url('../assets/Welcome.jpg');
 background-size: cover;
 filter: contrast(150%) hue-rotate(330deg);
-height: 100vh;
+height: 94.3vh;
 }
 
 #heroTitle{
@@ -17,6 +19,7 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 padding: 10px;
+padding-top: 5%;
 gap: 10px;
 
 
@@ -24,10 +27,11 @@ gap: 10px;
 }
 
 #MATA{
-  width: 205px;
-  height: 87px;
+  width: 45%;
   
-  font-family: 'Inter';
+  
+  text-align: end;
+  font-family: 'Jeju Gothic', sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 72px;
@@ -38,14 +42,16 @@ gap: 10px;
 }
 
 #main{
-  width: 200px;
+  width: 70%;
   height: 44px;
   
-  font-family: 'Inter';
+  text-align: end;
+  font-family: 'Jeju Gothic', sans-serif;
   font-style: normal;
-  font-weight: 500;
-  font-size: 36px;
+  font-weight: 550;
+  font-size: 40px;
   line-height: 44px;
+  padding-right: 3%;
 /* identical to box height */
 
 
@@ -56,8 +62,10 @@ color: #FFFFFF;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: end;
+  text-align: center;
   padding: 10px;
+  padding-right: 15%;
   gap: 10px;
   
   
@@ -67,12 +75,12 @@ color: #FFFFFF;
 #firstExplanation{
   
 height: 19px;
-
-font-family: 'Inter';
+width: 60%;
+font-family: 'Jeju Gothic', sans-serif;
 font-style: normal;
-font-weight: 600;
-font-size: 16px;
-line-height: 19px;
+font-weight: 550;
+font-size: 32px;
+line-height: 40px;
 
 color: #FFFFFF;
 }
