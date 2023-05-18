@@ -12,6 +12,8 @@ import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import DurationsAreaChart from './areachart/DurationsAreaChart';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // function DashboardMain() {
 
 import _ from "lodash";
@@ -183,7 +185,7 @@ class ToolboxLayout extends React.Component {
           ) : (
             <span className="text">{l.i} {chartName}</span>
           )}
-          <div className="h-100 ">
+          <div className="h-100  ">
           
             {component}
           </div>
@@ -275,7 +277,7 @@ class ToolboxLayout extends React.Component {
           현재 화면크기: {this.state.currentBreakpoint} (
           {this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
-        <div className="row border border-b-gray-50 p-5 py-3 rounded-2xl">
+        <div className="row border border-b-gray-50 p-5 py-3 rounded-2xl gap-3">
           <div className='d-flex flex-row justify-content-space-between'>
           <div>충돌 설정:{" "}
           {_.capitalize(this.state.compactType) || "No Compaction"}
@@ -391,9 +393,36 @@ const DashboardMain = (props) => {
       "name": '듀레이션'
     },
   ]));
+  const navigate=useNavigate()
 
   useEffect(() => {
-    const ownServiceIds=props.state.serviceList
+    const projectID = window.location.href.split('/')[4];
+    const accessToken=sessionStorage.getItem('accessToken')
+    const ownServiceIds=[]
+    props.state.serviceList.forEach(element => {
+      ownServiceIds.push(element.id)
+    });
+    const headers = {
+      "Authorization": `Bearer ${accessToken}`,
+    }
+    axios({method:"get",url:process.env.REACT_APP_HOST+"/v1/project/",headers:headers})
+      .then(res=>{
+       res.data.forEach(element => {
+        ownServiceIds.push(element.id)
+        console.log('가진서비스',ownServiceIds, 'id', Number(projectID))
+        console.log(ownServiceIds.includes(Number(projectID)))
+       });
+       if (!ownServiceIds.includes(Number(projectID))){
+        navigate('/notYourService')
+  
+      }
+      })
+      .catch(err=>{
+      })
+    console.log('props',props,'가진서비스',ownServiceIds, projectID)
+  
+    
+
     console.log('대쉬보드 진입', props.state)
     const storedLayout = JSON.parse(localStorage.getItem("my-grid-layout")) || [];
     console.log("대쉬보드 화면,",projectId)
