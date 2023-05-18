@@ -15,7 +15,11 @@ export default function DemoSankeyChart() {
 
   // 노드 선택 했을때
   const handleNodeDoubleClick = (nodeName) => {
-    setSelectedNode(nodeName); // 클릭한 payload.name 값을 selectedNode 변수에 저장
+    console.log(Object.keys(axios_data).includes(nodeName))
+    if(!Object.keys(axios_data).includes(nodeName)){
+      alert('마지막 노드입니다.')
+    }
+    else{setSelectedNode(nodeName);} // 클릭한 payload.name 값을 selectedNode 변수에 저장
   };
 
   // selectedNode 시작 노드 선택 -> 그림 초기화, node, link 재설정
@@ -43,6 +47,7 @@ export default function DemoSankeyChart() {
 
   useEffect(() => {
     if(axios_data) {
+      console.log(axios_data)
       let temp_url = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       Object.keys(axios_data).forEach((key) => {
         if(temp_url.length > key.length && key.length != 0) {
@@ -57,7 +62,7 @@ export default function DemoSankeyChart() {
   // axios로 데이터 받아오기
   useEffect(()=>{
     const projectID = window.location.href.split('/')[4];
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/journals_all?basetime=${Date.now()}&projectId=${projectID}`
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/journals_all?basetime=${Date.now()-3600000}&projectId=${projectID}`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
