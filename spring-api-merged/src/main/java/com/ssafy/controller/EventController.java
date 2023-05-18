@@ -107,7 +107,7 @@ public class EventController {
                     if(i % 13 == 0)      wl.setUserLanguage("ko");
                     else                 wl.setUserLanguage("en");
 
-                    wl.setLocation("http://mata2.co.kr" + urlList.get(hashValue%10));
+                    wl.setLocation("https://mata2.co.kr" + urlList.get(hashValue%10));
                     if(i % 5 == 0)  wl.setReferrer(referlist.get(i%300).toString());
                     else            wl.setReferrer("http://mata2.co.kr" + urlList.get((hashValue%10 + hashValue2 % 4) % 10));
 
