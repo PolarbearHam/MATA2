@@ -107,13 +107,21 @@ public class HiveRepository {
                     "LIMIT 1000", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, clickRowMapper);
     }
-    public List<HivePageDuration> selectPageDuration(long baseTime, String interval, long projectId) {
-        String sql = String.format(//language=sql
-                "SELECT * FROM mata.page_durations_%s "+
-                    "WHERE project_id=%d "+
-                        "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 1000", interval, projectId, baseTime);
-        return jdbcTemplate.query(sql, pageDurationRowMapper);
+    public List<HivePageDuration> selectPageDuration(long baseTime, String interval, long projectId, String domain) {
+        String sql = "SELECT * FROM mata.page_durations_? " +
+                "WHERE project_id = ? " +
+                "AND update_timestamp < CAST(? AS TIMESTAMP) " +
+                "AND location_from LIKE CONCAT('%', ?, '%')";
+        return jdbcTemplate.query(sql, new Object[] {interval,
+                projectId,
+                new Timestamp(baseTime),
+                domain}, pageDurationRowMapper);
+//        String sql = String.format(
+//                "SELECT * FROM mata.page_durations_%s "+
+//                    "WHERE project_id=%d "+
+//                        "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
+//                    "LIMIT 1000", interval, projectId, baseTime);
+//        return jdbcTemplate.query(sql, pageDurationRowMapper);
     }
     public List<HivePageJournal> selectPageJournal(long baseTime, String interval, long projectId) {
         String sql = String.format(//language=sql
@@ -166,8 +174,6 @@ public class HiveRepository {
         return jdbcTemplate.query(sql, pageDurationRowMapper);
     }
     public List<HivePageJournal> selectPageJournalAll(long baseTime, long projectId, String domain) {
-        System.out.println("domain.........." + domain);
-
         String sql = "SELECT * FROM mata.page_journals_all " +
                     "WHERE project_id = ? " +
                     "AND update_timestamp < CAST(? AS TIMESTAMP) " +
@@ -190,8 +196,6 @@ public class HiveRepository {
 //                "%google%", "%daum%", "%naver%"}, pageJournalRowMapper);
     }
     public List<HivePageJournal> selectpageReferAll(long baseTime, long projectId, String domain) {
-        System.out.println("domain.........." + domain);
-
         String sql = "SELECT * FROM mata.page_journals_all " +
                 "WHERE project_id = ? " +
                 "AND update_timestamp < CAST(? AS TIMESTAMP) " +
