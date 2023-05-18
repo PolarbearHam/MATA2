@@ -138,33 +138,15 @@ export default class ReferBarChart extends PureComponent {
     axios.get(url,{headers})
     .then((res)=>{
       console.log('referBar',res.data)
-      const refers={}
-      res.data.forEach(element => {
-        try{
-          const url = new URL(element.locatinFrom);
-          const baseUrl = url.origin + url.pathname;
-          if(!refers [baseUrl]){
-            refers[element.locationFrom]=0
-          }
-          refers[element.locationFrom]+=element.totalJournal
-        }
-        catch(err){return}
-      });
-      const refersArray=[]
-      Object.keys(refers).forEach(element => {
-        refersArray.push({locatinFrom:element,totalJournal:refers[element]})
-      });
-      this.setState({
-        refersArray:refersArray
-      })
-      console.log('referBar는',refers)
-      
+      this.setState(
+        {refersArray:res.data}
+      )
     })
     .catch((err)=>{
       console.log('refer실패',err)
     })
 
-
+    console.log (this.state)
   }
   render() {
     return (
@@ -174,7 +156,7 @@ export default class ReferBarChart extends PureComponent {
         <BarChart
           width={500}
           height={300}
-          data={this.state.referssArray? this.state.refersArray : data}
+          data={this.state.refersArray? this.state.refersArray : data}
           margin={{
             top: 20,
             right: 30,

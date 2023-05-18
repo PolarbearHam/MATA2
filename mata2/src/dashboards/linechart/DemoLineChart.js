@@ -187,7 +187,7 @@ export default class DemoLineChart extends PureComponent {
       <>
       <div className='d-flex flex-row'>
         <DropdownComponent menus={['10m','1h','1d']} onSelect={this.handleSelectInterval} title='interval'></DropdownComponent>
-        <DropdownComponent menus={this.state.urls} onSelect={this.handleSelectUrl} title='page'></DropdownComponent>
+        {/* <DropdownComponent menus={this.state.urls} onSelect={this.handleSelectUrl} title='page'></DropdownComponent> */}
       </div>
       <ResponsiveContainer width="100%" height="85%">
         <AreaChart

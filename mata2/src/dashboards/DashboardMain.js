@@ -166,7 +166,7 @@ class ToolboxLayout extends React.Component {
           chartName = "평균체류시간,"
           break;
         case "b":
-          chartName = "컴포넌트 별 클릭수 디바이스 종류 별로 나누어 보기"
+          chartName = "유입 경로에 따른 세션 수"
           break;
         case "c":
           chartName = "컴포넌트 별 클릭수"
