@@ -66,7 +66,7 @@ export default class DurationsLineChart extends PureComponent {
   }
   componentDidMount(){
     const projectID = window.location.href.split('/')[4];
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=${projectID}`
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()-3600000}&interval=${this.state.interval}&projectId=${projectID}`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
@@ -108,7 +108,7 @@ export default class DurationsLineChart extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.interval !== this.state.interval) {
-      const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
+      const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()-3600000}&interval=${this.state.interval}&projectId=15`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
