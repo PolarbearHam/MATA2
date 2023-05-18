@@ -302,9 +302,71 @@ class ToolboxLayout extends React.Component {
           items={this.state.toolbox[this.state.currentBreakpoint] || []}
           onTakeItem={this.onTakeItem}
           />
+          <button onClick={()=>{
+            localStorage.setItem('my-grid-layout',JSON.stringify([
+              {
+                "w": 5,
+                "h": 7,
+                "x": 1,
+                "y": 8,
+                "i": "b",
+                "moved": false,
+                "static": false
+              },
+              {
+                "w": 5,
+                "h": 7,
+                "x": 0,
+                "y": 29,
+                "i": "c",
+                "moved": false,
+                "static": false
+              },
+              {
+                "w": 5,
+                "h": 7,
+                "x": 1,
+                "y": 36,
+                "i": "d",
+                "moved": false,
+                "static": false
+              },
+              {
+                "w": 6,
+                "h": 14,
+                "x": 0,
+                "y": 15,
+                "i": "e",
+                "moved": false,
+                "static": true
+              },
+              {
+                "w": 5,
+                "h": 6,
+                "x": 0,
+                "y": 43,
+                "i": "f",
+                "moved": false,
+                "static": false
+              },
+              {
+                "w": 5,
+                "h": 6,
+                "x": 1,
+                "y": 2,
+                "i": "a",
+                "moved": false,
+                "static": false
+              }
+            ]))
+            window.location.reload()
+          }}>레이아웃 초기화</button>
         </div>
         {/* <button onClick={this.onNewLayout}>Generate New Layout</button> */}
-
+        <div>
+            유입경로 별 점유율
+            <DemoSankeyChart />
+        </div>
         
 
 
@@ -489,6 +551,7 @@ const DashboardMain = (props) => {
           
           
         </GridLayout> */}
+
         <ToolboxLayout/>
 
 
