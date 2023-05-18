@@ -53,13 +53,13 @@ public class EventController {
 
         List referlist = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            referlist.add("https://www.google.com/" + ("mata" + i).hashCode());
+            referlist.add("https://www.google.com/");
         }
         for (int i = 0; i < 100; i++) {
-            referlist.add("https://www.naver.com/" + ("mata" + i).hashCode());
+            referlist.add("https://www.naver.com/");
         }
         for (int i = 0; i < 100; i++) {
-            referlist.add("https://www.daum.com/" + ("mata" + i).hashCode());
+            referlist.add("https://www.daum.com/");
         }
 
         List<String> urlList = new ArrayList<>();
@@ -82,7 +82,8 @@ public class EventController {
         idList.add("map2");
 
 
-        for (long k = 0; k < 100; k++) {
+        for (long k = 0; k < 15; k++) {
+            Thread.sleep(1000);
             long projectId = 10 + k % 15;
 
             // 500명의 유저 접속, url 랜덤
@@ -109,7 +110,7 @@ public class EventController {
 
                     wl.setLocation("https://mata2.co.kr" + urlList.get(hashValue%10));
                     if(i % 5 == 0)  wl.setReferrer(referlist.get(i%300).toString());
-                    else            wl.setReferrer("http://mata2.co.kr" + urlList.get((hashValue%10 + hashValue2 % 4) % 10));
+                    else            wl.setReferrer("https://mata2.co.kr" + urlList.get((hashValue%10 + hashValue2 % 4) % 10));
 
                     long duTime = 10 + hashValue % 1000;
                     int hashValue3 = (int) (Math.random() * 100000);
