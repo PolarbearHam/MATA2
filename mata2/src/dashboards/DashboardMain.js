@@ -35,7 +35,7 @@ class ToolBox extends React.Component {
   render() {
     return (
       <div className="toolbox">
-        <span className="toolbox__title">Toolbox</span>
+        <span className="toolbox__title"> 제거한 차트들 </span>
         <div className="toolbox__items">
           {this.props.items.map(item => (
             <ToolBoxItem
@@ -170,7 +170,7 @@ class ToolboxLayout extends React.Component {
       }
       return (
         <div key={l.i} className={l.static ? "static" : ""}>
-          <div className="hide-button" onClick={this.onPutItem.bind(this, l)}>
+          <div className="hide-button cursor-pointer" onClick={this.onPutItem.bind(this, l)}>
             &times;
           </div>
           {l.static ? (
@@ -270,24 +270,29 @@ class ToolboxLayout extends React.Component {
 
   render() {
     return (
-      <div>
+      <div >
         <div>
-          Current Breakpoint: {this.state.currentBreakpoint} (
+          현재 화면크기: {this.state.currentBreakpoint} (
           {this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
-        <div>
-          Compaction type:{" "}
+        <div className="row border border-b-gray-50 p-5 py-3 rounded-2xl">
+          <div className='d-flex flex-row justify-content-space-between'>
+          <div>충돌 설정:{" "}
           {_.capitalize(this.state.compactType) || "No Compaction"}
-        </div>
-        {/* <button onClick={this.onNewLayout}>Generate New Layout</button> */}
-        <button onClick={this.onCompactTypeChange}>
-          Change Compaction Type
-        </button>
-
-        <ToolBox
+          </div>
+          <button className='btn btn-light' onClick={this.onCompactTypeChange}>
+          충돌 설정 변경
+          </button>
+          </div>
+          <ToolBox className="row border border-b-gray-50 p-5 py-3 rounded-2xl"
           items={this.state.toolbox[this.state.currentBreakpoint] || []}
           onTakeItem={this.onTakeItem}
-        />
+          />
+        </div>
+        {/* <button onClick={this.onNewLayout}>Generate New Layout</button> */}
+
+        
+
 
         <ResponsiveReactGridLayout
           {...this.props}
