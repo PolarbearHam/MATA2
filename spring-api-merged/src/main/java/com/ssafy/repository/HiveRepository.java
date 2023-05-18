@@ -166,6 +166,8 @@ public class HiveRepository {
         return jdbcTemplate.query(sql, pageDurationRowMapper);
     }
     public List<HivePageJournal> selectPageJournalAll(long baseTime, long projectId, String domain) {
+        System.out.println("domain.........." + domain);
+
         String sql = "SELECT * FROM mata.page_journals_all " +
                     "WHERE project_id = ? " +
                     "AND update_timestamp < CAST(? AS TIMESTAMP) " +
@@ -188,6 +190,8 @@ public class HiveRepository {
 //                "%google%", "%daum%", "%naver%"}, pageJournalRowMapper);
     }
     public List<HivePageJournal> selectpageReferAll(long baseTime, long projectId, String domain) {
+        System.out.println("domain.........." + domain);
+
         String sql = "SELECT * FROM mata.page_journals_all " +
                 "WHERE project_id = ? " +
                 "AND update_timestamp < CAST(? AS TIMESTAMP) " +
