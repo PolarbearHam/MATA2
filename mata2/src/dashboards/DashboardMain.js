@@ -283,10 +283,14 @@ class ToolboxLayout extends React.Component {
         </div>
         <div className="row border border-b-gray-50 p-5 py-3 rounded-2xl gap-3">
           <div className='d-flex flex-row justify-content-space-between'>
-          <div>충돌 설정:{" "}
+          <div style={
+            {textAlign: 'center',}
+          }>충돌 설정:{" "}
           {_.capitalize(this.state.compactType) || "No Compaction"}
           </div>
-          <button className='btn btn-light' onClick={this.onCompactTypeChange}>
+          <button style={
+            {textAlign: 'top',}
+          } className='btn btn-light' onClick={this.onCompactTypeChange}>
           충돌 설정 변경
           </button>
           </div>

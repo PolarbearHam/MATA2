@@ -137,7 +137,6 @@ export default class ReferBarChart extends PureComponent {
     }
     axios.get(url,{headers})
     .then((res)=>{
-      console.log('referBar',res.data)
       this.setState(
         {refersArray:res.data}
       )
@@ -145,8 +144,6 @@ export default class ReferBarChart extends PureComponent {
     .catch((err)=>{
       console.log('refer실패',err)
     })
-
-    console.log (this.state)
   }
   render() {
     return (

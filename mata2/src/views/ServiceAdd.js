@@ -37,7 +37,6 @@ const ServiceAdd = (props) => {
     });
   }
   useEffect(()=>{
-    console.log(props)
     if (!sessionStorage.getItem('accessToken')) {
       navigate('/login')
     }

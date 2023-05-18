@@ -114,7 +114,6 @@ export default class DemoPieChart extends PureComponent {
 
       axios.get(re_BASEURL, {headers})
       .then((res) => {
-        console.log('파이차트',res.data)
         const refers_all_data = res.data.reduce((result, item) => {
           // const domain = item.locationFrom.split('/')[2].split('.')[1];
           const domain = item.locationFrom.split('/')[2];
@@ -124,14 +123,12 @@ export default class DemoPieChart extends PureComponent {
             existingItem.value += item.totalJournal;
           } else {
             if(domain){
-            console.log(domain)
             result.push({ name: domain, value: item.totalJournal });
             }
           }
         
           return result;
         }, []);
-        console.log('파이222',refers_all_data)
         if(!refers_all_data.length) refers_all_data.push({name: "no data", value: 1});
         transformedData.push(refers_all_data);
         this.setState({
