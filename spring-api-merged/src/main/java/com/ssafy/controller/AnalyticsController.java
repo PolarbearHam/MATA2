@@ -89,8 +89,6 @@ public class AnalyticsController {
     public ResponseEntity<?> getComponents(@RequestParam(name="basetime") long baseTime,
                                            @RequestParam(name="projectId") long projectId,
                                            @AuthenticationPrincipal UserDetails userDetails){
-        // 임시
-        baseTime = 1684025143516l;
         List<HiveComponent> hiveComponents = hiveService.getComponentsAll(baseTime, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(hiveComponents);
     }
@@ -98,8 +96,6 @@ public class AnalyticsController {
     public ResponseEntity<List<HiveClick>> getClicks(@RequestParam(name="basetime") long baseTime,
                                                      @RequestParam(name="projectId") long projectId,
                                                      @AuthenticationPrincipal UserDetails userDetails) {
-        // 임시
-        baseTime = 1684025143516l;
         List<HiveClick> clicks = hiveService.getClicksAll(baseTime, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(clicks);
     }
@@ -107,8 +103,6 @@ public class AnalyticsController {
     public ResponseEntity<List<HivePageDuration>> getPageDurations(@RequestParam(name="basetime") long baseTime,
                                                                    @RequestParam(name="projectId") long projectId,
                                                                    @AuthenticationPrincipal UserDetails userDetails) {
-        // 임시
-        baseTime = 1684025143516l;
         List<HivePageDuration> hivePageDurations = hiveService.getPageDurationsAll(baseTime, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(hivePageDurations);
     }
@@ -116,8 +110,6 @@ public class AnalyticsController {
     public ResponseEntity<List<HivePageJournal>> getPageJournals(@RequestParam(name="basetime") long baseTime,
                                                                  @RequestParam(name="projectId") long projectId,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
-        // 임시
-        baseTime = 1684025143516l;
         List<HivePageJournal> hivePageJournals = hiveService.getPageJournalsAll(baseTime, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(hivePageJournals);
     }
@@ -125,8 +117,6 @@ public class AnalyticsController {
     public ResponseEntity<List<HivePageJournal>> getPageRefers(@RequestParam(name="basetime") long baseTime,
                                                              @RequestParam(name="projectId") long projectId,
                                                              @AuthenticationPrincipal UserDetails userDetails) {
-        // 임시
-        baseTime = 1684025143516l;
         List<HivePageJournal> hivePageJournalList = hiveService.getPageRefersAll(baseTime, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(hivePageJournalList);
     }
@@ -143,8 +133,6 @@ public class AnalyticsController {
     public ResponseEntity<List<HiveEvent>> getEvents(@RequestParam(name="basetime") long baseTime,
                                                      @RequestParam(name="projectId") long projectId,
                                                      @AuthenticationPrincipal UserDetails userDetails) {
-        // 임시
-        baseTime = 1684025143516l;
         List<HiveEvent> hiveEvents = hiveService.getEventsAll(baseTime, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(hiveEvents);
     }
