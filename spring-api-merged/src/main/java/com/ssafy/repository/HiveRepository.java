@@ -108,15 +108,18 @@ public class HiveRepository {
         return jdbcTemplate.query(sql, clickRowMapper);
     }
     public List<HivePageDuration> selectPageDuration(long baseTime, String interval, long projectId, String domain) {
+
         String sql = String.format(//language=sql
                 "SELECT * FROM mata.page_durations_%s " +
                 "WHERE project_id = ? " +
                 "AND update_timestamp < CAST(? AS TIMESTAMP) " +
-                "AND location_from LIKE CONCAT('%', ?, '%')", interval);
+                "AND location_from LIKE CONCAT('%%', ?, '%%')", interval);
+
         return jdbcTemplate.query(sql, new Object[] {
                 projectId,
                 new Timestamp(baseTime),
                 domain}, pageDurationRowMapper);
+
 //        String sql = String.format(
 //                "SELECT * FROM mata.page_durations_%s "+
 //                    "WHERE project_id=%d "+
