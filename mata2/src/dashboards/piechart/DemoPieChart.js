@@ -144,7 +144,7 @@ export default class DemoPieChart extends PureComponent {
     return (
       <>
       <DropdownComponent menus={["디바이스 비율","유입 경로 비율"]} onSelect={this.handleSelect} title={this.state.dropdownTitle} ></DropdownComponent>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="85%">
         <PieChart width={400} height={400}>
           <Pie
             activeIndex={this.state.activeIndex}
