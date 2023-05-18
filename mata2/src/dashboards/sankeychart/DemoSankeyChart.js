@@ -15,7 +15,6 @@ export default function DemoSankeyChart() {
 
   // 노드 선택 했을때
   const handleNodeDoubleClick = (nodeName) => {
-    console.log(Object.keys(axios_data).includes(nodeName))
     if(!Object.keys(axios_data).includes(nodeName)){
       alert('마지막 노드입니다.')
     }
@@ -29,8 +28,6 @@ export default function DemoSankeyChart() {
     setColorGradients(null)
 
     if(selectedNode) {
-      console.log(selectedNode)
-      console.log()
       // 시작 노드 선택
       const node = []
       const link = []
@@ -47,7 +44,7 @@ export default function DemoSankeyChart() {
 
   useEffect(() => {
     if(axios_data) {
-      console.log(axios_data)
+
       let temp_url = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       Object.keys(axios_data).forEach((key) => {
         if(temp_url.length > key.length && key.length != 0) {
@@ -91,7 +88,6 @@ export default function DemoSankeyChart() {
   // 데이터 있으면 색 입히기
   useEffect(()=>{
     if(data) {
-      console.log(data)
       const newColorgradient = data.links.map((link) => {
         return {
           source: colors[link.source % numColors],

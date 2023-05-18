@@ -87,9 +87,7 @@ const ServiceCustom = (props) => {
 
   const test=()=>{
     const tagsNamesArray= extractPropertyValues(tags,'tagName')
-    console.log('태그명들:',tagsNamesArray)
     const duplicates=findDuplicateValues(tagsNamesArray);
-    console.log('중복태그들:',duplicates)
     if(duplicates.length){window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)}
     console.log(fields,events,tags)
   }
@@ -211,9 +209,7 @@ const ServiceCustom = (props) => {
   };
   const saveTag= (e)=>{
     const tagsNamesArray= extractPropertyValues(tags,'tagName')
-    console.log('태그명들:',tagsNamesArray)
     const duplicates=findDuplicateValues(tagsNamesArray);
-    console.log('중복태그들:',duplicates)
     if(duplicates.length){
       window.alert(`중복된 이벤트 ${duplicates}를 지워주세요.`)
       window.location.reload();
@@ -231,7 +227,6 @@ const ServiceCustom = (props) => {
         tagClass:element.tagClass,
         tagEvents:element.tagEvents
       })
-      console.log(tag.tags)
 
     }
 
@@ -252,7 +247,6 @@ const ServiceCustom = (props) => {
       alert(error.data)
     });
     
-    console.log(tag)
   
   }
 

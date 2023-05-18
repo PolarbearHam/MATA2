@@ -26,7 +26,6 @@ const SignUp = () => {
     axios.post(process.env.REACT_APP_HOST+'/v1/member/signup',formData,{headers})
 
     .then(response => {
-      console.log(response);
       if (response.status === 200) {
         sessionStorage.setItem('accessToken',response.data.accessToken)  
         navigate('/')

@@ -62,7 +62,7 @@ export default class Test extends PureComponent {
     // 선택된 값에 대한 로직 처리 등을 수행
   }
   componentDidMount(){
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()-3600000}&interval=${this.state.interval}&projectId=15`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
@@ -102,7 +102,7 @@ export default class Test extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.interval !== this.state.interval) {
-      const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
+      const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()-3600000}&interval=${this.state.interval}&projectId=15`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',

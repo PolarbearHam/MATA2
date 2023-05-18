@@ -121,7 +121,7 @@ const data = [
 // };
 
 // export default DemoBarChart;
-export default class DemoBarChart extends PureComponent {
+export default class ReferBarChart extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -130,39 +130,23 @@ export default class DemoBarChart extends PureComponent {
   }
   componentDidMount() {
     const projectID = window.location.href.split('/')[4];
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=10m&projectId=${projectID}`
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/refers_all?basetime=${Date.now()-3600000}&projectId=${projectID}`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
     }
     axios.get(url,{headers})
     .then((res)=>{
-      const tagClicks = {};
-      for (let i = 0; i < res.data.length; i++) {
-        const el = res.data[i];
-        if (!tagClicks[el.tagName]) {
-          tagClicks[el.tagName] = 0;
-        }
-        tagClicks[el.tagName] += el.totalClick;
-      }
-      const tagClicksArray = Object.entries(tagClicks).map(([tagName, value]) => ({
-        tagName,
-        value,
-      }));
-      const chartData = tagClicksArray.map(tag => {
-        return {
-          x: tag.tagName,
-          y: tag.totalClicks
-        }
-      })
-      
-      this.setState({tagClicksArray})
+      console.log('referBar',res.data)
+      this.setState(
+        {refersArray:res.data}
+      )
     })
     .catch((err)=>{
-      console.log(err)
+      console.log('refer실패',err)
     })
 
-
+    console.log (this.state)
   }
   render() {
     return (
@@ -172,7 +156,7 @@ export default class DemoBarChart extends PureComponent {
         <BarChart
           width={500}
           height={300}
-          data={this.state.tagClicksArray? this.state.tagClicksArray : data}
+          data={this.state.refersArray? this.state.refersArray : data}
           margin={{
             top: 20,
             right: 30,
@@ -181,11 +165,11 @@ export default class DemoBarChart extends PureComponent {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="tagName" />
+          <XAxis dataKey="locationFrom" />
           <YAxis />
           <Tooltip  wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }}/>
           <Legend />
-          <Bar dataKey="value" stackId="a" fill="#8884d8" />
+          <Bar dataKey="totalJournal" stackId="a" fill="#8884d8" />
           {/* <Bar dataKey="uv" stackId="a" fill="#82ca9d" /> */}
         </BarChart>
       </ResponsiveContainer>
