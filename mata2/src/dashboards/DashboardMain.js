@@ -13,6 +13,7 @@ import "react-resizable/css/styles.css";
 import DurationsAreaChart from './areachart/DurationsAreaChart';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import ReferBarChart from './barchart/ReferBarChart';
 import { useNavigate } from 'react-router-dom';
 // function DashboardMain() {
 
@@ -98,16 +99,7 @@ class ToolboxLayout extends React.Component {
         "static": false,
         "name": '데모라인차트'
       },
-      {
-        "w": 11,
-        "h": 14,
-        "x": 15,
-        "y": 15,
-        "i": "e",
-        "moved": false,
-        "static": true,
-        "name": '샌키'
-      },
+
       {
         "w": 5,
         "h": 7,
@@ -143,7 +135,7 @@ class ToolboxLayout extends React.Component {
           component = <DemoLineChart />;
           break;
         case "b":
-          component = <DemoAreaChart />;
+          component = <ReferBarChart />;
           break;
         case "c":
           component = <DemoBarChart />;
@@ -165,7 +157,7 @@ class ToolboxLayout extends React.Component {
           chartName = "평균체류시간,"
           break;
         case "b":
-          chartName = "컴포넌트 별 클릭수 디바이스 종류 별로 나누어 보기"
+          chartName = "유입 경로에 따른 세션 수"
           break;
         case "c":
           chartName = "컴포넌트 별 클릭수"
@@ -332,15 +324,6 @@ class ToolboxLayout extends React.Component {
                 "static": false
               },
               {
-                "w": 6,
-                "h": 14,
-                "x": 0,
-                "y": 15,
-                "i": "e",
-                "moved": false,
-                "static": true
-              },
-              {
                 "w": 5,
                 "h": 6,
                 "x": 0,
@@ -447,16 +430,6 @@ const DashboardMain = (props) => {
       "name": '데모라인차트'
     },
     {
-      "w": 11,
-      "h": 14,
-      "x": 30,
-      "y": 30,
-      "i": "e",
-      "moved": false,
-      "static": true,
-      "name": '샌키'
-    },
-    {
       "w": 5,
       "h": 7,
       "x": 12,
@@ -483,8 +456,7 @@ const DashboardMain = (props) => {
       .then(res=>{
        res.data.forEach(element => {
         ownServiceIds.push(element.id)
-        console.log('가진서비스',ownServiceIds, 'id', Number(projectID))
-        console.log(ownServiceIds.includes(Number(projectID)))
+
        });
        if (!ownServiceIds.includes(Number(projectID))){
         navigate('/notYourService')
@@ -492,14 +464,9 @@ const DashboardMain = (props) => {
       }
       })
       .catch(err=>{
+        console.log(err)
       })
-    console.log('props',props,'가진서비스',ownServiceIds, projectID)
-  
-    
-
-    console.log('대쉬보드 진입', props.state)
     const storedLayout = JSON.parse(localStorage.getItem("my-grid-layout")) || [];
-    console.log("대쉬보드 화면,",projectId)
     setLayout(storedLayout);
   },[]);
 

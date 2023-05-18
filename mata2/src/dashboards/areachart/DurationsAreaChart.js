@@ -73,7 +73,7 @@ export default class DurationsAreaChart extends PureComponent {
   }
   componentDidMount(){
     const projectID = window.location.href.split('/')[4];
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()-3600000}&interval=${this.state.interval}&projectId=${projectID}`
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=${projectID}`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
@@ -113,7 +113,7 @@ export default class DurationsAreaChart extends PureComponent {
         this.setState({
           durationsData:sortedData
         })
-        console.log(sortedData)
+
     })
       .catch((err)=>{
         console.log('영역 데이터 실패',err)
@@ -124,7 +124,7 @@ export default class DurationsAreaChart extends PureComponent {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.interval !== this.state.interval) {
       const projectID = window.location.href.split('/')[4];
-      const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()-3600000}&interval=${this.state.interval}&projectId=${projectID}`
+      const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=${projectID}`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
@@ -164,7 +164,7 @@ export default class DurationsAreaChart extends PureComponent {
         this.setState({
           durationsData:sortedData
         })
-        console.log(sortedData)
+
     })
       .catch((err)=>{
         console.log('영역 데이터 실패',err)
