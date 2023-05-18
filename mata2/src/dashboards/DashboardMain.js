@@ -99,16 +99,7 @@ class ToolboxLayout extends React.Component {
         "static": false,
         "name": '데모라인차트'
       },
-      {
-        "w": 11,
-        "h": 14,
-        "x": 15,
-        "y": 15,
-        "i": "e",
-        "moved": false,
-        "static": true,
-        "name": '샌키'
-      },
+
       {
         "w": 5,
         "h": 7,
@@ -333,15 +324,6 @@ class ToolboxLayout extends React.Component {
                 "static": false
               },
               {
-                "w": 6,
-                "h": 14,
-                "x": 0,
-                "y": 15,
-                "i": "e",
-                "moved": false,
-                "static": true
-              },
-              {
                 "w": 5,
                 "h": 6,
                 "x": 0,
@@ -446,16 +428,6 @@ const DashboardMain = (props) => {
       "moved": false,
       "static": false,
       "name": '데모라인차트'
-    },
-    {
-      "w": 11,
-      "h": 14,
-      "x": 30,
-      "y": 30,
-      "i": "e",
-      "moved": false,
-      "static": true,
-      "name": '샌키'
     },
     {
       "w": 5,
