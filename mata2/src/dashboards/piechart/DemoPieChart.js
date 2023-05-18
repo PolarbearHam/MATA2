@@ -70,7 +70,6 @@ export default class DemoPieChart extends PureComponent {
   }
 
   handleSelect(selectedValue) {
-    console.log('선택된 값:', selectedValue);
     if(selectedValue === "디바이스 비율")
       this.setState({
         dataClass:0,

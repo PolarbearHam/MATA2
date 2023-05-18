@@ -13,6 +13,7 @@ import "react-resizable/css/styles.css";
 import DurationsAreaChart from './areachart/DurationsAreaChart';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import ReferBarChart from './barchart/ReferBarChart';
 import { useNavigate } from 'react-router-dom';
 // function DashboardMain() {
 
@@ -143,7 +144,7 @@ class ToolboxLayout extends React.Component {
           component = <DemoLineChart />;
           break;
         case "b":
-          component = <DemoAreaChart />;
+          component = <ReferBarChart />;
           break;
         case "c":
           component = <DemoBarChart />;
@@ -483,8 +484,7 @@ const DashboardMain = (props) => {
       .then(res=>{
        res.data.forEach(element => {
         ownServiceIds.push(element.id)
-        console.log('가진서비스',ownServiceIds, 'id', Number(projectID))
-        console.log(ownServiceIds.includes(Number(projectID)))
+
        });
        if (!ownServiceIds.includes(Number(projectID))){
         navigate('/notYourService')
@@ -492,14 +492,9 @@ const DashboardMain = (props) => {
       }
       })
       .catch(err=>{
+        console.log(err)
       })
-    console.log('props',props,'가진서비스',ownServiceIds, projectID)
-  
-    
-
-    console.log('대쉬보드 진입', props.state)
     const storedLayout = JSON.parse(localStorage.getItem("my-grid-layout")) || [];
-    console.log("대쉬보드 화면,",projectId)
     setLayout(storedLayout);
   },[]);
 
