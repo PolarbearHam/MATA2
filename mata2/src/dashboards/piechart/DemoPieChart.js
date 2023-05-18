@@ -95,76 +95,77 @@ export default class DemoPieChart extends PureComponent {
 
     const transformedData = [];
 
-    axios.get(du_BASEURL,{headers})
-    .then((res)=>{
-      const durations_all_Data = res.data.reduce((result, item) => {
+    axios.get(du_BASEURL, { headers })
+      .then((res) => {
+        const durations_all_Data = res.data.reduce((result, item) => {
           const { screenDevice, totalSession } = item;
           const existingItem = result.find(obj => obj.name === screenDevice);
-        
+
           if (existingItem) {
             existingItem.value += totalSession;
           } else {
             result.push({ name: screenDevice, value: totalSession });
           }
-        
-          return result;
-        }, []);
-      if(!durations_all_Data.length) durations_all_Data.push({name: "no data", value: 1});
-      transformedData.push(durations_all_Data);
 
-      axios.get(re_BASEURL, {headers})
-      .then((res) => {
-        console.log('파이차트',res.data)
-        const refers_all_data = res.data.reduce((result, item) => {
-          // const domain = item.locationFrom.split('/')[2].split('.')[1];
-          const domain = item.locationFrom.split('/')[2];
-          const existingItem = result.find(obj => obj.name === domain);
-        
-          if (existingItem) {
-            existingItem.value += item.totalJournal;
-          } else {
-            if(domain){
-            console.log(domain)
-            result.push({ name: domain, value: item.totalJournal });
-            }
-          }
-        
           return result;
         }, []);
-        console.log('파이222',refers_all_data)
-        if(!refers_all_data.length) refers_all_data.push({name: "no data", value: 1});
-        transformedData.push(refers_all_data);
-        this.setState({
-          transformedData
-        });
+        if (!durations_all_Data.length) durations_all_Data.push({ name: "no data", value: 1 });
+        transformedData.push(durations_all_Data);
+
+        axios.get(re_BASEURL, { headers })
+          .then((res) => {
+            console.log('파이차트', res.data)
+            const refers_all_data = res.data.reduce((result, item) => {
+              // const domain = item.locationFrom.split('/')[2].split('.')[1];
+              if (item.locationFrom) {
+                const domain = item.locationFrom.split('/')[2];
+                const existingItem = result.find(obj => obj.name === domain);
+
+                if (existingItem) {
+                  existingItem.value += item.totalJournal;
+                } else {
+                  if (domain) {
+                    console.log(domain)
+                    result.push({ name: domain, value: item.totalJournal });
+                  }
+                }
+              }
+              return result;
+            }, []);
+            console.log('파이222', refers_all_data)
+            if (!refers_all_data.length) refers_all_data.push({ name: "no data", value: 1 });
+            transformedData.push(refers_all_data);
+            this.setState({
+              transformedData
+            });
+          })
       })
-    })
-    .catch((error)=>{
-      console.log(error);
-    });
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
 
     return (
       <>
-      <DropdownComponent menus={["디바이스 비율","유입 경로 비율"]} onSelect={this.handleSelect} title={this.state.dropdownTitle} ></DropdownComponent>
-      <ResponsiveContainer width="100%" height="85%">
-        <PieChart width={400} height={400}>
-          <Pie
-            activeIndex={this.state.activeIndex}
-            activeShape={renderActiveShape}
-            data={this.state.transformedData[this.state.dataClass]}
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-            onMouseEnter={this.onPieEnter}
-          />
-        </PieChart>
-      </ResponsiveContainer>
+        <DropdownComponent menus={["디바이스 비율", "유입 경로 비율"]} onSelect={this.handleSelect} title={this.state.dropdownTitle} ></DropdownComponent>
+        <ResponsiveContainer width="100%" height="85%">
+          <PieChart width={400} height={400}>
+            <Pie
+              activeIndex={this.state.activeIndex}
+              activeShape={renderActiveShape}
+              data={this.state.transformedData[this.state.dataClass]}
+              cx="50%"
+              cy="50%"
+              innerRadius={60}
+              outerRadius={80}
+              fill="#8884d8"
+              dataKey="value"
+              onMouseEnter={this.onPieEnter}
+            />
+          </PieChart>
+        </ResponsiveContainer>
       </>
     );
   }
