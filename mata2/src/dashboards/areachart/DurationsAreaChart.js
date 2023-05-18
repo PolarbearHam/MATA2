@@ -194,7 +194,7 @@ export default class DurationsAreaChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="timestamp" />
           <YAxis />
-          <Tooltip />
+          <Tooltip wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }}/>
           <Area type="monotone" dataKey="totalSession" stackId="1" stroke="#8884d8" fill="#8884d8" />
           <Area type="monotone" dataKey={this.averageDuration} stackId="2" stroke="green" fill="green" />
           <Area type="monotone" dataKey={this.state.selectedUrl} stackId="3" stroke="red" fill="red" />

@@ -192,7 +192,7 @@ class ToolboxLayout extends React.Component {
               className="text"
               title="This item is static and cannot be removed or resized."
             >
-              Static - {l.i} {l.name}
+              Static - {l.i} {chartName}
             </span>
           ) : (
             <span className="text">{l.i} {chartName}</span>

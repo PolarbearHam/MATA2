@@ -167,7 +167,7 @@ export default class DurationsLineChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="timestamp" />
           <YAxis />
-          <Tooltip />
+          <Tooltip wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }}/>
           <Line type="monotone" dataKey="totalSession" stackId="1" stroke="#8884d8" fill="#8884d8" />
           <Line type="monotone" dataKey={this.averageDuration} stackId="2" stroke="green" fill="green" />
         </LineChart>

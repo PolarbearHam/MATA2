@@ -183,7 +183,7 @@ export default class DemoBarChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="tagName" />
           <YAxis />
-          <Tooltip />
+          <Tooltip  wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }}/>
           <Legend />
           <Bar dataKey="value" stackId="a" fill="#8884d8" />
           <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
