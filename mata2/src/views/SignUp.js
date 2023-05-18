@@ -27,8 +27,13 @@ const SignUp = () => {
 
     .then(response => {
       if (response.status === 200) {
-        sessionStorage.setItem('accessToken',response.data.accessToken)  
-        navigate('/')
+        axios.post(process.env.REACT_APP_HOST+'/v1/member/login',formData,{headers})
+        .then(res2=>{
+          sessionStorage.setItem('accessToken',res2.data.accessToken) 
+          navigate('/')
+        })
+          
+        // navigate('/')
       }else alert('틀림')
     })
     .catch(error => {
