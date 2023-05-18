@@ -170,11 +170,11 @@ public class HiveRepository {
                     "WHERE project_id = ? " +
                     "AND update_timestamp < CAST(? AS TIMESTAMP) " +
                     "AND update_timestamp > CAST(? AS TIMESTAMP) " +
-                    "AND location_from LIKE ? ";
+                    "AND location_from LIKE CONCAT('%', ?, '%')";
         return jdbcTemplate.query(sql, new Object[] {projectId,
                 new Timestamp(baseTime),
                 new Timestamp(baseTime - 3600000),
-                "%" + domain + "%"}, pageJournalRowMapper);
+                domain}, pageJournalRowMapper);
 //        String sql = "SELECT * FROM mata.page_journals_all " +
 //                "WHERE project_id = ? " +
 //                "AND update_timestamp < CAST(? AS TIMESTAMP) " +
@@ -192,11 +192,11 @@ public class HiveRepository {
                 "WHERE project_id = ? " +
                 "AND update_timestamp < CAST(? AS TIMESTAMP) " +
                 "AND update_timestamp > CAST(? AS TIMESTAMP) " +
-                "AND location_from NOT LIKE ?";
+                "AND location_from NOT LIKE CONCAT('%', ?, '%')";
         return jdbcTemplate.query(sql, new Object[] {projectId,
                 new Timestamp(baseTime),
                 new Timestamp(baseTime - 3600000),
-                "%" + domain + "%"}, pageJournalRowMapper);
+                domain}, pageJournalRowMapper);
 //        String sql = "SELECT * FROM mata.page_journals_all " +
 //                "WHERE project_id = ? " +
 //                "AND update_timestamp < CAST(? AS TIMESTAMP) " +
