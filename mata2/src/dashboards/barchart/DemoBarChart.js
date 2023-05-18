@@ -168,7 +168,7 @@ export default class DemoBarChart extends PureComponent {
     return (
       <>
   
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="85%">
         <BarChart
           width={500}
           height={300}

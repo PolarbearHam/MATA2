@@ -179,7 +179,7 @@ export default class DurationsAreaChart extends PureComponent {
         <DropdownComponent menus={['10m','1h','1d']} onSelect={this.handleSelectInterval} title='interval'></DropdownComponent>
         <DropdownComponent menus={this.state.urls} onSelect={this.handleSelectUrl} title='page'></DropdownComponent>
       </div>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="85%">
         <AreaChart
           width={500}
           height={400}
