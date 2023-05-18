@@ -12,6 +12,8 @@ import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import DurationsAreaChart from './areachart/DurationsAreaChart';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // function DashboardMain() {
 
 import _ from "lodash";
@@ -35,7 +37,7 @@ class ToolBox extends React.Component {
   render() {
     return (
       <div className="toolbox">
-        <span className="toolbox__title">Toolbox</span>
+        <span className="toolbox__title"> 제거한 차트들 </span>
         <div className="toolbox__items">
           {this.props.items.map(item => (
             <ToolBoxItem
@@ -162,15 +164,27 @@ class ToolboxLayout extends React.Component {
         case "a":
           chartName = "x:타임스탬프,y:클릭 수 라인; 디바이스 종류,"
           break;
+        case "b":
+          chartName = "컴포넌트 별 클릭수 디바이스 종류 별로 나누어 보기"
+          break;
         case "c":
           chartName = "컴포넌트 별 클릭수"
           break;
+        case "d":
+          chartName = "인터렉티브 파이차트"
+          break;
+        case "e":
+          chartName = "여정 sankey차트"
+          break;
+        case "f" :
+          chartName= "사용자 수와 체류시간, 페이지, 집계단위별로"
+          break 
         default:
           chartName='다른차트'
       }
       return (
         <div key={l.i} className={l.static ? "static" : ""}>
-          <div className="hide-button" onClick={this.onPutItem.bind(this, l)}>
+          <div className="hide-button cursor-pointer" onClick={this.onPutItem.bind(this, l)}>
             &times;
           </div>
           {l.static ? (
@@ -178,12 +192,12 @@ class ToolboxLayout extends React.Component {
               className="text"
               title="This item is static and cannot be removed or resized."
             >
-              Static - {l.i} {l.name}
+              Static - {l.i} {chartName}
             </span>
           ) : (
             <span className="text">{l.i} {chartName}</span>
           )}
-          <div className="h-100 ">
+          <div className="h-100  ">
           
             {component}
           </div>
@@ -270,24 +284,91 @@ class ToolboxLayout extends React.Component {
 
   render() {
     return (
-      <div>
+      <div >
         <div>
-          Current Breakpoint: {this.state.currentBreakpoint} (
+          현재 화면크기: {this.state.currentBreakpoint} (
           {this.props.cols[this.state.currentBreakpoint]} columns)
         </div>
-        <div>
-          Compaction type:{" "}
+        <div className="row border border-b-gray-50 p-5 py-3 rounded-2xl gap-3">
+          <div className='d-flex flex-row justify-content-space-between'>
+          <div>충돌 설정:{" "}
           {_.capitalize(this.state.compactType) || "No Compaction"}
-        </div>
-        {/* <button onClick={this.onNewLayout}>Generate New Layout</button> */}
-        <button onClick={this.onCompactTypeChange}>
-          Change Compaction Type
-        </button>
-
-        <ToolBox
+          </div>
+          <button className='btn btn-light' onClick={this.onCompactTypeChange}>
+          충돌 설정 변경
+          </button>
+          </div>
+          <ToolBox className="row border border-b-gray-50 p-5 py-3 rounded-2xl"
           items={this.state.toolbox[this.state.currentBreakpoint] || []}
           onTakeItem={this.onTakeItem}
-        />
+          />
+          <button onClick={()=>{
+            localStorage.setItem('my-grid-layout',JSON.stringify([
+              {
+                "w": 5,
+                "h": 7,
+                "x": 1,
+                "y": 8,
+                "i": "b",
+                "moved": false,
+                "static": false
+              },
+              {
+                "w": 5,
+                "h": 7,
+                "x": 0,
+                "y": 29,
+                "i": "c",
+                "moved": false,
+                "static": false
+              },
+              {
+                "w": 5,
+                "h": 7,
+                "x": 1,
+                "y": 36,
+                "i": "d",
+                "moved": false,
+                "static": false
+              },
+              {
+                "w": 6,
+                "h": 14,
+                "x": 0,
+                "y": 15,
+                "i": "e",
+                "moved": false,
+                "static": true
+              },
+              {
+                "w": 5,
+                "h": 6,
+                "x": 0,
+                "y": 43,
+                "i": "f",
+                "moved": false,
+                "static": false
+              },
+              {
+                "w": 5,
+                "h": 6,
+                "x": 1,
+                "y": 2,
+                "i": "a",
+                "moved": false,
+                "static": false
+              }
+            ]))
+            window.location.reload()
+          }}>레이아웃 초기화</button>
+        </div>
+        {/* <button onClick={this.onNewLayout}>Generate New Layout</button> */}
+        <div>
+            유입경로 별 점유율
+            <DemoSankeyChart />
+        </div>
+        
+
 
         <ResponsiveReactGridLayout
           {...this.props}
@@ -386,8 +467,37 @@ const DashboardMain = (props) => {
       "name": '듀레이션'
     },
   ]));
+  const navigate=useNavigate()
 
   useEffect(() => {
+    const projectID = window.location.href.split('/')[4];
+    const accessToken=sessionStorage.getItem('accessToken')
+    const ownServiceIds=[]
+    props.state.serviceList.forEach(element => {
+      ownServiceIds.push(element.id)
+    });
+    const headers = {
+      "Authorization": `Bearer ${accessToken}`,
+    }
+    axios({method:"get",url:process.env.REACT_APP_HOST+"/v1/project/",headers:headers})
+      .then(res=>{
+       res.data.forEach(element => {
+        ownServiceIds.push(element.id)
+        console.log('가진서비스',ownServiceIds, 'id', Number(projectID))
+        console.log(ownServiceIds.includes(Number(projectID)))
+       });
+       if (!ownServiceIds.includes(Number(projectID))){
+        navigate('/notYourService')
+  
+      }
+      })
+      .catch(err=>{
+      })
+    console.log('props',props,'가진서비스',ownServiceIds, projectID)
+  
+    
+
+    console.log('대쉬보드 진입', props.state)
     const storedLayout = JSON.parse(localStorage.getItem("my-grid-layout")) || [];
     console.log("대쉬보드 화면,",projectId)
     setLayout(storedLayout);
@@ -441,6 +551,7 @@ const DashboardMain = (props) => {
           
           
         </GridLayout> */}
+
         <ToolboxLayout/>
 
 

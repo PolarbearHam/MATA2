@@ -63,7 +63,8 @@ export default class DemoPieChart extends PureComponent {
     this.state = {
       activeIndex: 0,
       dataClass:0,
-      transformedData:[]
+      transformedData:[[{name: "no data", value: 1}]],
+      dropdownTitle: "디바이스 비율"
     };
     this.handleSelect = this.handleSelect.bind(this);
   }
@@ -72,11 +73,13 @@ export default class DemoPieChart extends PureComponent {
     console.log('선택된 값:', selectedValue);
     if(selectedValue === "디바이스 비율")
       this.setState({
-        dataClass:0
+        dataClass:0,
+        dropdownTitle: "디바이스 비율"
     })
     else if(selectedValue === "유입 경로 비율"){
       this.setState({
-        dataClass:1
+        dataClass:1,
+        dropdownTitle: "유입 경로 비율"
       })
     }
     // 선택된 값에 대한 로직 처리 등을 수행
@@ -107,6 +110,7 @@ export default class DemoPieChart extends PureComponent {
         
           return result;
         }, []);
+      if(!durations_all_Data.length) durations_all_Data.push({name: "no data", value: 1});
       transformedData.push(durations_all_Data);
 
       axios.get(re_BASEURL, {headers})
@@ -123,9 +127,9 @@ export default class DemoPieChart extends PureComponent {
         
           return result;
         }, []);
+        if(!refers_all_data.length) refers_all_data.push({name: "no data", value: 1});
         transformedData.push(refers_all_data);
         this.setState({
-          ...this.state,
           transformedData
         });
       })
@@ -139,8 +143,8 @@ export default class DemoPieChart extends PureComponent {
 
     return (
       <>
-      <DropdownComponent menus={["디바이스 비율","유입 경로 비율"]} onSelect={this.handleSelect} title={"비율 정보 선택"} ></DropdownComponent>
-      <ResponsiveContainer width="100%" height="100%">
+      <DropdownComponent menus={["디바이스 비율","유입 경로 비율"]} onSelect={this.handleSelect} title={this.state.dropdownTitle} ></DropdownComponent>
+      <ResponsiveContainer width="100%" height="85%">
         <PieChart width={400} height={400}>
           <Pie
             activeIndex={this.state.activeIndex}

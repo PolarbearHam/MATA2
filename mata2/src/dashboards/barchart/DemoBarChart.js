@@ -129,7 +129,8 @@ export default class DemoBarChart extends PureComponent {
     };
   }
   componentDidMount() {
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=1h&projectId=15`
+    const projectID = window.location.href.split('/')[4];
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=10m&projectId=${projectID}`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
@@ -167,7 +168,7 @@ export default class DemoBarChart extends PureComponent {
     return (
       <>
   
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="85%">
         <BarChart
           width={500}
           height={300}
@@ -182,7 +183,7 @@ export default class DemoBarChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="tagName" />
           <YAxis />
-          <Tooltip />
+          <Tooltip  wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }}/>
           <Legend />
           <Bar dataKey="value" stackId="a" fill="#8884d8" />
           <Bar dataKey="uv" stackId="a" fill="#82ca9d" />

@@ -65,7 +65,8 @@ export default class DurationsLineChart extends PureComponent {
     // 선택된 값에 대한 로직 처리 등을 수행
   }
   componentDidMount(){
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
+    const projectID = window.location.href.split('/')[4];
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=${projectID}`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
@@ -151,7 +152,7 @@ export default class DurationsLineChart extends PureComponent {
     return (
       <>
       <DropdownComponent menus={['10m','1h','1d']} onSelect={this.handleSelect} title='interval'></DropdownComponent>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="85%">
         <LineChart
           width={500}
           height={400}
@@ -166,7 +167,7 @@ export default class DurationsLineChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="timestamp" />
           <YAxis />
-          <Tooltip />
+          <Tooltip wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }}/>
           <Line type="monotone" dataKey="totalSession" stackId="1" stroke="#8884d8" fill="#8884d8" />
           <Line type="monotone" dataKey={this.averageDuration} stackId="2" stroke="green" fill="green" />
         </LineChart>

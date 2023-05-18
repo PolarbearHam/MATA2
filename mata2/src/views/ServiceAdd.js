@@ -1,14 +1,14 @@
 import React from 'react';
 import './ServiceAdd.css'
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-const ServiceAdd = () => {
+const ServiceAdd = (props) => {
   const navigate=useNavigate()
   const [serviceName, setServiceName] = useState('');
   const [serviceUrl, setServiceUrl] = useState('');
-  const [category, SetCategory]=useState('')
-  function handleClick(e) {
+  const [category, SetCategory]=useState('BLOG')
+  function  handleClick(e) {
     e.preventDefault();
     
     navigate('/signup')
@@ -36,6 +36,13 @@ const ServiceAdd = () => {
       console.error(error);
     });
   }
+  useEffect(()=>{
+    console.log(props)
+    if (!sessionStorage.getItem('accessToken')) {
+      navigate('/login')
+    }
+  },[])
+
   return (
     <div id='ServiceAdd-background' className='vh-100'>
       <form  id='ServiceAddForm' onSubmit={serviceAdd} >

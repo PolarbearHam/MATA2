@@ -62,7 +62,8 @@ export default class DemoAreaChart extends PureComponent {
     // 선택된 값에 대한 로직 처리 등을 수행
   }
   componentDidMount(){
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
+    const projectID = window.location.href.split('/')[4];
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=${this.state.interval}&projectId=${projectID}`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
@@ -102,8 +103,9 @@ export default class DemoAreaChart extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const projectID = window.location.href.split('/')[4];
     if (prevState.interval !== this.state.interval) {
-      const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
+      const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=${this.state.interval}&projectId=${projectID}`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
@@ -144,7 +146,7 @@ export default class DemoAreaChart extends PureComponent {
     return (
       <>
       <DropdownComponent menus={['10m','1h','1d']} onSelect={this.handleSelect} title='interval'></DropdownComponent>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="85%">
         <AreaChart
           width={500}
           height={400}
@@ -159,7 +161,7 @@ export default class DemoAreaChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="timestamp" />
           <YAxis />
-          <Tooltip />
+          <Tooltip wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }} />
           <Area type="monotone" dataKey="tablet" stackId="1" stroke="#8884d8" fill="#8884d8" />
           <Area type="monotone" dataKey="phone" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
           <Area type="monotone" dataKey="Desktop" stackId="1" stroke="#ffc658" fill="#ffc658" />

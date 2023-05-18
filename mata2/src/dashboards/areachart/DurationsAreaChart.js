@@ -72,7 +72,8 @@ export default class DurationsAreaChart extends PureComponent {
     // 선택된 값에 대한 로직 처리 등을 수행
   }
   componentDidMount(){
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
+    const projectID = window.location.href.split('/')[4];
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=${projectID}`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
@@ -122,7 +123,8 @@ export default class DurationsAreaChart extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.interval !== this.state.interval) {
-      const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=15`
+      const projectID = window.location.href.split('/')[4];
+      const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=${projectID}`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
@@ -177,7 +179,7 @@ export default class DurationsAreaChart extends PureComponent {
         <DropdownComponent menus={['10m','1h','1d']} onSelect={this.handleSelectInterval} title='interval'></DropdownComponent>
         <DropdownComponent menus={this.state.urls} onSelect={this.handleSelectUrl} title='page'></DropdownComponent>
       </div>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="85%">
         <AreaChart
           width={500}
           height={400}
@@ -192,7 +194,7 @@ export default class DurationsAreaChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="timestamp" />
           <YAxis />
-          <Tooltip />
+          <Tooltip wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }}/>
           <Area type="monotone" dataKey="totalSession" stackId="1" stroke="#8884d8" fill="#8884d8" />
           <Area type="monotone" dataKey={this.averageDuration} stackId="2" stroke="green" fill="green" />
           <Area type="monotone" dataKey={this.state.selectedUrl} stackId="3" stroke="red" fill="red" />

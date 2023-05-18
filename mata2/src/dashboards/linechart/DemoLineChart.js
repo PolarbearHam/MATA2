@@ -72,7 +72,8 @@ export default class DemoLineChart extends PureComponent {
   }
   static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
   componentDidMount(){
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=1h&projectId=15`
+    const projectID = window.location.href.split('/')[4];
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/components?basetime=${Date.now()}&interval=1h&projectId=${projectID}`
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
@@ -111,7 +112,7 @@ export default class DemoLineChart extends PureComponent {
   }
   render() {
     return (
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="85%">
    
         <LineChart
           width={500}
@@ -128,12 +129,7 @@ export default class DemoLineChart extends PureComponent {
           <XAxis dataKey="timestamp" />
           <YAxis />
           <Tooltip 
-          overrideStyle={{
-            fontSize: '14px',
-            width: '70px',
-            height: '50px',
-            // ... 다른 CSS 스타일 지정
-          }}/>
+          wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }}/>
           <Legend />
           <Line type="monotone" dataKey="tablet" stroke="#8884d8" activeDot={{ r: 8 }} />
           <Line type="monotone" dataKey="phone" stroke="#82ca9d" />
