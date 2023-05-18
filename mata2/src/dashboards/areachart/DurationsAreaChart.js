@@ -61,7 +61,7 @@ export default class DurationsAreaChart extends PureComponent {
     this.handleSelectUrl=this.handleSelectUrl.bind(this)
   }
   averageDuration  (dataPoint) {
-    return dataPoint.totalDuration / dataPoint.totalSession;
+    return parseInt(dataPoint.totalDuration / dataPoint.totalSession /1000);
   };
   handleSelectInterval(selectedValue) {
     this.setState({interval:selectedValue})
@@ -73,7 +73,7 @@ export default class DurationsAreaChart extends PureComponent {
   }
   componentDidMount(){
     const projectID = window.location.href.split('/')[4];
-    const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=${projectID}`
+    const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()-3600000}&interval=${this.state.interval}&projectId=${projectID}`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
@@ -95,7 +95,7 @@ export default class DurationsAreaChart extends PureComponent {
           } sessionByTimestamp[el.updateTimestamp].totalDuration+=el.totalDuration
           if(!sessionByTimestamp[el.updateTimestamp][el.location]){
             sessionByTimestamp[el.updateTimestamp][el.location]=0
-            newUrls.push(el.location)
+            if (!newUrls.includes(el.location)){newUrls.push(el.location)}
           } sessionByTimestamp[el.updateTimestamp][el.location]+=el.totalSession
         }
         this.setState({
@@ -124,7 +124,7 @@ export default class DurationsAreaChart extends PureComponent {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.interval !== this.state.interval) {
       const projectID = window.location.href.split('/')[4];
-      const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()}&interval=${this.state.interval}&projectId=${projectID}`
+      const url=`${process.env.REACT_APP_HOST}/v1/analytics/durations?basetime=${Date.now()-3600000}&interval=${this.state.interval}&projectId=${projectID}`
       const headers = {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
@@ -146,7 +146,7 @@ export default class DurationsAreaChart extends PureComponent {
           } sessionByTimestamp[el.updateTimestamp].totalDuration+=el.totalDuration
           if(!sessionByTimestamp[el.updateTimestamp][el.location]){
             sessionByTimestamp[el.updateTimestamp][el.location]=0
-            newUrls.push(el.location)
+            if (!newUrls.includes(el.location)){newUrls.push(el.location)}
           } sessionByTimestamp[el.updateTimestamp][el.location]+=el.totalSession
         }
         this.setState({
@@ -193,10 +193,10 @@ export default class DurationsAreaChart extends PureComponent {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="timestamp" />
-          <YAxis />
+          <YAxis label={{ value: '세션 수 (명)', angle: -90, position: 'insideLeft' }} />
           <Tooltip wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }}/>
           <Area type="monotone" dataKey="totalSession" stackId="1" stroke="#8884d8" fill="#8884d8" />
-          <Area type="monotone" dataKey={this.averageDuration} stackId="2" stroke="green" fill="green" />
+          {/* <Area type="monotone" dataKey={this.averageDuration} stackId="2" stroke="green" fill="green" /> */}
           <Area type="monotone" dataKey={this.state.selectedUrl} stackId="3" stroke="red" fill="red" />
           <Legend/>
         </AreaChart>

@@ -162,7 +162,7 @@ class ToolboxLayout extends React.Component {
       }
       switch(l.i) {
         case "a":
-          chartName = "x:타임스탬프,y:클릭 수 라인; 디바이스 종류,"
+          chartName = "평균체류시간,"
           break;
         case "b":
           chartName = "컴포넌트 별 클릭수 디바이스 종류 별로 나누어 보기"
@@ -177,7 +177,7 @@ class ToolboxLayout extends React.Component {
           chartName = "여정 sankey차트"
           break;
         case "f" :
-          chartName= "사용자 수와 체류시간, 페이지, 집계단위별로"
+          chartName= "사용자 수와, 페이지, 집계단위별로"
           break 
         default:
           chartName='다른차트'

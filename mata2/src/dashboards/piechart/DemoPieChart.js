@@ -87,8 +87,8 @@ export default class DemoPieChart extends PureComponent {
 
   componentDidMount(){
     const projectID = window.location.href.split('/')[4];
-    const du_BASEURL=`https://mata2.co.kr/api/v1/analytics/durations_all?basetime=${Date.now()}&projectId=${projectID}`;
-    const re_BASEURL=`https://mata2.co.kr/api/v1/analytics/refers_all?basetime=${Date.now()}&projectId=${projectID}`;
+    const du_BASEURL=`https://mata2.co.kr/api/v1/analytics/durations_all?basetime=${Date.now()-3600000}&projectId=${projectID}`;
+    const re_BASEURL=`https://mata2.co.kr/api/v1/analytics/refers_all?basetime=${Date.now()-3600000}&projectId=${projectID}`;
     const headers = {
       "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
       'Content-type': 'application/json',
