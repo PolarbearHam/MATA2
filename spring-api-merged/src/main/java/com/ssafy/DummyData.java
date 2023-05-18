@@ -41,10 +41,10 @@ public class DummyData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        addMember();
-        addProject();
-        addEvent();
-        addTag();
+//        addMember();
+//        addProject();
+//        addEvent();
+//        addTag();
     }
 
     private void addEvent() throws IOException {

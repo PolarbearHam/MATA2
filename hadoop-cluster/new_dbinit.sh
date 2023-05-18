@@ -7,7 +7,7 @@ CREATE KEYSPACE IF NOT EXISTS tagmanager WITH REPLICATION = {
 USE tagmanager;
 DROP TABLE IF EXISTS tagmanager.stream;
 
-CREATE TABLE stream (
+CREATE TABLE tagmanager.stream (
   key TEXT,
   project_id BIGINT,
   session_id TEXT,
@@ -25,7 +25,7 @@ CREATE TABLE stream (
   title TEXT,
   user_agent TEXT,
   user_language TEXT,
-  PRIMARY KEY ((project_id), creation_timestamp, session_id, event)
+  PRIMARY KEY ((project_id), creation_timestamp, session_id, key)
 ) WITH CLUSTERING ORDER BY (creation_timestamp DESC);"
 
 sudo docker exec master01 hive -e "
