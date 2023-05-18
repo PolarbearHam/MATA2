@@ -113,7 +113,7 @@ public class HiveRepository {
                 "SELECT * FROM mata.page_durations_%s " +
                 "WHERE project_id = ? " +
                 "AND update_timestamp < CAST(? AS TIMESTAMP) " +
-                "AND location_from LIKE CONCAT('%%', ?, '%%')", interval);
+                "AND location LIKE CONCAT('%%', ?, '%%')", interval);
 
         return jdbcTemplate.query(sql, new Object[] {
                 projectId,
