@@ -115,7 +115,7 @@ export default function DemoSankeyChart() {
           link={<DemoSankeyLink colorGradients={colorGradients} />}
           node={<DemoSankeyNode containerWidth={960} colors={colors} onNodeDoubleClick={handleNodeDoubleClick} />}
         >
-          <Tooltip />
+          <Tooltip wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }} />
         </Sankey>
       </div>
       <br />

@@ -161,7 +161,7 @@ export default class DemoAreaChart extends PureComponent {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="timestamp" />
           <YAxis />
-          <Tooltip />
+          <Tooltip wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }} />
           <Area type="monotone" dataKey="tablet" stackId="1" stroke="#8884d8" fill="#8884d8" />
           <Area type="monotone" dataKey="phone" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
           <Area type="monotone" dataKey="Desktop" stackId="1" stroke="#ffc658" fill="#ffc658" />

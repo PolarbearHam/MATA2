@@ -129,12 +129,7 @@ export default class DemoLineChart extends PureComponent {
           <XAxis dataKey="timestamp" />
           <YAxis />
           <Tooltip 
-          overrideStyle={{
-            fontSize: '14px',
-            width: '70px',
-            height: '50px',
-            // ... 다른 CSS 스타일 지정
-          }}/>
+          wrapperStyle={{ width: 70, height: 50 }} contentStyle={{ fontSize: '13px' }}  labelStyle={{ fontSize: '16px' }}/>
           <Legend />
           <Line type="monotone" dataKey="tablet" stroke="#8884d8" activeDot={{ r: 8 }} />
           <Line type="monotone" dataKey="phone" stroke="#82ca9d" />
