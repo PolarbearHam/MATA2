@@ -173,146 +173,207 @@ Kubernetes
 ### Frontend
 
 ```
-FRONTEND\VUE3\SRC
-├─assets
-│  ├─base
-│  ├─images
-│  │  └─flags
-│  └─sass
-│      ├─apps
-│      ├─authentication
-│      ├─components
-│      │  ├─cards
-│      │  │  └─_card
-│      │  ├─tabs-accordian
-│      │  └─timeline
-│      │      └─_timeline
-│      ├─drag-drop
-│      ├─elements
-│      │  └─_infobox
-│      ├─font-icons
-│      │  └─fontawesome
-│      │      ├─css
-│      │      └─webfonts
-│      ├─forms
-│      ├─pages
-│      │  ├─coming-soon
-│      │  ├─error
-│      │  ├─faq
-│      │  └─privacy
-│      ├─tables
-│      ├─users
-│      ├─widgets
-│      └─_structure
-├─components
-│  ├─layout
-│  └─plugins
-├─composables
-├─layouts
-├─locales
-├─router
-├─store
-└─views
-    ├─apps
-    │  └─invoice
-    ├─auth
-    ├─charts
-    ├─pages
-    └─users
+\mata2\SRC
+|   App.css
+|   App.js
+|   App.test.js
+|   index.css
+|   index.js
+|   input.css
+|   logo.svg
+|   reportWebVitals.js
+|   setupTests.js
+|   tagmanager.js
+|
++---assets
+|       item-project-icon.svg
+|       loginBackground.svg
+|       Service_add_icon.svg
+|       tagmanager.js
+|       Welcome.jpg
+|
++---components
+|       DropdownComponent.js
+|       Header.js
+|       Sidebar.css
+|       Sidebar.js
+|
++---dashboards
+|   |   DashboardMain.css
+|   |   DashboardMain.js
+|   |
+|   +---areachart
+|   |       DemoAreaChart.js
+|   |       DurationsAreaChart.js
+|   |
+|   +---barchart
+|   |       DemoBarChart.js
+|   |       ReferBarChart.js
+|   |
+|   +---linechart
+|   |       DemoLineChart.js
+|   |       DurationLineChart.js
+|   |
+|   +---piechart
+|   |       DemoPieChart.js
+|   |
+|   \---sankeychart
+|           DemoSankeyChart.js
+|           DemoSankeyLink.js
+|           DemoSankeyNode.js
+|
++---layout
+|       DashboardLayout.js
+|       WelcomeLayout.js
+|
+\---views
+        Collapse.js
+        GettingStarted.js
+        Login.css
+        Login.js
+        Logout.js
+        ServiceAdd.css
+        ServiceAdd.js
+        ServiceCustom.css
+        ServiceCustom.js
+        ServiceStart.js
+        SignUp.css
+        SignUp.js
+        Test.js
+        Welcome.css
+        Welcome.js
+
+
 ```
 
 ### Backend
 
 ```
-BACKEND\BIGDATA-API
-├─mata-api-server
-│  └─src
-│      └─main
-│          ├─java
-│          │  └─com
-│          │      └─ssafy
-│          │          ├─common
-│          │          │  └─exception
-│          │          │      └─dto
-│          │          ├─config
-│          │          │  └─sercurity
-│          │          └─controller
-│          └─resources
-├─mata-hive
-│  └─src
-│      └─main
-│          └─java
-│              └─com
-│                  └─ssafy
-│                      ├─config
-│                      ├─entity
-│                      ├─repository
-│                      └─service
-├─mata-mysql
-│  ├─META-INF
-│  └─src
-│      └─main
-│          ├─java
-│          │  └─com
-│          │      └─ssafy
-│          │          ├─common
-│          │          │  └─validation
-│          │          ├─dto
-│          │          │  ├─member
-│          │          │  │  ├─exception
-│          │          │  │  ├─request
-│          │          │  │  └─response
-│          │          │  └─project
-│          │          │      ├─exception
-│          │          │      ├─request
-│          │          │      └─response
-│          │          ├─entity
-│          │          │  └─enums
-│          │          ├─repository
-│          │          │  ├─member
-│          │          │  └─project
-│          │          ├─service
-│          │          └─token
-│          └─resources
-│              └─META-INF
+\BIGDATA-API
+|   deployment.yml
+|   docker-entrypoint.sh
+|   Dockerfile
+|   HELP.md
+|   mvnw
+|   mvnw.cmd
+|   package-lock.json
+|   pom.xml
+|   README.md
+|   service.yml
+|
++---redis
+|       redis.conf
+|
+\---src
+    \---main
+        +---java
+        |   \---com
+        |       \---ssafy
+        |           |   DummyData.java
+        |           |   MataApiServerApplication.java
+        |           |
+        |           +---config
+        |           |       CassandraConfig.java
+        |           |       ControllerAdvice.java
+        |           |       HiveConfiguration.java
+        |           |       KafkaAdminConfig.java
+        |           |       KafkaProducerConfig.java
+        |           |       MySqlConfiguration.java
+        |           |       RedisConfig.java
+        |           |       SecurityUtils.java
+        |           |       WebMvcConfig.java
+        |           |       WebSecurityConfig.java
+        |           |
+        |           +---controller
+        |           |       AnalyticsController.java
+        |           |       EventController.java
+        |           |       MemberController.java
+        |           |       ProjectController.java
+        |           |       TagManagerController.java
+        |           |
+        |           +---dto
+        |           |       ClientTokenDto.java
+        |           |       ErrorDto.java
+        |           |       EventDto.java
+        |           |       EventParamDto.java
+        |           |       EventPathDto.java
+        |           |       MemberDto.java
+        |           |       MemberInfoDto.java
+        |           |       MemberInfoResponse.java
+        |           |       MemberLoginDto.java
+        |           |       MemberSignUpDto.java
+        |           |       NoSuchProjectException.java
+        |           |       ProjectAddDto.java
+        |           |       ProjectDeleteDto.java
+        |           |       ProjectDto.java
+        |           |       ProjectResponse.java
+        |           |       SaveEventDto.java
+        |           |       SaveEventListDto.java
+        |           |       SaveEventParamDto.java
+        |           |       SaveEventPathDto.java
+        |           |       SaveTagDto.java
+        |           |       SaveTagListDto.java
+        |           |       SettingDto.java
+        |           |       Stream.java
+        |           |       TagDto.java
+        |           |       TagEventDto.java
+        |           |       TokenDto.java
+        |           |       WebLogDto.java
+        |           |
+        |           +---entity
+        |           |       Event.java
+        |           |       EventParam.java
+        |           |       EventPath.java
+        |           |       HiveClick.java
+        |           |       HiveComponent.java
+        |           |       HiveEvent.java
+        |           |       HivePageDuration.java
+        |           |       HivePageJournal.java
+        |           |       HivePageRefer.java
+        |           |       Member.java
+        |           |       Project.java
+        |           |       Referrer.java
+        |           |       Tag.java
+        |           |       TagEvent.java
+        |           |
+        |           +---repository
+        |           |       EventParamRepository.java
+        |           |       EventPathRepository.java
+        |           |       EventRepository.java
+        |           |       HiveRepository.java
+        |           |       MemberRepository.java
+        |           |       ProjectRepository.java
+        |           |       TagEventRepository.java
+        |           |       TagRepository.java
+        |           |       WeblogRepository.java
+        |           |
+        |           +---service
+        |           |       CassandraService.java
+        |           |       CustomUserDetailsService.java
+        |           |       HiveService.java
+        |           |       InjectionService.java
+        |           |       KafkaProducerService.java
+        |           |       MemberService.java
+        |           |       ProjectService.java
+        |           |
+        |           \---util
+        |                   Authority.java
+        |                   DuplicateMemberException.java
+        |                   JwtAuthenticationFilter.java
+        |                   JwtTokenProvider.java
+        |                   MemberPrivilege.java
+        |                   NoSuchMemberException.java
+        |                   ProjectCategory.java
+        |                   RedisKeyExecption.java
+        |                   Validation.java
+        |
+        \---resources
+                application.yml
+
+
 ```
 
 ### Data Cluster
-
-```
-FRONTEND\VUE3\SRC
-├─client
-│  └─notebook
-│      └─.ipynb_checkpoints
-├─lib
-│  ├─apache-airflow-2.5.0
-│  │  ├─conf
-│  │  ├─dags
-│  │  │  ├─lib
-│  │  │  │  ├─extract
-│  │  │  │  │  └─__pycache__
-│  │  │  │  ├─spark
-│  │  │  │  └─__pycache__
-│  │  │  └─__pycache__
-│  │  └─logs
-│  ├─apache-cassandra-4.0.8
-│  │  └─conf
-│  ├─apache-flume-1.11.0-bin
-│  │  └─conf
-│  ├─apache-hive-3.1.3-bin
-│  │  └─conf
-│  ├─apache-zookeeper-3.7.1-bin
-│  │  ├─conf
-│  │  └─sbin
-│  ├─hadoop-3.3.4
-│  │  └─etc
-│  │      └─hadoop
-│  └─spark-3.3.2-bin-hadoop3
-│      ├─conf
-│      └─jobs
-├─node
-└─sbin
-```
 
 # ✔ 협업
 
@@ -366,7 +427,7 @@ FRONTEND\VUE3\SRC
 - React rechart, grid-layout 기반 대시보드 컴포넌트 개발
 - Cassandra To Hive를 위한 Spark스크립트 작성
 
-# 
+ 
 
 ### 이진욱
 
