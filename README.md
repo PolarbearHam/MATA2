@@ -1,8 +1,8 @@
 # SSAFY 특화 프로젝트
 
-## 팀 마타(A309)
+## 팀 마타2(A309)
 
-# 🌐 MATA 링크 : [대시보드 링크](http://mata2.co.kr/)
+# 🌐 MATA21 링크 : [대시보드 링크](http://mata2.co.kr/)
 
 # 🎞 소개 영상 보기 :
 
@@ -307,9 +307,6 @@ FRONTEND\VUE3\SRC
 │  ├─hadoop-3.3.4
 │  │  └─etc
 │  │      └─hadoop
-│  ├─kafka_2.12-3.4.0
-│  │  ├─config
-│  │  └─sbin
 │  └─spark-3.3.2-bin-hadoop3
 │      ├─conf
 │      └─jobs
@@ -345,7 +342,6 @@ FRONTEND\VUE3\SRC
 
 - 데이터 플랫폼 아키텍쳐 설계
 - 데이터 플랫폼 구축
-- Kafka Producer 개발
 - 실시간 ETL 파이프라인 개발
 - 배치 ETL 파이프라인 개발
 - 리눅스 개발 환경 개선
@@ -357,7 +353,9 @@ FRONTEND\VUE3\SRC
 - Spring boot 기반 회원, 프로젝트 도메인 API 작성
 - React 기반 히트맵 컴포넌트 개발
 - Cassandra To Hive를 위한 Spark스크립트 작성
-- UCC 제작
+- VPN 환경 구축
+- 쿠버네티스 도입
+- 모니터링 웹 UI 설정
 - ERD 제작
 
 ### 김호성
@@ -385,7 +383,7 @@ FRONTEND\VUE3\SRC
 - Airflow Dag 작성
 - Data Workflow 자동화
 - Hive 데이터 조회 쿼리 작성
-- Vue3 기반 여정지도 컴포넌트 개발
+- React 기반 여정지도 컴포넌트 개발
 - Hive ERD 설계
 - SparkSQL 쿼리 작성
 - Ucc 출연
