@@ -66,7 +66,7 @@ function App() {
   // GLOBAL: ************** 사용자 정보 **************
 
   useEffect(() => {
-    console.log(location)
+    
     let accessToken = sessionStorage.getItem("accessToken");
     
     const headers = {

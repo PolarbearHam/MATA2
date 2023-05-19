@@ -29,7 +29,8 @@ public class HiveService {
         return hiveRepository.selectClick(baseTime, interval, projectId);
     }
     public List<HivePageDuration> getPageDurations(long baseTime, String interval, long projectId){
-        return hiveRepository.selectPageDuration(baseTime, interval, projectId);
+        String domain = projectRepository.findById(projectId).get().getUrl();
+        return hiveRepository.selectPageDuration(baseTime, interval, projectId, domain);
     }
     public List<HivePageJournal> getPageJournals(long baseTime, String interval, long projectId){
         return hiveRepository.selectPageJournal(baseTime, interval, projectId);

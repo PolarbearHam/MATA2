@@ -107,7 +107,6 @@ export default class Test extends PureComponent {
         "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`,
         'Content-type': 'application/json',
       }
-      console.log('바뀐 url',url)
       axios.get(url,{headers})
       .then((res)=>{
         const timestampByscreenDevice = {};

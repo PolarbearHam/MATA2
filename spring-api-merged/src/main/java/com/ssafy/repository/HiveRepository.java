@@ -107,13 +107,25 @@ public class HiveRepository {
                     "LIMIT 1000", interval, projectId, baseTime);
         return jdbcTemplate.query(sql, clickRowMapper);
     }
-    public List<HivePageDuration> selectPageDuration(long baseTime, String interval, long projectId) {
+    public List<HivePageDuration> selectPageDuration(long baseTime, String interval, long projectId, String domain) {
+
         String sql = String.format(//language=sql
-                "SELECT * FROM mata.page_durations_%s "+
-                    "WHERE project_id=%d "+
-                        "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
-                    "LIMIT 1000", interval, projectId, baseTime);
-        return jdbcTemplate.query(sql, pageDurationRowMapper);
+                "SELECT * FROM mata.page_durations_%s " +
+                "WHERE project_id = ? " +
+                "AND update_timestamp < CAST(? AS TIMESTAMP) " +
+                "AND location LIKE CONCAT('%%', ?, '%%')", interval);
+
+        return jdbcTemplate.query(sql, new Object[] {
+                projectId,
+                new Timestamp(baseTime),
+                domain}, pageDurationRowMapper);
+
+//        String sql = String.format(
+//                "SELECT * FROM mata.page_durations_%s "+
+//                    "WHERE project_id=%d "+
+//                        "AND update_timestamp<CAST(%d AS TIMESTAMP) "+
+//                    "LIMIT 1000", interval, projectId, baseTime);
+//        return jdbcTemplate.query(sql, pageDurationRowMapper);
     }
     public List<HivePageJournal> selectPageJournal(long baseTime, String interval, long projectId) {
         String sql = String.format(//language=sql
@@ -166,48 +178,48 @@ public class HiveRepository {
         return jdbcTemplate.query(sql, pageDurationRowMapper);
     }
     public List<HivePageJournal> selectPageJournalAll(long baseTime, long projectId, String domain) {
-//        String sql = "SELECT * FROM mata.page_journals_all " +
-//                    "WHERE project_id = ? " +
-//                    "AND update_timestamp < CAST(? AS TIMESTAMP) " +
-//                    "AND update_timestamp > CAST(? AS TIMESTAMP) " +
-//                    "AND location_from LIKE ? ";
-//        return jdbcTemplate.query(sql, new Object[] {projectId,
-//                new Timestamp(baseTime),
-//                new Timestamp(baseTime - 3600000),
-//                "%" + domain + "%"}, pageJournalRowMapper);
         String sql = "SELECT * FROM mata.page_journals_all " +
-                "WHERE project_id = ? " +
-                "AND update_timestamp < CAST(? AS TIMESTAMP) " +
-                "AND update_timestamp > CAST(? AS TIMESTAMP) " +
-                "AND (location_from NOT LIKE ? " +
-                "AND location_from NOT LIKE ? " +
-                "AND location_from NOT LIKE ?)";
+                    "WHERE project_id = ? " +
+                    "AND update_timestamp < CAST(? AS TIMESTAMP) " +
+                    "AND update_timestamp > CAST(? AS TIMESTAMP) " +
+                    "AND location_from LIKE CONCAT('%', ?, '%')";
         return jdbcTemplate.query(sql, new Object[] {projectId,
                 new Timestamp(baseTime),
                 new Timestamp(baseTime - 3600000),
-                "%google%", "%daum%", "%naver%"}, pageJournalRowMapper);
-    }
-    public List<HivePageJournal> selectpageReferAll(long baseTime, long projectId, String domain) {
+                domain}, pageJournalRowMapper);
 //        String sql = "SELECT * FROM mata.page_journals_all " +
 //                "WHERE project_id = ? " +
 //                "AND update_timestamp < CAST(? AS TIMESTAMP) " +
 //                "AND update_timestamp > CAST(? AS TIMESTAMP) " +
-//                "AND location_from NOT LIKE ?";
+//                "AND (location_from NOT LIKE ? " +
+//                "AND location_from NOT LIKE ? " +
+//                "AND location_from NOT LIKE ?)";
 //        return jdbcTemplate.query(sql, new Object[] {projectId,
 //                new Timestamp(baseTime),
 //                new Timestamp(baseTime - 3600000),
-//                "%" + domain + "%"}, pageJournalRowMapper);
+//                "%google%", "%daum%", "%naver%"}, pageJournalRowMapper);
+    }
+    public List<HivePageJournal> selectpageReferAll(long baseTime, long projectId, String domain) {
         String sql = "SELECT * FROM mata.page_journals_all " +
                 "WHERE project_id = ? " +
                 "AND update_timestamp < CAST(? AS TIMESTAMP) " +
                 "AND update_timestamp > CAST(? AS TIMESTAMP) " +
-                "AND (location_from LIKE ? " +
-                "OR location_from LIKE ? " +
-                "OR location_from LIKE ?)";
+                "AND location_from NOT LIKE CONCAT('%', ?, '%')";
         return jdbcTemplate.query(sql, new Object[] {projectId,
                 new Timestamp(baseTime),
                 new Timestamp(baseTime - 3600000),
-                "%google%", "%daum%", "%naver%"}, pageJournalRowMapper);
+                domain}, pageJournalRowMapper);
+//        String sql = "SELECT * FROM mata.page_journals_all " +
+//                "WHERE project_id = ? " +
+//                "AND update_timestamp < CAST(? AS TIMESTAMP) " +
+//                "AND update_timestamp > CAST(? AS TIMESTAMP) " +
+//                "AND (location_from LIKE ? " +
+//                "OR location_from LIKE ? " +
+//                "OR location_from LIKE ?)";
+//        return jdbcTemplate.query(sql, new Object[] {projectId,
+//                new Timestamp(baseTime),
+//                new Timestamp(baseTime - 3600000),
+//                "%google%", "%daum%", "%naver%"}, pageJournalRowMapper);
     }
     public List<HiveEvent> selectEventAll(long baseTime, long projectId) {
         String sql = String.format(//language=sql
