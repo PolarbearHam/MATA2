@@ -372,11 +372,9 @@ FRONTEND\VUE3\SRC
 
 ### 이진욱
 
-`Frontend` `Backend` `Data Mart`
+`Frontend` `Backend`
 
-- MySQL, Hive ERD 설계
 - Spring boot 기반 회원, 프로젝트 도메인 API 작성
-- Hive 대용량 데이터 조회 쿼리 작성
 - React 기반 대시보드 컴포넌트 개발
 - Ucc 촬영 및 편집
 
