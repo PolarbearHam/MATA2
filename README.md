@@ -168,155 +168,6 @@ Kubernetes
 
 - 개인공부, 회의록 등 문서를 정리한 공간
 
-## 디렉토리 구조
-
-### Frontend
-
-```
-FRONTEND\VUE3\SRC
-├─assets
-│  ├─base
-│  ├─images
-│  │  └─flags
-│  └─sass
-│      ├─apps
-│      ├─authentication
-│      ├─components
-│      │  ├─cards
-│      │  │  └─_card
-│      │  ├─tabs-accordian
-│      │  └─timeline
-│      │      └─_timeline
-│      ├─drag-drop
-│      ├─elements
-│      │  └─_infobox
-│      ├─font-icons
-│      │  └─fontawesome
-│      │      ├─css
-│      │      └─webfonts
-│      ├─forms
-│      ├─pages
-│      │  ├─coming-soon
-│      │  ├─error
-│      │  ├─faq
-│      │  └─privacy
-│      ├─tables
-│      ├─users
-│      ├─widgets
-│      └─_structure
-├─components
-│  ├─layout
-│  └─plugins
-├─composables
-├─layouts
-├─locales
-├─router
-├─store
-└─views
-    ├─apps
-    │  └─invoice
-    ├─auth
-    ├─charts
-    ├─pages
-    └─users
-```
-
-### Backend
-
-```
-BACKEND\BIGDATA-API
-├─mata-api-server
-│  └─src
-│      └─main
-│          ├─java
-│          │  └─com
-│          │      └─ssafy
-│          │          ├─common
-│          │          │  └─exception
-│          │          │      └─dto
-│          │          ├─config
-│          │          │  └─sercurity
-│          │          └─controller
-│          └─resources
-├─mata-hive
-│  └─src
-│      └─main
-│          └─java
-│              └─com
-│                  └─ssafy
-│                      ├─config
-│                      ├─entity
-│                      ├─repository
-│                      └─service
-├─mata-mysql
-│  ├─META-INF
-│  └─src
-│      └─main
-│          ├─java
-│          │  └─com
-│          │      └─ssafy
-│          │          ├─common
-│          │          │  └─validation
-│          │          ├─dto
-│          │          │  ├─member
-│          │          │  │  ├─exception
-│          │          │  │  ├─request
-│          │          │  │  └─response
-│          │          │  └─project
-│          │          │      ├─exception
-│          │          │      ├─request
-│          │          │      └─response
-│          │          ├─entity
-│          │          │  └─enums
-│          │          ├─repository
-│          │          │  ├─member
-│          │          │  └─project
-│          │          ├─service
-│          │          └─token
-│          └─resources
-│              └─META-INF
-```
-
-### Data Cluster
-
-```
-FRONTEND\VUE3\SRC
-├─client
-│  └─notebook
-│      └─.ipynb_checkpoints
-├─lib
-│  ├─apache-airflow-2.5.0
-│  │  ├─conf
-│  │  ├─dags
-│  │  │  ├─lib
-│  │  │  │  ├─extract
-│  │  │  │  │  └─__pycache__
-│  │  │  │  ├─spark
-│  │  │  │  └─__pycache__
-│  │  │  └─__pycache__
-│  │  └─logs
-│  ├─apache-cassandra-4.0.8
-│  │  └─conf
-│  ├─apache-flume-1.11.0-bin
-│  │  └─conf
-│  ├─apache-hive-3.1.3-bin
-│  │  └─conf
-│  ├─apache-zookeeper-3.7.1-bin
-│  │  ├─conf
-│  │  └─sbin
-│  ├─hadoop-3.3.4
-│  │  └─etc
-│  │      └─hadoop
-│  ├─kafka_2.12-3.4.0
-│  │  ├─config
-│  │  └─sbin
-│  └─spark-3.3.2-bin-hadoop3
-│      ├─conf
-│      └─jobs
-├─node
-└─sbin
-```
-
 # ✔ 협업
 
 ---
@@ -341,14 +192,14 @@ FRONTEND\VUE3\SRC
 
 ### 정준호 (팀장)
 
-`Frontend` `Backend` `System`
+`Frontend` `Backend` `Workflow Management`
 
-- 데이터 플랫폼 아키텍쳐 설계
-- 데이터 플랫폼 구축
-- Kafka Producer 개발
-- 실시간 ETL 파이프라인 개발
-- 배치 ETL 파이프라인 개발
-- 리눅스 개발 환경 개선
+- Airflow Dag 작성
+- Data Workflow 자동화
+- Hive 데이터 조회 쿼리 작성
+- React 기반 여정지도 컴포넌트 개발
+- Hive ERD 설계
+- Spark SQL 쿼리 작성
 
 ### 이태희
 
