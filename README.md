@@ -38,16 +38,16 @@
 
 ### 마타 메인보드 화면
 
-![image](https://github.com/PolarbearHam/MATA2/assets/28555802/b9844ca7-3057-4f04-849f-83b51c92b957)
+![Image Pasted at 2023-5-17 16-50](https://github.com/PolarbearHam/MATA2/assets/28555802/1f4031ef-b647-46b1-a185-7d6426048a20)
 
 
 ### 대시보드 화면 및 컴포넌트 별 통계
 
-![image](https://github.com/PolarbearHam/MATA2/assets/28555802/a5b18586-4e9e-40ae-a973-28f13fb06968)
+![Image Pasted at 2023-5-18 16-17](https://github.com/PolarbearHam/MATA2/assets/28555802/8ae9e567-cad2-49d5-9c9d-1a5b015ac538)
 
 ### 고객여정지도 별 통계
 
-![image](https://github.com/PolarbearHam/MATA2/assets/28555802/e391baca-0360-4bcb-83bc-a0929fb5e846)
+![Image Pasted at 2023-5-18 16-16](https://github.com/PolarbearHam/MATA2/assets/28555802/9228ba41-91e8-4c57-a82a-4fb3986ce170)
 
 
 # ✔ 주요 기술
@@ -255,7 +255,7 @@ Kubernetes
 
 # 📊 MATA 대시보드 화면
 
-![image](https://github.com/PolarbearHam/MATA2/assets/28555802/8e8e43b2-04a4-4b46-b0ef-436f594f0838)
+![Image Pasted at 2023-5-18 16-17](https://github.com/PolarbearHam/MATA2/assets/28555802/a7cd47b8-1728-4cde-bfe6-bbfc9b999d6a)
 
 
 ---
