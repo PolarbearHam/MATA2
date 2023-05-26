@@ -26,9 +26,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://localhost:3306/mata?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: root
+    jdbc-url: *****************
+    username: ****
+    password: ****
     initialization-mode: true
 
   jpa:
@@ -43,16 +43,16 @@ spring:
     redis:
       host: localhost
       port: 6379
-      password:  ssafy8a309
+      password:  ******
     cassandra:
       contact-points: 70.12.246.60
       keyspace-name: tagmanager
       local-datacenter: datacenter1
     hive:
       driver-class-name: org.apache.hive.jdbc.HiveDriver
-      jdbc-url: jdbc:hive2://70.12.246.60:10000/mata
-      username: hive
-      password: hive
+      jdbc-url: ***************
+      username: ****
+      password: ****
 #  kafka:
 #    bootstrap-servers: master01:9092,master02:9092,slave01:9092,slave02:9092,slave03:9092
 #    topic:
@@ -78,9 +78,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://172.26.3.140:3306/mata?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: spring
-    password: ssafy8a309
+    jdbc-url: *********************************
+    username: ****
+    password: ****
     initialization-mode: true
 
   jpa:
@@ -95,16 +95,16 @@ spring:
     redis:
       host: localhost
       port: 6379
-      password:  ssafy8a309
+      password:  ***********
     cassandra:
       contact-points: 172.31.58.239:9042
       keyspace-name: tagmanager
       local-datacenter: datacenter1
     hive:
       driver-class-name: org.apache.hive.jdbc.HiveDriver
-      jdbc-url: jdbc:hive2://172.26.3.140:10000/mata
-      username: hive
-      password: hive
+      jdbc-url: ************
+      username: ****
+      password: ****
 #  kafka:
 #    bootstrap-servers: 172.26.3.140:9092
 #    topic:
